@@ -36,7 +36,7 @@ To compile this for RAC, the following procedure is executed:
 The resulting sources should in essence feel like this:
 
 {{{
-public void foo'() {
+public void fooRAC() {
        assert (a);
        assert (b);
        foo();
