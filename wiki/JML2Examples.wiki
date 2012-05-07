@@ -1,0 +1,79 @@
+= JML (2) Examples =
+
+
+TODO: clean the bellow up (fix links / markup etc...)
+
+
+== BinSearch ==
+
+code:
+
+https://sasp-f2012-jml-and-more.googlecode.com/svn/JMLExamples/trunk
+
+import eventually as existing project into eclipse or just go for the
+command line as bellow.
+
+
+the gen file are here:
+
+https://sasp-f2012-jml-and-more.googlecode.com/svn/JMLExamples/trunk/jml-compiled/dk/itu/jmlexamples/binsearch/BinSearch.java.gen
+
+
+
+jml
+---
+type and syntax checking
+
+::
+
+    $ sh /usr/local/JML/bin/jmlc-unix -R src -d jml-compiled
+
+(note: without *-d jml-compiled* it created .class files to the src dir
+which surpriced me a bit - had not expected compiling yet... todo?)
+
+
+jmlc
+----
+compile 
+
+::
+
+    $ sh /usr/local/JML/bin/jmlc-unix -R src -d jml-compiled
+    parsing src/dk/itu/jmlexamples/binsearch/BinSearch.java
+    ...
+
+-R src means build recursively src folder
+-d where to add the compiled files to
+
+
+
+check jml is compiled to rac:
+
+::
+
+    $ find jml-compiled -name "*.class"
+    jml-compiled/dk/itu/jmlexamples/binsearch/BinSearch$1$rac$v2.class
+    jml-compiled/dk/itu/jmlexamples/binsearch/BinSearch$2$rac$v5.class
+    jml-compiled/dk/itu/jmlexamples/binsearch/BinSearch$3$rac$v10.class
+
+
+print instead of compile to rac
+
+::
+
+    sh /usr/local/JML/bin/jmlc-unix -R src -d jml-compiled -P
+
+
+
+produces the file:
+
+::
+
+    <workspace>/jml-compiled/dk/itu/jmlexamples/binsearch/BinSearch.java.gen
+
+jmlrac
+-----
+::
+
+    $ sh /usr/local/JML/bin/jmlrac-unix -classpath "<full path to workspace>/JMLExamples/jml-compiled/" dk.itu.jmlexamples.binsearch.BinSearch
+    result: 1
