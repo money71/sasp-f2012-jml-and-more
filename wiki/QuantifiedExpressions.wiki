@@ -1,0 +1,51 @@
+#summary Everything about quantified expressions in OpenJML
+
+= Getting into OpenJML Development =
+
+== Quantified expressions ==
+
+These may be interesting entry points for us:
+  * org.jmlspecs.openjml.esc.JmlAssertionAdder.java, line 1792
+  * org.jmlspecs.openjml.JmlTree.java, line 2112
+  * com.sun.tools.javac.comp.JmlRac.java, line 747
+  * org.jmlspecs.openjml.JmlCompiler.java
+
+ Questions
+  * In how far are quantifiers implemented already?
+
+== RAC Overview  ==
+
+Cosider a file Foo.java containing a method with JML annotations
+
+{{{
+//@ invariant a;
+//@ requires b;
+//@ ensures c;
+public void foo() {
+       // Some code
+}
+}}}
+
+To compile this for RAC, the following procedure is executed:
+
+  * jmlc Foo.java
+    ** Transforms source into an AST from which new sources are generated
+  * javac -cp $CLASSPATH:org.jmlspecs.models.jar:org.jmlspecs.runtime.jar Foo$rac$.java
+    ** -P stops at this point and outputs a file Foo.java.gen containing the generated sources
+ 
+The resulting sources should in essence feel like this:
+
+{{{
+public void foo'() {
+       assert (a);
+       assert (b);
+       foo();
+       assert (a);
+       assert (c);
+}
+}}}
+
+These sources can then be run like normal java-compiled code, but require the same jars used for compiling.
+
+  * jmlrac Foo
+    ** java -cp $CLASSPATH:org.jmlspecs.models.jar:org.jmlspecs.runtime.jar Foo 
