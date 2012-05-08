@@ -1,0 +1,37 @@
+#summary Notes on various meetings
+
+= Meeting Notes =
+
+== Meeting with Joe, 1.05.2012, 16.00 ==
+ * JML2 is most advanced and working -> use it for homework!
+ * "An overview over JML Tools" - Joes's website
+ * Project -> Validated Type checker for universes
+
+=== Universes ===
+ * Specify ownership-relations
+ * "Hot area" for the past twelve years
+ * Who owns whom?
+ * /readonly, /rep, /any
+ * RAC or ESC??
+
+==== Levels of project ====
+ * 1. implement core basic unit type checker without testing or contracts
+ * 2. + validation via contracts and unit testing (translating rules into contracts)
+ * 3. + implement universe variants
+
+=== Quantifiers in RAC for OpenJML ===
+ * How to translate quantified expression into executable code?
+ * Also several papers published on that
+
+=== \nonnull ===
+ * No runtime checking for that
+ * Build!
+
+=== \fresh ===
+ * Specify that an object is new
+ * Meaning, newly created
+
+=== \assignable ===
+ * "Frame axioms"
+ * Runtime checking is absolutely novel
+ * Kinda heavyweight

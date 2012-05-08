@@ -1,0 +1,19 @@
+= OpenJML Code Diving =
+
+== RAC ==
+
+=== \nonnullelements ===
+
+Declaration of token for \nunnullelements
+
+{{{
+BSNONNULLELEMENTS("\\nonnullelements"),
+}}}
+
+com.sun.tools.javac.parser.JmlTokens.java, line 144
+
+ * visitJmlMethodInvocation(JmlMethodInvocation) in com.sun.tools.javac.comp.JmlAttr checks for well-typed annotations, including BSNONNULLELEMENTS (line 2793).
+ * visitJmlMethodInvocation(JmlMethodInvocation) in com.sun.tools.javac.comp.JmlRac calls to translateNonNullArguments() in case of BSNONNULLELEMENTS (line 1714)
+ ** translateNonnullelements(JCMethodInvocation tree) in JmlRac.java (line1848)
+
+
