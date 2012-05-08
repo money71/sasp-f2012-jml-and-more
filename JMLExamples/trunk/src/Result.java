@@ -5,4 +5,7 @@ public static class Result {
 	return(1);
     }
 
+    public static void main (String[] args){
+	foo();
+    }
 }
