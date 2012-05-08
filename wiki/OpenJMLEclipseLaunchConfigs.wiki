@@ -1,0 +1,82 @@
+= OpenJML Eclipse Launch Configurations =
+
+
+== Existing Launch Configurations ==
+
+They are located here <OpenJML source>/launchConfigs/ (todo add link to code)
+
+=== Open JML-Plugin (Eclipse) ===
+
+Is the default and launches a new Eclipse with the OpenJML installed
+similar to the one you will get when installing openjml through eclipse - but not usefull for real development.
+
+=== OpenJML-Test ===
+
+Executes all the tests.
+
+=== More ===
+Some uses the prover setting so remembr to set the path to *yices*.
+
+
+== Add new Launch Configurations == 
+
+OpenJMLCommandLine is sane to have in mind for setting up the arguments.
+
+Add these through OpenJML Eclipse workspace w. the sorce code. 
+
+For the OpenJML go to properties.
+
+Add on run configuration for each of Check|Compile|RAC
+
+=== Check ===
+
+Project: OpenJML
+Main: org.jmlspecs.openjml.Main
+Program args: 
+{{{
+-noPurityCheck -g -check /tmp/openjml_tryouts/Foo.java -d /tmp/openjml_tryouts/openjml-compiled/
+}}}
+VM args: 
+{{{
+-Dopenjml.eclipseProjectLocation=${project_loc:OpenJML} -Dopenjml.eclipseSpecsProjectLocation=${project_loc:Specs}
+}}}
+
+
+=== Compile ===
+
+Project: OpenJML
+Main: org.jmlspecs.openjml.Main
+Program args: 
+{{{
+-noPurityCheck -g -compile /tmp/openjml_tryouts/Foo.java -d /tmp/openjml_tryouts/openjml-compiled/
+}}}
+VM args: 
+{{{
+-Dopenjml.eclipseProjectLocation=${project_loc:OpenJML} -Dopenjml.eclipseSpecsProjectLocation=${project_loc:Specs}
+}}}
+
+
+=== RAC ===
+
+Project: OpenJML
+Main: org.jmlspecs.openjml.Main
+Program args: 
+{{{
+-noPurityCheck -g -rac /tmp/openjml_tryouts/Foo.java -d /tmp/openjml_tryouts/openjml-compiled/
+}}}
+VM args: 
+{{{
+-Dopenjml.eclipseProjectLocation=${project_loc:OpenJML} -Dopenjml.eclipseSpecsProjectLocation=${project_loc:Specs}
+}}}
+
+
+All this can possible be added through the file system and set up in a more flexible way - just don't know now.
+
+
+
+
+todo: add some screen shoots etc and more nots on setting up the 
+run'ers as favorites and more...
+
+
+ 

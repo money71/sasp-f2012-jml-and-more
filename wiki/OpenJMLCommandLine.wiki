@@ -1,0 +1,114 @@
+= OpenJML From Command Line =
+
+---todo start---
+
+Using tar / relase from xxx
+
+Placed xxx
+
+Remember to load $OPENJML or specify full path
+
+Add link to JML2FromCommandLine.wiki and create that file
+using material *on desk*.
+
+== Prerequests ==
+
+Java 7
+
+java 6 can be used using xxx
+
+
+---todo end---
+
+
+== -help is your friend ==
+
+{{{
+
+    $ java -jar $OPENJML/openjml.jar -help
+
+}}}
+
+but lets get some simple examples in place (for now using example
+with out package).
+
+== Check ==
+
+{{{
+    $ java -jar $OPENJML/openjml.jar -check Foo.java
+}}}
+
+In the docs it states its a short hand for doing:
+
+{{{
+    $ java -jar $OPENJML/openjml.jar org.jmlspecs.openjml.Main -check Foo.java
+}}}
+
+If check produces lots of warnings simply use the *-noPurityCheck*
+
+{{{
+
+    $ java -jar $OPENJML/openjml.jar -noPurityCheck -check Foo.java
+}}}
+
+This removes the warnings sbout various jml stuff not implemented yet
+within OpenJML.
+
+== Compile ==
+
+{{{
+
+    $ java -jar $OPENJML/openjml.jar -compile Foo.java -d openjml-compiled
+    // or 
+    $ java -jar $OPENJML/openjml.jar -compile Foo.java -d java-compiled
+
+}}}
+
+Both produces/outputs currently no .class files - not sure whats 
+intended *-help* says: *-compile Does a Java-only compiler*.
+    
+Plain mimic of javac can be done as follow:
+
+
+{{{
+    java -jar $OPENJML/openjml.jar -java JMLTest.java -d java-compiled
+    // produces:
+    .
+    ├── java-compiled
+    │   └── JMLTest.class
+}}}
+
+== RAC ==
+
+{{{
+
+    $ java -jar $OPENJML/openjml.jar -rac Foo.java -d openjml-compiled
+    $ tree .
+    .
+    ├── Foo.java
+    └── openjml-compiled
+	└── Foo.class
+}}}
+
+
+
+== ESC ==
+
+Extend statical analysis says:
+
+
+{{{
+
+    $ java -jar $OPENJML/openjml.jar -noPurityCheck -g -esc -prover JMLTest.java
+    openjml: no source files
+    Usage: openjml <options> <source files>
+    use -help for a list of possible options
+}}} 
+
+remember to set the properties file in openjml for the yices:
+
+{{{
+  /usr/local/java/openjml:
+  -rwxr-xr-x 1 ubuntu ubuntu     683 May  8 14:00 openjml.properties
+}}}
+
