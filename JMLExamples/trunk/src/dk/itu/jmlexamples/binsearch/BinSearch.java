@@ -3,14 +3,22 @@ package dk.itu.jmlexamples.binsearch;
 /**
  * 
  * Based java code upon the *package org.charter.jmlunitng* - specs are 
- * 'our' contribution.
+ * 'our' contribution which is pretty close to the one presented in this paper (TODO: add ref).
  * 
  * another java implementation of the bin search 
  * - http://pastebin.com/vXezvegU
- *
+ * 
  */
 public class BinSearch {
 	
+	/*
+	 * Instead of doing assignable \nothing; 
+	 * add / * @ pure @ * / to the search method which implies assignable \nothing;
+	 * according to the JML2 refman (pdf p. 92):
+	 * "Using the modifier pure on a method achieves the same effect as specifying assignable 
+	 * \nothing, but does so for the methodÕs entire specification as opposed to a single 
+	 * specification-case."   
+	 */
 	/*@ public normal_behavior
 	 @   requires array != null;
 	 @   requires (\exists int i; i>=0 && i<array.length; array[i] == target);
