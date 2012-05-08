@@ -6,4 +6,8 @@ public static class Old {
     public static void foo () {
 	var++;
     }
+
+    public static void main (String[] args){
+	foo();
+    }
 }
