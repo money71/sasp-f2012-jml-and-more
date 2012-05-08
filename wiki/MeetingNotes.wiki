@@ -2,6 +2,12 @@
 
 = Meeting Notes =
 
+== Meeting notes with Joe, 08/05/2012 = =
+ * AST node relating to universal quantifier
+ * Eclipse search "where in the code is this constant referenced?"
+ * Friday Analog with Joe, 11.00am
+ * regarding jml2 bug: find switch for using javac instead of multi-java
+
 == Meeting with Joe, 1.05.2012, 16.00 ==
  * JML2 is most advanced and working -> use it for homework!
  * "An overview over JML Tools" - Joes's website
