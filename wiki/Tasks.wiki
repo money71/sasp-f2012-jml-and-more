@@ -5,8 +5,8 @@ This should be converted to tickets!
  * Get command-line build in Eclipse up and running 
   ** Step through code while parsing code examples
  * Code-diving
-  ** Write small \non_null example (2-liner)
-  ** Put examples in JMLExamlpes/ on googlecode
+  ** *DONE!* Write small \non_null example (2-liner)
+  ** *DONE!* Put examples in JMLExamlpes/ on googlecode
   ** Search through codebase by hand + write docs
  * Find working modifiers in OpenJML
   ** Write example files for those

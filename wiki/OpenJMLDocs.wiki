@@ -1,20 +1,41 @@
 = OpenJML Code Diving =
 
+Interesting places in the code should be marked with a comment containing "*sasp_f2012*" (without quotes of course).
+
 == RAC ==
 
 === \nonnullelements ===
 
+Files seeming relevant to us, currently in no particular order.
+ * JmlRac.java (annotated)
+ * JmlAttr.java (annotated)
+ * JmlParser.java (annotated)
+
+Further files working with \nonnullelements:
+ * BasicBlocker.java (annotated)
+ * JmlAssertionAdder.java (annotated)
+
 Declaration of token for \nunnullelements
 
 {{{
+[...]
 BSNONNULLELEMENTS("\\nonnullelements"),
+[...]
 }}}
 
-com.sun.tools.javac.parser.JmlTokens.java, line 144
+com.sun.tools.javac.parser.JmlTokens.java, l. 144
 
- * visitJmlMethodInvocation(JmlMethodInvocation) in com.sun.tools.javac.comp.JmlAttr checks for well-typed annotations, including BSNONNULLELEMENTS (line 2793).
- * visitJmlMethodInvocation(JmlMethodInvocation) in com.sun.tools.javac.comp.JmlRac calls to translateNonNullArguments() in case of BSNONNULLELEMENTS (line 1714)
-  ** translateNonnullelements(JCMethodInvocation tree) in JmlRac.java (line1848)
+Search for BSNONNULLELEMENTS in the code if you want to look further.
 
+References to BSNONNULLEEMENTS:
+ * visitJmlMethodInvocation(JmlMethodInvocation) in com.sun.tools.javac.comp.JmlAttr checks for well-typed annotations, including BSNONNULLELEMENTS (l. 2793).
+ * visitJmlMethodInvocation(JmlMethodInvocation) in com.sun.tools.javac.comp.JmlRac calls to translateNonNullArguments() in case of BSNONNULLELEMENTS (l. 1714)
+  ** translateNonnullelements(JCMethodInvocation tree) in JmlRac.java (l. 1848)
 
+*See org.jmlspecs.openjml.esc.BasicBlocker, l. 3639 - 3731, esp. l. 3702*
+Comments indicate that a \forall expression might be required or more elegant. Example:
+{{{//@ requires \nonnullelements o;}}}
+equals
+{{{//@ requires \forall o, i; i < o.length; \nonnull o[i];}}}
+Simply combining both would reduce amount of code needed.
 
