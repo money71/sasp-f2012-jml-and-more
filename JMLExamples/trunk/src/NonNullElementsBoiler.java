@@ -1,4 +1,4 @@
-public static void NonNullElementsBoiler {
+public class NonNullElementsBoiler {
     
     /**
      * TODO: Write specs?
@@ -24,7 +24,7 @@ public static void NonNullElementsBoiler {
      * @returns True if no element in o is null, false otherwise
      */
     public static boolean nonNullElementsAll(Object[] o){
-	boolean retval = True;
+	boolean retval = true;
 	for (int i = 0; i < o.length; i++) {
 	    retval = retval && !(o[i] == null);
 	}

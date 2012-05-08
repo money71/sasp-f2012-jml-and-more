@@ -1,4 +1,4 @@
-public static class Result {
+public class Result {
     
     //@ ensures \result == 1;
     public static int foo () {
