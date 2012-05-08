@@ -4,6 +4,10 @@
 
 A collection of questions formulated based on findings in the code and project development.
 
+== Recent == 
+ * Does \nonnullelements not rely on a proper \forall implementation in RAC?
+ * {{{//@ requires \nonnullelements o;}}} could basically be {{{\forall (int i; i < o.length; \nonnull o[i]);}}}
+
 == Development ==
  * To what extend are quantified expressions already implemented? ("RAC is implemented for expressions with just one declaration.")
  * Are quantified expressions being parsed at the moment? Where in the code?
@@ -15,22 +19,3 @@ A collection of questions formulated based on findings in the code and project d
  * Is the main task to evaluate a \forall expression?
  * Is the main task to generate proper assertions fo a \forall expression?
  * We'd rather go for multiple easier tasks than a single hard one (nullabl,e, fresh...)
-
-= Meeting notes with Joe, 08/05/2012 = 
- * AST node relating to universal quantifier
- * Eclipse search "where in the code is this constant referenced?"
- * Friday Analog with Joe, 11.00am
- * regarding jml2 bug: find switch for using javac instead of multi-java
-
-== Tasks ==
- * Get command-line build in Eclipse up and running 
-  ** Step through code while parsing code examples
- * Code-diving
-  ** Write small \non_null example (2-liner)
-  ** Put examples in JMLExamlpes/ on googlecode
-  ** Search through codebase by hand + write docs
- * Find working modifiers in OpenJML
-  ** Write example files for those
-  ** Put them also in JMLExamples/
- * Find equivalent implementation in JML2
- * ?
