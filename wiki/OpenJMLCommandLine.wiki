@@ -71,7 +71,7 @@ Plain mimic of javac can be done as follow:
 
 
 {{{
-    java -jar $OPENJML/openjml.jar -java JMLTest.java -d java-compiled
+    java -jar $OPENJML/openjml.jar -java Foo.java -d java-compiled
     // produces:
     .
     ├── java-compiled
