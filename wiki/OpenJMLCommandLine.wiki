@@ -208,3 +208,30 @@ remember to set the properties file in openjml for the yices:
   /usr/local/java/openjml:
   -rwxr-xr-x 1 ubuntu ubuntu     683 May  8 14:00 openjml.properties
 }}}
+
+
+== OpenJML w. Java 6 ==
+
+Basically use *-Xbootclasspath/p:$OPENJML/openjml.jar* - lets have a few examples:
+
+{{{
+
+    $ java -Xbootclasspath/p:$OPENJML/openjml.jar -jar $OPENJML/openjml.jar -noPurityCheck -check Foo.java
+
+    $ java -Xbootclasspath/p:$OPENJML/openjml.jar -jar $OPENJML/openjml.jar -noPurityCheck -compile Foo.java -d java-compiled
+    
+    $ java -Xbootclasspath/p:$OPENJML/openjml.jar -jar $OPENJML/openjml.jar -noPurityCheck -rac Foo.java -d openjml-compiled
+
+}}}
+
+*-rac* raised (and no compiled files created)
+
+{{{    
+    ...
+    Note: /usr/local/java/openjml/openjml.jar(specs16/java/util/Arrays.jml) uses unchecked or unsafe operations.
+    Note: Recompile with -Xlint:unchecked for details.
+    100 errors
+}}}
+
+We don't really have the time look into that for now we focus on Java 7 as
+descriebed above.
