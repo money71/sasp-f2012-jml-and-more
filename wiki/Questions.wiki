@@ -1,0 +1,17 @@
+#summary: Questions and maybe answers
+
+= Collected Questions =
+
+A collection of questions formulated based on findings in the code and project development.
+
+== Development ==
+ * To what extend are quantified expressions implemented already?
+ * Are quantified expressions being parsed at the moment? Where in the code?
+ * Do RAC and ESC use the same parser?
+ * Where are methods called that create checks (assertions)?
+
+== Concepts ==
+ * Is the main task to evaluate a \forall expression?
+ * Is the main task to generate proper assertions fo a \forall expression?
+
+
