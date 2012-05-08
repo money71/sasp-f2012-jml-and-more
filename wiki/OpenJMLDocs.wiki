@@ -25,17 +25,27 @@ BSNONNULLELEMENTS("\\nonnullelements"),
 
 com.sun.tools.javac.parser.JmlTokens.java, l. 144
 
-Search for BSNONNULLELEMENTS in the code if you want to look further.
+Search for references to _BSNONNULLELEMENTS_ in the code if you want to look further.
 
-References to BSNONNULLEEMENTS:
- * visitJmlMethodInvocation(JmlMethodInvocation) in com.sun.tools.javac.comp.JmlAttr checks for well-typed annotations, including BSNONNULLELEMENTS (l. 2793).
- * visitJmlMethodInvocation(JmlMethodInvocation) in com.sun.tools.javac.comp.JmlRac calls to translateNonNullArguments() in case of BSNONNULLELEMENTS (l. 1714)
+*References to _BSNONNULLEEMENTS_*
+ * visitJmlMethodInvocation(JmlMethodInvocation) in JmlAttr.java checks for well-typed annotations, including _BSNONNULLELEMENTS_ (l. 2793).
+ * visitJmlMethodInvocation(JmlMethodInvocation) in JmlRac.java calls to translateNonNullArguments() in switch-case of _BSNONNULLELEMENTS_ (l. 1714)
   ** translateNonnullelements(JCMethodInvocation tree) in JmlRac.java (l. 1848)
 
 *See org.jmlspecs.openjml.esc.BasicBlocker, l. 3639 - 3731, esp. l. 3702*
-Comments indicate that a \forall expression might be required or more elegant. Example:
-{{{//@ requires \nonnullelements o;}}}
+It seems that there are some implementations present, the overall connection is currently not clear to me, though.
+
+Comments indicate that a _\forall_ expression might be required or more elegant. Example:
+
+{{{
+//@ requires \nonnullelements o;
+}}}
+
 equals
-{{{//@ requires \forall o, i; i < o.length; \nonnull o[i];}}}
+
+{{{
+//@ requires \forall o, i; i < o.length; \nonnull o[i];
+}}}
+
 Simply combining both would reduce amount of code needed.
 
