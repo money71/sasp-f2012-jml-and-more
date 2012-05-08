@@ -1,17 +1,36 @@
-#summary: Questions and maybe answers
+#summary Questions and maybe answers
 
 = Collected Questions =
 
 A collection of questions formulated based on findings in the code and project development.
 
 == Development ==
- * To what extend are quantified expressions implemented already?
+ * To what extend are quantified expressions already implemented? ("RAC is implemented for expressions with just one declaration.")
  * Are quantified expressions being parsed at the moment? Where in the code?
  * Do RAC and ESC use the same parser?
  * Where are methods called that create checks (assertions)?
+ * Where is the main-method for the RAC?
 
 == Concepts ==
  * Is the main task to evaluate a \forall expression?
  * Is the main task to generate proper assertions fo a \forall expression?
+ * We'd rather go for multiple easier tasks than a single hard one (nullabl,e, fresh...)
 
+= Meeting notes with Joe, 08/05/2012 = 
+ * AST node relating to universal quantifier
+ * Eclipse search "where in the code is this constant referenced?"
+ * Friday Analog with Joe, 11.00am
+ * regarding jml2 bug: find switch for using javac instead of multi-java
 
+== Tasks ==
+ * Get command-line build in Eclipse up and running 
+  ** Step through code while parsing code examples
+ * Code-diving
+  ** Write small \non_null example (2-liner)
+  ** Put examples in JMLExamlpes/ on googlecode
+  ** Search through codebase by hand + write docs
+ * Find working modifiers in OpenJML
+  ** Write example files for those
+  ** Put them also in JMLExamples/
+ * Find equivalent implementation in JML2
+ * ?
