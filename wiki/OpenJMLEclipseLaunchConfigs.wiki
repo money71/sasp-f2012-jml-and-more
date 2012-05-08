@@ -28,6 +28,9 @@ For the OpenJML go to properties.
 
 Add on run configuration for each of Check|Compile|RAC
 
+Remember to add each configuration as a *Java application* 
+- screenshoot: http://screencast.com/t/xkTVb1Fza (todo add as real img).
+
 === Check ===
 
 Project: OpenJML

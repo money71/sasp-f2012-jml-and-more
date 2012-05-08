@@ -78,6 +78,54 @@ Plain mimic of javac can be done as follow:
     │   └── JMLTest.class
 }}}
 
+
+=== Ad hoc observation ===
+
+For now check|compile seems/feels the same try e.g. run those with
+*-noInternalSpecs -jmlverbose*:
+
+{{{
+
+    java -jar $OPENJML/openjml.jar -noPurityCheck -noInternalSpecs -jmlverbose -check Foo.java -d openjml-compiled
+
+    java -jar $OPENJML/openjml.jar -noPurityCheck -noInternalSpecs -jmlverbose -compile Foo.java -d openjml-compiled
+
+}}}
+
+outputs both:
+
+{{{
+
+    Using internal runtime /usr/local/java/openjml/jmlruntime.jar
+    Classpath: /usr/local/java/openjml/jmlruntime.jar
+    parsing file:/tmp/openjml_tryouts/JMLTest.java
+    specspath: /usr/local/java/openjml/jmlruntime.jar
+    sourcepath: null
+    classpath: /usr/local/java/openjml/jmlruntime.jar
+    java.class.path: /usr/local/java/openjml/openjml.jar
+    entering JMLTest.java
+      completed entering JMLTest.java
+    No specs for java.lang.Object
+    No specs for java.io.Serializable
+    No specs for java.lang.Comparable
+    No specs for java.lang.CharSequence
+    No specs for java.lang.String
+    typechecking JMLTest
+    No specs for java.lang.System
+    No specs for java.lang.Number
+    No specs for java.lang.Integer
+    typechecked JMLTest
+    No specs for java.lang.AutoCloseable
+    No specs for java.io.Closeable
+    No specs for java.io.Flushable
+    No specs for java.io.OutputStream
+    No specs for java.io.FilterOutputStream
+    No specs for java.lang.Appendable
+    No specs for java.io.PrintStream
+
+}}}
+
+
 == RAC ==
 
 {{{
@@ -91,11 +139,60 @@ Plain mimic of javac can be done as follow:
 }}}
 
 
+== how to run? ==
+
+Something like:
+
+{{{
+
+    $ java -cp $CLASSPATH:openjml-compiled JMLTest
+    Exception in thread "main" java.lang.NoClassDefFoundError: org/jmlspecs/utils/Utils
+	    at JMLTest._JML$$$checkStaticInvariant(JMLTest.java:1)
+	    at JMLTest.main(JMLTest.java:1)
+    Caused by: java.lang.ClassNotFoundException: org.jmlspecs.utils.Utils
+	    at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	    at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	    at java.security.AccessController.doPrivileged(Native Method)
+	    at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	    at java.lang.ClassLoader.loadClass(ClassLoader.java:423)
+	    at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	    at java.lang.ClassLoader.loadClass(ClassLoader.java:356)
+	    ... 2 more
+
+}}}
+
+or:
+
+{{{
+
+    $ java -jar $OPENJML/openjml.jar -cp $CLASSPATH:openjml-compiled JMLTest
+    error: Class names, 'JMLTest', are only accepted if annotation processing is explicitly requested
+    1 error
+
+}}}
+
+
+or 
+
+{{{
+    $ java -cp $OPENJML/openjml.jar org.jmlspecs.openjml.Main -cp $CLASSPATH:openjml-compiled JMLTest
+    error: Class names, 'JMLTest', are only accepted if annotation processing is explicitly requested
+    1 error
+}}}
+
+conclusion do:
+
+{{{
+
+
+    $ java -cp $CLASSPATH:$OPENJML/openjml.jar:openjml-compiled/ JMLTest
+    // or just if nothing is in the $CLASSPATH
+    $ java -cp $OPENJML/openjml.jar:openjml-compiled/ JMLTest
+}}}
 
 == ESC ==
 
 Extend statical analysis says:
-
 
 {{{
 
@@ -111,4 +208,3 @@ remember to set the properties file in openjml for the yices:
   /usr/local/java/openjml:
   -rwxr-xr-x 1 ubuntu ubuntu     683 May  8 14:00 openjml.properties
 }}}
-
