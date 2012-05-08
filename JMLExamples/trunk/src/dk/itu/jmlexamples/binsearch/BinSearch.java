@@ -2,9 +2,11 @@ package dk.itu.jmlexamples.binsearch;
 
 /**
  * 
- * Based upon the *package org.charter.jmlunitng* 
+ * Based java code upon the *package org.charter.jmlunitng* - specs are 
+ * 'our' contribution.
  * 
- * another implementation of the bin search - http://pastebin.com/vXezvegU
+ * another java implementation of the bin search 
+ * - http://pastebin.com/vXezvegU
  *
  */
 public class BinSearch {

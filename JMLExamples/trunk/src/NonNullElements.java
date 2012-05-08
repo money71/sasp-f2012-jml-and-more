@@ -1,4 +1,4 @@
-public static class NonNullElements {
+public class NonNullElements {
     
     //@ requires \nonnullelements(o);
     public static void foo (Object[] o) {

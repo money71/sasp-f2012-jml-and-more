@@ -1,4 +1,4 @@
-public static class Old {
+public class Old {
     
     public static int var = 1;
     
