@@ -47,4 +47,5 @@ public class NonNullElementsBoiler {
     // TODO: Double-check specs!
     // TODO: JML2 cannot cope with iterators (1.4 syntax).
     // TODO: Should we also try a recursive function?
+    // TODO: What about multi-dimensional arrays?
 }
