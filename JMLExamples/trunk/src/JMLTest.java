@@ -1,3 +1,11 @@
+/**
+ * 
+ * Based upon a simple account example - though adjusted the specs
+ * (TODO: add ref. and evt. refactor to AccountSimple etc.)
+ * 
+ */
+
+
 public class JMLTest {
 
     private final int MAX_BALANCE = 100;
@@ -8,6 +16,8 @@ public class JMLTest {
     
     /*@ public normal_behavior
       @ requires a > 0;
+      @ assignable balance;
+      @ ensures balance == \old(balance) + a;
       @*/
     public void add(int a) {
         this.balance += a;
