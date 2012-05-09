@@ -1,7 +1,7 @@
 public class NonNullElements {
     
-    //@ requires \nonnullelements(o);
-    public static void foo (Object[] o) {
+    //@ requires \nonnullelements(a);
+    public static void foo (Object[] a) {
 	// Do nothing.
     }
 
@@ -10,4 +10,5 @@ public class NonNullElements {
 	array[0] = new Object();
 	foo(array);
     }
+
 }
