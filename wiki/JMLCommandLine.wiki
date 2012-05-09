@@ -1,4 +1,4 @@
-= JML (2) Examples =
+= JML (2) Command Line  =
 
 
 TODO: clean the bellow up (fix links / markup etc...)
