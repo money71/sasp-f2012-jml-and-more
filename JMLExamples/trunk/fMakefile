@@ -1,0 +1,51 @@
+JML2=/usr/local/java/jml2
+OPENJML=/usr/local/java/openjml
+
+SRC = ./src
+BIN = ./bin
+JMLBIN = ./jml-compiled
+OPENJMLBIN = ./openjml-compiled
+
+FILE?=$(SRC)/NonNullElements.java
+CLASS?=NonNullElements
+
+### cleans
+clean:
+	find $(BIN) $(CLASS) | xarg rm
+
+clean-jml:
+	find $(JMLBIN) $(CLASS) | xarg rm
+
+clean-openjml:
+	find $(OPENJMLBIN) $(CLASS) | xarg rm
+
+### jml2
+jml2-check:
+	sh $(JML2)/bin/jml $(FILE)
+
+jml2-compile:
+	sh $(JML2)/bin/jmlc -d $(JMLBIN) $(FILE)
+
+jml2-rac:
+	sh $(JML2)/bin/jmlrac -cp $(CLASSPATH):$(JMLBIN) $(CLASS)
+
+# TODO: commands for jmlunitng
+#jmlunitng-gen:
+#	java -Xbootclasspath/p:$(OPENJMLBOOT) -jar $(JMLUNITNG) --dest tests --reflection src/
+
+### openjml
+openjml-check:
+	java -jar $(OPENJML)/openjml.jar -check -noPurityCheck $(FILE)
+
+openjml-compile:
+	java -jar $(OPENJML)/openjml.jar -rac -d $(OPENJMLBIN) -noPurityCheck $(FILE)
+
+openjml-rac:
+	java -cp $(CLASSPATH):$(OPENJML)/openjml.jar:$(OPENJMLBIN)/ $(CLASS)
+
+### java
+java-compile:
+	javac $(FILE)
+
+java:
+	java -cp $(CLASSPATH):$(BIN) $(CLASS)
