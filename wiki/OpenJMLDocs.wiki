@@ -49,3 +49,30 @@ equals
 
 Simply combining both would reduce amount of code needed.
 
+
+
+== \nonnullelements in the JML2 refman ==
+
+Quote p. 99 from the pdf version 2011:
+
+    12.4.14 \nonnullelements 
+    The syntax of a nonnullelements-expression is as follows. See Section 12.2
+    [Specification Expressions], page 90, for the syntax of spec-expression.
+    
+    nonnullelements-expression ::= \nonnullelements ( spec-expression ) 
+
+    The operator \nonnullelements can be used to assert that an array and its
+    elements are all non-null. For example, \nonnullelements(myArray), is
+    equivalent to [Leino-Nelson-Saxe00]:
+
+    myArray != null && 
+    (\forall int i; 0 <= i && i < myArray.length; 
+    myArray[i] != null) 
+
+
+    
+
+
+
+
+
