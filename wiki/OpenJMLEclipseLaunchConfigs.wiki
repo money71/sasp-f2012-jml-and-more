@@ -130,22 +130,3 @@ Used for an eclipse set up with OpenJML trunk source code (OpenJMLDevelopment) a
 - add / adjust eventually script to walk over all files in src etc.
 
 
-
-
-== Add hook problems ==
-
-::
-
-Problems with rac on these files:
-
-works(TM):
-- Old.java
-- JMLTest.java
-- NonNullElements.java (not sure what i had expected here)
-
-problems:
-- Result.java
-- Pure.java
-
-Full trace back (when running rac on Result.java - others look similar)
-http://pastebin.com/w23q0XyY

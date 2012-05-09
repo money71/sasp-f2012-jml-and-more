@@ -175,8 +175,8 @@ or:
 or 
 
 {{{
-    $ java -cp $OPENJML/openjml.jar org.jmlspecs.openjml.Main -cp $CLASSPATH:openjml-compiled JMLTest
-    error: Class names, 'JMLTest', are only accepted if annotation processing is explicitly requested
+    $ java -cp $OPENJML/openjml.jar org.jmlspecs.openjml.Main -cp $CLASSPATH:openjml-compiled Foo
+    error: Class names, 'Foo', are only accepted if annotation processing is explicitly requested
     1 error
 }}}
 
@@ -185,10 +185,19 @@ conclusion do:
 {{{
 
 
-    $ java -cp $CLASSPATH:$OPENJML/openjml.jar:openjml-compiled/ JMLTest
+    $ java -cp $CLASSPATH:$OPENJML/openjml.jar:openjml-compiled/ Foo
     // or just if nothing is in the $CLASSPATH
-    $ java -cp $OPENJML/openjml.jar:openjml-compiled/ JMLTest
+    $ java -cp $OPENJML/openjml.jar:openjml-compiled/ Foo
 }}}
+
+or if it has a package structure
+
+{{{
+
+    $ java -cp $OPENJML/openjml.jar:openjml-compiled/ dk.itu.jmlexamples.foo.Foo
+
+}}}
+
 
 == ESC ==
 
