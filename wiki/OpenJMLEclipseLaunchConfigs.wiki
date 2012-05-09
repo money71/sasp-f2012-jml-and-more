@@ -72,14 +72,80 @@ VM args:
 -Dopenjml.eclipseProjectLocation=${project_loc:OpenJML} -Dopenjml.eclipseSpecsProjectLocation=${project_loc:Specs}
 }}}
 
-
 All this can possible be added through the file system and set up in a more flexible way - just don't know now.
 
+== run the configurations ==
+
+1. Choose project OpenJML
+2. Then under *run* choose *run configurations*
+3. Choose config to run and / or set up favorites etc..
+
+View screen shoot: http://screencast.com/t/5HYq3bHlsmKd
+
+
+== Export launch configurations ==
+
+Launch configurations created through Eclipse can be exported simply 
+do :
+
+1. choose project and select export
+2. filter for launch and choose that one
+3. then export and e.g.: place the *.launch files under
+   OpenJML/launchConfigs.
+
+== Edit existing launch configurations ==
+
+Its easy to edit simply just edit the files through Eclipse or file system and run the config again.
+
+Eg. adding the *-jmlverbose* flag for more out put on running 
+*-check*. 
 
 
 
-todo: add some screen shoots etc and more nots on setting up the 
-run'ers as favorites and more...
+== Launch config example ==
+
+Used for an eclipse set up with OpenJML trunk source code (OpenJMLDevelopment) and imported this Eclipse project - JMLExamples .
+
+{{{
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/OpenJML/src/org/jmlspecs/openjml/Main.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jmlspecs.openjml.Main"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-jmlverbose -noPurityCheck -rac ${project_loc:JMLExamples}/src/JMLTest.java -d ${project_loc:JMLExamples}/openjml-compiled/"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="OpenJML"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dopenjml.eclipseProjectLocation=${project_loc:OpenJML} -Dopenjml.eclipseSpecsProjectLocation=${project_loc:Specs}"/>
+</launchConfiguration>
+
+}}}
+
+- add / adjust eventually script to walk over all files in src etc.
 
 
- 
+
+
+== Add hook problems ==
+
+::
+
+Problems with rac on these files:
+
+works(TM):
+- Old.java
+- JMLTest.java
+- NonNullElements.java (not sure what i had expected here)
+
+problems:
+- Result.java
+- Pure.java
+
+Full trace back (when running rac on Result.java - others look similar)
+http://pastebin.com/w23q0XyY
