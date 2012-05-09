@@ -1,3 +1,32 @@
 = JMLExamples =
 
 Todo add path to source code and an short explaination.
+
+== NonNullElementsBoiler.java ==
+
+This is our boiler-plate class for the _\nonnullelements_ expression in OpenJML. The static class is holding two methods:
+
+ * One checking the elements of the passed array consecutively until a null-reference is found or until there are no more elements to check
+ * One checking all the elements of the passed array and returing in the end if there have been null-references.
+
+While the former is, of course, saving computation time, the latter is more correct in a logical sense. However, from the outside both methods behave exactly the same, as indicated by both sharing the same specifications. These are created in reference to [Leino-Nelson-Saxe00] and read exactly like this:
+
+{{{
+    //@ requires o != null;
+    //@ requires (\forall int i; 0 <= i && i < o.length; o[i] != null);
+    //@ ensures \result == true;
+    //@ also
+    //@ requires o == null || (\exists int i; 0 <= i && i < o.length; o[i] == null);
+    //@ ensures \result == false;
+}}}
+
+*Checks:*
+
+ * JML2 ESC - *Done*
+ * JML2 compiler - *Done*
+ * JML2 RAC
+ * OpenJML ESC - *Done*
+ * OpenJML compiler
+ * OpenJML RAC
+
+The latter two are not possible to perform as long as there is no \forall expression implemented in OpenJML.

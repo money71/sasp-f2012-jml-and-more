@@ -27,7 +27,7 @@ com.sun.tools.javac.parser.JmlTokens.java, l. 144
 
 Search for references to _BSNONNULLELEMENTS_ in the code if you want to look further.
 
-*References to _BSNONNULLEEMENTS_*
+*References to _BSNONNULLELEMENTS_*
  * visitJmlMethodInvocation(JmlMethodInvocation) in JmlAttr.java checks for well-typed annotations, including _BSNONNULLELEMENTS_ (l. 2793).
  * visitJmlMethodInvocation(JmlMethodInvocation) in JmlRac.java calls to translateNonNullArguments() in switch-case of _BSNONNULLELEMENTS_ (l. 1714)
   ** translateNonnullelements(JCMethodInvocation tree) in JmlRac.java (l. 1848)
@@ -65,10 +65,11 @@ Quote p. 99 from the pdf version 2011:
     elements are all non-null. For example, \nonnullelements(myArray), is
     equivalent to [Leino-Nelson-Saxe00]:
 
+{{{
     myArray != null && 
     (\forall int i; 0 <= i && i < myArray.length; 
     myArray[i] != null) 
-
+}}}
 
     
 
