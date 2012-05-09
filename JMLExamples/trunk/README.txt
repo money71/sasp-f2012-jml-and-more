@@ -13,7 +13,10 @@ Structure for now
   - for JML 2 compiled .class files
 * openjml-compiled
   - for OpenJML compiled .class files
-
+* src
+  - for examples files with no package naming
+* examples
+  - for examples files with package naming
 
 
 
