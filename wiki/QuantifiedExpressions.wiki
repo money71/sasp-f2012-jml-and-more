@@ -48,4 +48,94 @@ public void fooRAC() {
 These sources can then be run like normal java-compiled code, but require the same jars used for compiling.
 
   * jmlrac Foo
-    ** java -cp $CLASSPATH:org.jmlspecs.models.jar:org.jmlspecs.runtime.jar Foo 
+    ** java -cp $CLASSPATH:org.jmlspecs.models.jar:org.jmlspecs.runtime.jar Foo
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+== JML 2 quantifiers rac implementation ==
+
+Code is in the cvs repos of jml - http://jmlspecs.cvs.sourceforge.net/jmlspecs
+
+
+=== org/jmlspecs/jmlrac ===
+
+They have a *quantiExp* which they test isForAll() | isExists() | isSum() etc..
+
+code of interest: TransQuantifiedExpression.java and 
+
+=== qexpr/StaticAnalysis.java  ===
+
+{{{
+   /** Returns Java source code for evaluating the JML quantified
+     * expression, which is either a universal or existential
+     * quantifier.  Refer to the method <code>translateForAll</code>
+     * and <code>translateExists</code> for the structure of the
+     * returned code.
+     *
+     * <pre><jml>
+     * requires quantiExp.isForAll() || quantiExp.isExists();
+     * ensures \result != null;
+     * </jml></pre>
+     *
+     * @see #translateForAll()
+     * @see #translateExists()
+     */
+    private RacNode transForAllOrExists() 
+    throws NonExecutableQuantifierException 
+    {
+    	final boolean isForAll = quantiExp.isForAll();
+    	final String cond = (isForAll ? "" : "!") +  resultVar;
+    	final String initVal = isForAll ? "true" : "false";
+    	
+    	// build code for evaluating the body, i.e.,
+    	// P ==> Q for (\forall D; P; Q) and P && Q for (\exists D; P; Q).
+    	JExpression expr = unwrapJmlExpression(quantiExp.specExpression());
+    	final JmlPredicate pred = quantiExp.predicate();
+    	if (pred != null) {
+    		if (isForAll)
+    			expr = new JmlRelationalExpression(NO_REF, OPE_IMPLIES,
+    					pred, expr);
+    		else
+    			expr = new JConditionalAndExpression(NO_REF, pred, expr);
+    	}
+    	RacNode result = transExpression(expr, resultVar);
+    	
+    	// build code for while loops to evaluate the body
+    	JVariableDefinition[] varDefs = quantiExp.quantifiedVarDecls();
+    	for (int i = varDefs.length - 1; i >= 0; i--) {
+    		result = generateLoop(varDefs[i], rangePredicate(), cond, result);
+    	}
+    	
+    	// wrap the resulting code in try statement
+    	if(transExp instanceof TransExpression){
+    		result = RacParser.parseStatement(
+    				"try {\n" +
+    				"  " + resultVar + " = " + initVal + ";\n" +
+    				"$0\n" +
+    				"}\n" +
+    				"catch (JMLNonExecutableException " + varGen.freshVar() + ") {\n" +
+    				"  " + context.angelicValue(resultVar) + ";\n" + 
+    				"}\n" +
+    				"catch (java.lang.Exception " + varGen.freshVar() + ") {\n" +
+    				"  " + context.demonicValue(resultVar) + ";\n" + 
+    				"}",
+    				result.incrIndent());
+    	}
+    	return result;
+    }
+}}}
+
+
+
