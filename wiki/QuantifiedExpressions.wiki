@@ -65,7 +65,8 @@ public class ForAll {
 
 === Conclusions ===
 
- * There seems to be actual no implementation of _\forall_ quantifiers in OpenJML RAC
+ * ~~There seems to be actual no implementation of _\forall_ quantifiers in OpenJML RAC~~
+ * Tests with RAC compiled classes indicate that quantifiers in fact are implemented for arbitrary Objects over classes implementing _Collection_
 
 == RAC Overview  ==
 
