@@ -6,7 +6,10 @@ public class Exists {
 	}
 	
 	public static void main(String[] args) {
+		System.out.println("Precondition holds!");
 		exists(new int[] {1});
+		System.out.println("Precondition fails!");
+		exists(new int[] {0});
 	}
 
 }
