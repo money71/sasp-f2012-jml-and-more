@@ -191,6 +191,27 @@ public class NonNullElements {
 }}}
 
 
+Looking carefully at the tree indicates that the nonnullelements already is 
+implemented: *org.jmlspecs.utils.Utils.nonnullElementCheck(a);*
+
+Looking up the OpenJML code:
+
+{{{
+
+    /** Tests that an array and all the elements of the array are non-null 
+     * @param array the array to test
+     * @return true if all elements are not null, false if at least one is
+     */  // FIXME - this is a different style from the others - it emits no message
+    public static boolean nonnullElementCheck(Object[] array) {
+        if (array == null) return false;
+        for (Object o: array) {
+            if (o == null) return false;
+        }
+        return true;
+    }
+
+}}}
+
 
 
 
