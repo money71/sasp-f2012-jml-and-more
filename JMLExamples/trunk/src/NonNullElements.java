@@ -7,7 +7,7 @@ public class NonNullElements {
 
     public static void main (String[] args){
     	Object[] array = new Object[1];
-    	array[0] = new Object();
+    	array[0] = null;
     	foo(array);
     }
 
