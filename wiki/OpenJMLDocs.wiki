@@ -71,7 +71,127 @@ Quote p. 99 from the pdf version 2011:
     myArray[i] != null) 
 }}}
 
+
+
+== rac on Nonnullelements.java ==
     
+todo: make ref to code repos.
+
+
+When stepping through w. breakpoints we go from the JmlRAC.java (where we have
+to hook in) and landing at JmlCompiler.java - here the (toString) of the tree 
+is looking like: 
+
+{{{
+
+public class NonNullElements {
+  
+  public NonNullElements() {
+    super();
+    .java.lang.Exception _JML$$$signalsException = null;
+    try {
+    } catch (.java.lang.RuntimeException _JML$$$caughtException) {
+      _JML$$$signalsException = _JML$$$caughtException;
+      throw _JML$$$caughtException;
+    } finally {
+      if (_JML$$$signalsException == null) {
+      } else {
+      }
+      _JML$$$checkInvariant$$NonNullElements();
+      _JML$$$checkStaticInvariant();
+    }
+  }
+    /*@
+      requires \nonnullelements(a); 
+   */
+
+  public static void foo(Object[] a) {
+    boolean _JML$$$PRE28579615 = false;
+    try {
+      {
+        _JML$$$PRE28579615 = true && a != null && org.jmlspecs.utils.Utils.nonnullElementCheck(a);
+        if (!(false | _JML$$$PRE28579615)) org.jmlspecs.utils.Utils.assertionFailure("/home/ubuntu/open_jml_branch_workspace/JMLExamples/src/NonNullElements.java:4: JML precondition is false");
+      }
+    } catch (.java.lang.Exception _JML$$$caughtException) {
+      org.jmlspecs.utils.Utils.assertionFailure("/home/ubuntu/open_jml_branch_workspace/JMLExamples/src/NonNullElements.java:4: JML precondition is undefined - exception thrown");
+    }
+    _JML$$$checkStaticInvariant();
+    .java.lang.Exception _JML$$$signalsException = null;
+    try {
+    } catch (.java.lang.RuntimeException _JML$$$caughtException) {
+      _JML$$$signalsException = _JML$$$caughtException;
+      throw _JML$$$caughtException;
+    } finally {
+      if (_JML$$$signalsException == null) {
+      } else {
+        try {
+          if (true) org.jmlspecs.utils.Utils.assertionFailure("/home/ubuntu/open_jml_branch_workspace/JMLExamples/src/NonNullElements.java:4: JML unexpected exception");
+        } catch (.java.lang.Exception _JML$$$caughtException) {
+          org.jmlspecs.utils.Utils.assertionFailure("/home/ubuntu/open_jml_branch_workspace/JMLExamples/src/NonNullElements.java:4: JML default signals_only condition is undefined - exception thrown");
+        }
+      }
+      _JML$$$checkStaticInvariant();
+    }
+  }
+  
+  public static void main(String[] args) {
+    boolean _JML$$$PRE28053363 = false;
+    try {
+      {
+        _JML$$$PRE28053363 = true && args != null;
+        if (!(false | _JML$$$PRE28053363)) org.jmlspecs.utils.Utils.assertionFailure("/home/ubuntu/open_jml_branch_workspace/JMLExamples/src/NonNullElements.java:8: JML precondition is false");
+      }
+    } catch (.java.lang.Exception _JML$$$caughtException) {
+      org.jmlspecs.utils.Utils.assertionFailure("/home/ubuntu/open_jml_branch_workspace/JMLExamples/src/NonNullElements.java:8: JML precondition is undefined - exception thrown");
+    }
+    _JML$$$checkStaticInvariant();
+    .java.lang.Exception _JML$$$signalsException = null;
+    try {
+      Object[] array = org.jmlspecs.utils.Utils.nonNullCheck("/home/ubuntu/open_jml_branch_workspace/JMLExamples/src/NonNullElements.java:9: JML null initialization of non_null variable array", new Object[1]);
+      array[0] = new Object();
+      foo(array);
+    } catch (.java.lang.RuntimeException _JML$$$caughtException) {
+      _JML$$$signalsException = _JML$$$caughtException;
+      throw _JML$$$caughtException;
+    } finally {
+      if (_JML$$$signalsException == null) {
+      } else {
+        try {
+          if (true) org.jmlspecs.utils.Utils.assertionFailure("/home/ubuntu/open_jml_branch_workspace/JMLExamples/src/NonNullElements.java:8: JML unexpected exception");
+        } catch (.java.lang.Exception _JML$$$caughtException) {
+          org.jmlspecs.utils.Utils.assertionFailure("/home/ubuntu/open_jml_branch_workspace/JMLExamples/src/NonNullElements.java:8: JML default signals_only condition is undefined - exception thrown");
+        }
+      }
+      _JML$$$checkStaticInvariant();
+    }
+  }
+  
+  @Model 
+  /*synthetic*/ public void _JML$$$checkInvariant$$NonNullElements() {
+    org.jmlspecs.utils.Utils.callClassInvariant(this, "java.lang.Object");
+  }
+  
+  @Model 
+  /*synthetic*/ public static void _JML$$$checkStaticInvariant() {
+    org.jmlspecs.utils.Utils.callStaticClassInvariant("java.lang.Object");
+  }
+  // JML specifications
+  
+  @Model 
+  /*synthetic*/ public void _JML$$$checkInvariant$$NonNullElements() {
+    org.jmlspecs.utils.Utils.callClassInvariant(this, "java.lang.Object");
+  }
+  
+  @Model 
+  /*synthetic*/ public static void _JML$$$checkStaticInvariant() {
+    org.jmlspecs.utils.Utils.callStaticClassInvariant("java.lang.Object");
+  }
+}
+
+}}}
+
+
+
 
 
 
