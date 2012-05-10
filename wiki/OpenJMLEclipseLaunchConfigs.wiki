@@ -129,4 +129,14 @@ Used for an eclipse set up with OpenJML trunk source code (OpenJMLDevelopment) a
 
 - add / adjust eventually script to walk over all files in src etc.
 
+== Generic launches ==
+
+To perform a launch on a selected resource from JMLExamples, replace the .java-filename in the run config by *${selected_resource_name}*, respectively *${java_type_name}* for classes.
+
+ * OpenJML-Check
+ * OpenJML-Compile
+ * OpenJML-RAC
+ * OpenJML-Run
+
+The latter executes the OpenJML RAC compiled class. Should ESC be added?
 
