@@ -3,8 +3,8 @@
  * Spec pure for the whole class should set all methods to be pure...
  *
  */
-public class /*@ pure @*/ PureClass {
- 
+// public class / * @ pure @ * / PureClass { - disabled pure ticket #1
+public class PureClass { 
 	public static int pure1() {
 		return 1;
 	}
