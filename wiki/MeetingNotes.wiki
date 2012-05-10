@@ -1,43 +1,54 @@
 #summary Notes on various meetings
 
+= Question for the next meeting =
+
+ * What about recursive deepening for multi-dimensional arrays or nested lists?
+ * _\nonnullelements_ for instances of _Collection_?
+ * What is _desugaring_?
+ * _\forall_ is implemented but limited to one race-variable -> change parser behavior?
+ * Should _\nonnullelements_ not be a product of _\non_null_, _\forall_?
+
 = Meeting Notes =
 
-== Meeting notes with Joe, 08/05/2012 = =
+== Meeting with Joe, 11.05.2012, 11.00 ==
+
+ * not yet conducted
+
+== Meeting with Joe, 8.05.2012, 10.15 ==
  * AST node relating to universal quantifier
  * Eclipse search "where in the code is this constant referenced?"
  * Friday Analog with Joe, 11.00am
- * regarding jml2 bug: find switch for using javac instead of multi-java
 
 == Meeting with Joe, 1.05.2012, 16.00 ==
  * JML2 is most advanced and working -> use it for homework!
  * "An overview over JML Tools" - Joes's website
  * Project -> Validated Type checker for universes
 
-=== Universes ===
+ === Universes ===
  * Specify ownership-relations
  * "Hot area" for the past twelve years
  * Who owns whom?
  * /readonly, /rep, /any
  * RAC or ESC??
 
-==== Levels of project ====
+ ==== Levels of project ====
  * 1. implement core basic unit type checker without testing or contracts
  * 2. + validation via contracts and unit testing (translating rules into contracts)
  * 3. + implement universe variants
 
-=== Quantifiers in RAC for OpenJML ===
+ === Quantifiers in RAC for OpenJML ===
  * How to translate quantified expression into executable code?
  * Also several papers published on that
 
-=== \nonnull ===
+ === \nonnull ===
  * No runtime checking for that
  * Build!
 
-=== \fresh ===
+ === \fresh ===
  * Specify that an object is new
  * Meaning, newly created
 
-=== \assignable ===
+ === \assignable ===
  * "Frame axioms"
  * Runtime checking is absolutely novel
  * Kinda heavyweight
