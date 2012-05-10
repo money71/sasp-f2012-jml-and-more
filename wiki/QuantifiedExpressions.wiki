@@ -13,6 +13,60 @@ These may be interesting entry points for us:
  Questions
   * In how far are quantifiers implemented already?
 
+== Implementation Walkthrough ==
+
+=== Original ForAll.java ===
+
+{{{
+public class ForAll {
+	
+	//@ requires (\forall int i; 0 <= i && i < array.length; array[i] == i);
+	public static void forAll (int[] array) {
+		// Do nothing
+	}
+	
+	public static void main (String[] args) {
+		forAll(new int[] {0, 1, 2, 3});
+	}
+	
+}
+}}}
+
+
+=== AST-modified code by OpenJML RAC (copy-pasted from the debugger) ===
+
+{{{
+public class ForAll {
+  
+  public ForAll() {
+    super();
+  }
+    /*@
+      requires (\forall int i; 0 <= i && i < array.length; array[i] == i); 
+   */
+
+  public static void forAll(int[] array) {
+  }
+  
+  public static void main(String[] args) {
+    forAll(new int[]{0, 1, 2, 3});
+  }
+  // JML specifications
+  
+  @Model 
+  /*synthetic*/ public void _JML$$$checkInvariant$$ForAll() {
+  }
+  
+  @Model 
+  /*synthetic*/ public static void _JML$$$checkStaticInvariant() {
+  }
+}
+}}}
+
+=== Conclusions ===
+
+ * There seems to be actual no implementation of _\forall_ quantifiers in OpenJML RAC
+
 == RAC Overview  ==
 
 Cosider a file Foo.java containing a method with JML annotations
