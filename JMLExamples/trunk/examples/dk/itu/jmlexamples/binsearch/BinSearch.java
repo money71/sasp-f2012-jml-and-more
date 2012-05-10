@@ -15,9 +15,9 @@ public class BinSearch {
 	 * Instead of doing assignable \nothing; 
 	 * add / * @ pure @ * / to the search method which implies assignable \nothing;
 	 * according to the JML2 refman (pdf p. 92):
-	 * "Using the modifier pure on a method achieves the same effect as specifying assignable 
-	 * \nothing, but does so for the method’s entire specification as opposed to a single 
-	 * specification-case."   
+	 * Using the modifier pure on a method achieves the same effect as specifying assignable 
+	 * \nothing, but does so for the methods entire specification as opposed to a single 
+	 * specification-case.   
 	 */
 	/*@ public normal_behavior
 	 @   requires array != null;

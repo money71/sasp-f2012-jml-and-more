@@ -1,11 +1,9 @@
 /**
- *  jml2 refman:
- *  \fresh(x,y) asserts that x and y are not null and that the objects bound to
- *   these identifiers were not allocated in the pre-state. The arguments to \fresh...
+ *  Not fresh version of Fresh.java should fail on run time when rac complied 
  */
 public class FreshNotFresh {
     
-	private static Object a = null;	
+	private static /*@ spec_public @*/ Object a;		
 	
     /*@ assignable a; 
     @ ensures \fresh(a);

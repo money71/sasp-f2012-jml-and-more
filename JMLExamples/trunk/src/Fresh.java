@@ -5,7 +5,9 @@
  */
 public class Fresh {
     
-	private static Object a;	
+	private static /*@ spec_public @*/ Object a;	
+	
+//	"warning: Entire clause will be dropped since JmlFreshExpression is not executable" ?
 	
     /*@ assignable a; 
     @ ensures \fresh(a);
