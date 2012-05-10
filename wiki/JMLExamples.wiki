@@ -29,7 +29,7 @@ While the former is, of course, saving computation time, the latter is more corr
  * OpenJML compiler
  * OpenJML RAC
 
-The latter two are not possible to perform as long as there is no \forall expression implemented in OpenJML.
+~~The latter two are not possible to perform as long as there is no \forall expression implemented in OpenJML.~~
 
 
 
