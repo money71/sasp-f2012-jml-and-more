@@ -46,7 +46,7 @@ The latter two are not possible to perform as long as there is no \forall expres
 
 === What's \invariant_for ? ===
 
-JML refman pdf p. 110:
+JML refman pdf p. 110 (todo: change into links to the online refman) :
 
 {{{
     12.4.22 \invariant_for 
@@ -61,7 +61,28 @@ JML refman pdf p. 110:
 lets show that within a *real example* - todo.
 
 
+=== Whats the precise def. of \fresh ? ===
 
+JML refman pdf p. 97 (todo: change into links to the online refman) :
+
+{{{
+
+    12.4.9 \fresh 
+    The syntax of a fresh-expression is as follows. See Section 12.2 [Specification
+    Expressions], page 90, for the syntax of spec-expression-list.
+    fresh-expression ::= \fresh ( spec-expression-list ) 
+    The operator \fresh asserts that ob jects were freshly allocated; for example, 
+    \fresh(x,y) asserts that x and y are not null and that the ob jects bound to
+    these identifiers were not allocated in the pre-state. The arguments to \fresh
+    can have any reference type, and the type of the overall expression is boolean.
+
+    Note that it is wrong to use \fresh(this) in the specification of a
+    constructor, because Java’s new operator allocates storage for the object; the
+    constructor’s job is just to initialize that storage. 
+
+}}}
+
+lets show that within a *real example* - todo.
 
 
 
