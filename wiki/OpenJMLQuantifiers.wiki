@@ -5,22 +5,36 @@
 === Original ForAll.java ===
 
 {{{
+
 public class ForAll {
-	
-	//@ requires (\forall int i; 0 <= i && i < array.length; array[i] == i);
-	public static void forAll (int[] array) {
-		// Do nothing
-	}
-	
-	public static void main (String[] args) {
-		forAll(new int[] {0, 1, 2, 3});
-	}
-	
+  
+  public ForAll() {
+    super();
+  }
+    /*@
+      requires (\forall int i; 0 <= i && i < array.length; array[i] == i); 
+   */
+
+  public static void forAll(int[] array) {
+  }
+  
+  public static void main(String[] args) {
+    forAll(new int[]{0, 1, 2, 3});
+  }
+  // JML specifications
+  
+  @Model 
+  /*synthetic*/ public void _JML$$$checkInvariant$$ForAll() {
+  }
+  
+  @Model 
+  /*synthetic*/ public static void _JML$$$checkStaticInvariant() {
+  }
 }
 }}}
 
 
-=== AST-modified code by OpenJML RAC ===
+=== AST-modified code by OpenJML RAC (copy-pasted from the debugger) ===
 
 {{{
 public class ForAll {
