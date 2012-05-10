@@ -71,8 +71,8 @@ JML refman pdf p. 97 (todo: change into links to the online refman) :
     The syntax of a fresh-expression is as follows. See Section 12.2 [Specification
     Expressions], page 90, for the syntax of spec-expression-list.
     fresh-expression ::= \fresh ( spec-expression-list ) 
-    The operator \fresh asserts that ob jects were freshly allocated; for example, 
-    \fresh(x,y) asserts that x and y are not null and that the ob jects bound to
+    The operator \fresh asserts that objects were freshly allocated; for example, 
+    \fresh(x,y) asserts that x and y are not null and that the objects bound to
     these identifiers were not allocated in the pre-state. The arguments to \fresh
     can have any reference type, and the type of the overall expression is boolean.
 
