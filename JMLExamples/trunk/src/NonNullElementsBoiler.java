@@ -13,12 +13,12 @@ public class NonNullElementsBoiler {
     //@ requires o == null || (\exists int i; 0 <= i && i < o.length; o[i] == null);
     //@ ensures \result == false;
     public static boolean nonNullElementsfirstOccurence(Object[] o){
-	//	for (Object i: o) {
-	for (int i = 0; i < o.length; i++) {
-	    //	    if (i == null) return false;
-	    if (o[i] == null) return false;
-	}
-	return true;
+		//	for (Object i: o) {
+		for (int i = 0; i < o.length; i++) {
+		    //	    if (i == null) return false;
+		    if (o[i] == null) return false;
+		}
+		return true;
     }
     
     /**
@@ -35,13 +35,13 @@ public class NonNullElementsBoiler {
     //@ requires o == null || (\exists int i; 0 <= i && i < o.length; o[i] == null);
     //@ ensures \result == false;
     public static boolean nonNullElementsAll(Object[] o){
-	boolean retval = true;
-	//	for (Object i: o) {
-	for (int i = 0; i < o.length; i++) {
-	    //	    retval = retval && i != null;
-	    retval = retval && o[i] != null;
-	}
-	return retval;
+		boolean retval = true;
+		//	for (Object i: o) {
+		for (int i = 0; i < o.length; i++) {
+		    //	    retval = retval && i != null;
+		    retval = retval && o[i] != null;
+		}
+		return retval;
     }
     
     // TODO: Double-check specs!
