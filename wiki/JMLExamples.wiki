@@ -30,3 +30,38 @@ While the former is, of course, saving computation time, the latter is more corr
  * OpenJML RAC
 
 The latter two are not possible to perform as long as there is no \forall expression implemented in OpenJML.
+
+
+
+
+
+
+
+
+
+
+
+== Ad hoc JML / OpenJML Q/A ==
+
+
+=== What's \invariant_for ? ===
+
+JML refman pdf p. 110:
+
+{{{
+    12.4.22 \invariant_for 
+    invariant-for-expression ::= \invariant_for ( spec-expression ) 
+    The \invariant_for operator returns true just when its argument satisfies
+    the invariant of its static type; for example, \invariant_for((MyClass)o)
+    is true when o satisfies the invariant of MyClass. The entire \invariant_for
+    expression is of type boolean. 
+}}}
+
+
+lets show that within a *real example* - todo.
+
+
+
+
+
+

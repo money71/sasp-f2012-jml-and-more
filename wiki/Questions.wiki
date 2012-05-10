@@ -19,3 +19,10 @@ A collection of questions formulated based on findings in the code and project d
  * Is the main task to evaluate a \forall expression?
  * Is the main task to generate proper assertions fo a \forall expression?
  * We'd rather go for multiple easier tasks than a single hard one (nullabl,e, fresh...)
+
+
+
+
+
+
+
