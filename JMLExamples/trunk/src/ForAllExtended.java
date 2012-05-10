@@ -1,20 +1,5 @@
+import java.util.LinkedList;
 
-// Minimal container class 
-class Container {
-	
-	private Contained[] array;
-	
-	public Container (Contained[] array) {
-		this.array = array;
-	}
-	
-	public /*@ pure @*/ boolean contains (Contained i) {
-		for (Contained j: array) {
-			if (j == i) return true;
-		}
-		return false;
-	}	
-}
 
 // Minimal contained class
 class Contained {
@@ -28,31 +13,42 @@ class Contained {
 public class ForAllExtended {
 
 	//@ requires (\forall Contained c; a.contains(c) && b.contains(c); 1 < c.value && c.value < 4);
-	public static /*@ pure @*/ void forAllExtended(Container a, Container b){
+	public static /*@ pure @*/ void forAllExtended(LinkedList<Contained> a, LinkedList<Contained> b){
 		// Do nothing
 	}
 	
 	public static void main(String[] args) {
-		Contained A = new Contained(1);
-		Contained B = new Contained(2);
-		Contained C = new Contained(3);
-		Contained D = new Contained(4);
+		LinkedList<Contained> A = new LinkedList<Contained>();
+		LinkedList<Contained> B = new LinkedList<Contained>();
+		LinkedList<Contained> C = new LinkedList<Contained>();
+		
+		Contained cA = new Contained (1);
+		Contained cB = new Contained (2);
+		Contained cC = new Contained (3);
+		Contained cD = new Contained (4);
 		
 		// Precondition should hold
 		System.out.println("Precondition holds!");
 		
-		Container containerA = new Container(new Contained[] {A, B, C});
-		Container containerB = new Container(new Contained[] {B, C, D});
+		A.add(cA);
+		A.add(cB);
+		A.add(cC);
 		
-		forAllExtended(containerA, containerB);
+		B.add(cB);
+		B.add(cC);
+		B.add(cD);
+		
+		forAllExtended(A, B);
 		
 		// Precondition should fail
-		System.out.println("Precondition fails!");
+		System.out.println("Precondition fails!");		
 		
-		Container containerC = new Container(new Contained[]{A, B, D});
-		Container containerD = new Container(new Contained[]{B, C, D});
+		C.add(cA);
+		C.add(cB);
+		C.add(cC);
+		C.add(cD);
 		
-		forAllExtended(containerC, containerD);
+		forAllExtended(A, C);
 	}
 
 }
