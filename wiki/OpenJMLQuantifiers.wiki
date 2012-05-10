@@ -1,0 +1,46 @@
+= Quantifiers in OpenJML =
+
+== Walkthrough ==
+
+=== Original ForAll.java ===
+
+{{{
+public class ForAll {
+	
+	//@ requires (\forall int i; 0 <= i && i < array.length; array[i] == i);
+	public static void forAll (int[] array) {
+		// Do nothing
+	}
+	
+	public static void main (String[] args) {
+		forAll(new int[] {0, 1, 2, 3});
+	}
+	
+}
+}}}
+
+
+=== AST-modified code by OpenJML RAC ===
+
+{{{
+public class ForAll {
+  
+  public ForAll() {
+    super();
+  }
+    /*@
+      requires (\forall int i; 0 <= i && i < array.length; array[i] == i); 
+   */
+
+  public static void forAll(int[] array) {
+  }
+  
+  public static void main(String[] args) {
+    forAll(new int[]{0, 1, 2, 3});
+  }
+}
+}}}
+
+=== Conclusions ===
+
+ * There seems to be actual no implementation of _\forall_ quantifiers in OpenJML RAC
