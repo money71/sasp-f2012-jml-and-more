@@ -50,6 +50,21 @@ where
 
 Mathematically it reads <wiki:gadget url="http://mathml-gadget.googlecode.com/svn/trunk/mathml-gadget.xml" border="0" up_content="forall d in D: P rightarrow Q" height="15"/>
 
+ === A First Approach in Code ===
+A simple first step is to let OpenJML parse a .java-file and pass it to our function. We then generate some (yet random) code and pass it back to
+
+{{{
+List<JmlCompilationUnit> ast = org.jmlspecs.openjml.API.parseSingleFile("/usr/local/myFile.java");
+
+public static f(List <JmlCompilationUnit> ast) {
+       // Here we later process expressions big-time
+       return "public class Foo { \n"
+       	      + "\t // Do nothing \n"
+	      + "}";
+}
+
+org.jmlspecs.openjml.API.parseString(f(ast));
+}}}
 
  == Bibliography ==
 Todo: Generate a proper bibtex-file
