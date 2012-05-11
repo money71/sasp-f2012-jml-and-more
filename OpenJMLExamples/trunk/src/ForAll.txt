@@ -1,0 +1,8 @@
+class ForAll {
+
+	//@ requires (\forall int i; 0 <= i && i < array.length; array[i] == i);
+	public static void forAll (int[] array) {
+		// Do nothing
+	}
+
+}
