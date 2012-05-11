@@ -30,6 +30,7 @@ Further, the problem is how to determine the variable space in a smart way. Just
      * from a string
      * from a JML-AST
    * Refine _f_ to accept multiple declarations
+     * A nested for-loop might be a solution here!
    * Refine _f_ to process the guard smartly to avoid unneccesary overhead
    * Generalize _f_ to parse existential and universal quantifiers
    * Modify _f_ so it produces
