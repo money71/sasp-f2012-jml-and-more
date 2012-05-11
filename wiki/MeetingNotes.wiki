@@ -11,7 +11,7 @@
    {{{
    File "src/Fresh.java", line 13, character 22 warning: Entire clause will be dropped since JmlFreshExpression is not executable.
    }}}
- * Quantified expressions seem in general be limited to one race variable
+ * Quantified expressions seem *in general* be limited to one race variable (tested with _\forall_, _\exists_ and _\sum_)
 
 = Meeting Notes =
 
