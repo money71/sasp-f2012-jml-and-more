@@ -1,0 +1,28 @@
+#summary Outline of the project report
+
+= Project Outline =
+
+  === Abstract ===
+
+An abstract
+
+ == Intro ==
+An introduction.
+ 
+ == Pre-requisites ==
+Outlining pre-requisits, what we did, etc.?
+
+ == Approaches Towards Quantified Expressions ==
+Quantified expressions in JML are semantically defined in the following way:
+{{{
+(\forall D; P; Q);
+}}}
+
+where
+ _D_: a declaration of a race-variable
+ _P_: the guard which variables in D have to pass
+ _Q_: the predicate which has to be true variables passing P.
+
+Mathematically it is read <wiki:gadget url="http://mathml-gadget.googlecode.com/svn/trunk/mathml-gadget.xml" border="0" up_content="forall d in D: P rightarrow Q" height="15"/>
+
+ == Bibliography ==
