@@ -12,6 +12,17 @@ An introduction.
  == Pre-requisites ==
 Outlining pre-requisits, what we did, etc.?
 
+ == Current Status ==
+Quantified expressions in OpenJML are currently implemented for a single declaration only. Our task is to generalize this behavior so that a quantified expression is also valid with multiple declarations.
+
+Examlpe use case (the condition is pretty bogus whatsoever):
+{{{
+	//@ requires (\forall int i, j; 0 <= i && i < array.length && j == i++; array[i] == j);
+	public static void foo (int[] array) {
+		// Do something
+	}
+}}}
+
  == Approaches Towards Quantified Expressions ==
 Quantified expressions in JML are semantically defined in the following way:
 {{{
@@ -24,5 +35,7 @@ where
  * _Q_: the predicate which has to be true variables passing P.
 
 Mathematically it is read <wiki:gadget url="http://mathml-gadget.googlecode.com/svn/trunk/mathml-gadget.xml" border="0" up_content="forall d in D: P rightarrow Q" height="15"/>
+
+
 
  == Bibliography ==
