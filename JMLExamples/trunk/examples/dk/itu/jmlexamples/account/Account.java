@@ -43,7 +43,7 @@ public class Account {
     @ assignable bal;
     @ ensures bal == \old(bal) - amt; @*/
   public void withdraw(int amt) {
-    bal -= amt;
+	  bal -= amt;
   }
 
   /*@ requires amt > 0;
@@ -58,9 +58,4 @@ public class Account {
     return bal;
   }
     
-	public static void main(String[] args) {
-	    Account acc = new Account(100);
-	    acc.withdraw(200);
-	    System.out.println("Balance after withdrawal: " + acc.balance());
-	}
 }

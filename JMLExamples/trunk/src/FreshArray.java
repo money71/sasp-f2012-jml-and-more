@@ -13,7 +13,7 @@ public class FreshArray {
     /*@ assignable a; 
     @ ensures \fresh(a);
     @*/
-    public static void foo () {
+    public static void foo() {
     	a = new int[2*a.length+1];
     	a[0] = 1;
     	a[1] = 2;

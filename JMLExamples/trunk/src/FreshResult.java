@@ -6,13 +6,10 @@
  *  - some examples in the mobious project just use \fresh(\result) 
  */
 public class FreshResult {
-    
-	private static Object a;
 	 
     //@ ensures \fresh(\result);
     public static Object foo () {
-    	a = new Object();
-    	return a;
+    	return new Object();
     }
 
     public static void main (String[] args){
