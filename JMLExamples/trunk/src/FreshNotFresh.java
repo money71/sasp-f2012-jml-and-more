@@ -3,7 +3,7 @@
  */
 public class FreshNotFresh {
     
-	private static /*@ spec_public @*/ Object a;		
+	private static /*@ spec_public @*/ Object a = null;		
 	
     /*@ assignable a; 
     @ ensures \fresh(a);

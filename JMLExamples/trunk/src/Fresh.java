@@ -10,15 +10,14 @@ public class Fresh {
 //	"warning: Entire clause will be dropped since JmlFreshExpression is not executable" ?
 	
     /*@ assignable a; 
-    @ ensures \fresh(a);
+    @ ensures \fresh(\result);
     @*/
     public static Object foo () {
-    	a = new Object();
     	/* in the jml 2 tutorial they uses rep but since universes is not 
     	 * implemented in openjml yet 
     	 * - we should use that for now - right ?
     	 * a = new / * @ rep @ * / int[inp.length]; */
-    	return a;
+    	return new Object();
     }
 
     public static void main (String[] args){
