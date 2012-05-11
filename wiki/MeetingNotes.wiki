@@ -7,6 +7,10 @@
  * What is _desugaring_?
  * _\forall_ is implemented but limited to one race-variable -> change parser behavior?
  * Should _\nonnullelements_ not be a product of _\non_null_, _\forall_?
+ * When trying to compile _\fresh_ with JML2 it outputs
+   {{{
+   File "src/Fresh.java", line 13, character 22 warning: Entire clause will be dropped since JmlFreshExpression is not executable.
+   }}}
 
 = Meeting Notes =
 
