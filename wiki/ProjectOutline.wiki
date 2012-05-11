@@ -19,9 +19,9 @@ Quantified expressions in JML are semantically defined in the following way:
 }}}
 
 where
- _D_: a declaration of a race-variable
- _P_: the guard which variables in D have to pass
- _Q_: the predicate which has to be true variables passing P.
+ * _D_: a declaration of a race-variable
+ * _P_: the guard which variables in D have to pass
+ * _Q_: the predicate which has to be true variables passing P.
 
 Mathematically it is read <wiki:gadget url="http://mathml-gadget.googlecode.com/svn/trunk/mathml-gadget.xml" border="0" up_content="forall d in D: P rightarrow Q" height="15"/>
 
