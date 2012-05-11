@@ -1,7 +1,7 @@
 package dk.itu.openjml.forall;
 
 import org.jmlspecs.openjml.API;
-import org.jmlspecs.openjml.JmlTree.JmlCompilationUnit;
+import org.jmlspecs.openjml.JmlTree.JmlQuantifiedExpr;
 
 public class ForAllNaive {
 	
@@ -10,9 +10,9 @@ public class ForAllNaive {
 	 * @param tree JML AST containing a \forall expression
 	 * @return Java code that asserts the given \forall expression
 	 */
-	public static String generateForAll(JmlCompilationUnit tree) {
+	public static String generateForAll(JmlQuantifiedExpr tree) {
 		
-		return "";
+		return tree.toString();
 	}
 	
 	/**
@@ -20,19 +20,8 @@ public class ForAllNaive {
 	 * @param tree JML AST containing a \forall expression
 	 * @return True if the \forall expression holds, false otherwise
 	 */
-	public static boolean assertForAll(JmlCompilationUnit tree) {
+	public static boolean assertForAll(JmlQuantifiedExpr tree) {
 		
 		return true;
-	}
-	
-	public static void main(String[] args) throws java.io.IOException{
-		try {
-			API openjmlApi = new API();
-			JmlCompilationUnit tree = openjmlApi.parseSingleFile(new java.io.File(args[0]));
-			assertForAll(tree);
-			generateForAll(tree);
-		} catch (NullPointerException e) {
-			throw new java.io.IOException("Need path to a .java file as argument.");
-		}
 	}
 }
