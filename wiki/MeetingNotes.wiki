@@ -16,8 +16,31 @@
 = Meeting Notes =
 
 == Meeting with Joe, 11.05.2012, 11.00 ==
-
- * not yet conducted
+ * What about recursive deepening for multi-dimensional arrays or nested lists?
+  ** There should be semantics for this
+  ** Implemented in the original compiler
+  ** Write testcase
+ * What is _desugaring_?
+  ** Different language levels
+  ** Rewrite higher-level definitions into core definitions
+  ** Happens because David and Joe defined it that way
+ * Should _\nonnullelements_ not be a product of _\non_null_, _\forall_?
+  ** Implementations and semantics are de-coupled
+  ** Maybe make a proposal
+ * When trying to compile _\fresh_ with JML2 it outputs
+   {{{
+   File "src/Fresh.java", line 13, character 22 warning: Entire clause will be dropped since JmlFreshExpression is not executable.
+   }}}
+  ** _\fresh_ is not executable in any tools we have right now
+ * Quantified expressions seem *in general* be limited to one race variable (tested with _\forall_, _\exists_ and _\sum_) 
+  ** *Implement translator/utility function to interpret quantifiers which takes an AST and produces code/AST* 
+  ** Code style?
+  ** Performance?
+  ** Less overhead
+  ** Amount of code
+ * What about the style of the report?
+  ** Examples, Goals, Experiences, important stuff
+  ** Joe will share examples
 
 == Meeting with Joe, 8.05.2012, 10.15 ==
  * AST node relating to universal quantifier
