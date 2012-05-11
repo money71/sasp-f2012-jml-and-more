@@ -1,7 +1,7 @@
 #summary Notes on various meetings
 
 = Question for the next meeting =
- * None so far
+ * To implement quantified expressions with multiple declarations, do we need to alter the parser?
 
 = Meeting Notes =
 
