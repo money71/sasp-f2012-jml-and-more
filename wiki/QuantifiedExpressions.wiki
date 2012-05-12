@@ -154,8 +154,8 @@ they perform a statical analysis splitting up the type:
 - SetBased
   - objects
 
-It confuses us a bit that its called statical analysis because its in the rac og
-the expressions seems to be evaluated.
+It confuses us a bit that its called statical analysis because its in the rac ~~and 
+the expressions seems to be evaluated~~. ?? 
 
 
 === org/jmlspecs/jmlrac ===
