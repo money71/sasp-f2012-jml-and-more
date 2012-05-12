@@ -21,7 +21,7 @@ public class TestOpenJMLAPI {
 	 * Setup API 
 	 */	
 	@BeforeClass 
-	public void setupSearchEngine() throws IOException {
+	public static void setupOpenJML() throws IOException {
 
 		api = new API();		
 	
