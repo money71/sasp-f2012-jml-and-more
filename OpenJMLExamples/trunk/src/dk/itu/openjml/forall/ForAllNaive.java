@@ -3,7 +3,6 @@ package dk.itu.openjml.forall;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jmlspecs.openjml.API;
 import org.jmlspecs.openjml.JmlTree.JmlQuantifiedExpr;
 
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -13,7 +12,7 @@ import com.sun.tools.javac.util.ListBuffer;
 public class ForAllNaive {
 	
 	/**
-	 * 
+	 * Converts a JmlQuantifiedExpr into executable code which is returned as a String
 	 * @param tree JML AST containing a \forall expression
 	 * @return Java code that asserts the given \forall expression
 	 */
