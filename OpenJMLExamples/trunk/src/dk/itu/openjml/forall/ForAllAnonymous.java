@@ -9,7 +9,6 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 
-import edu.umd.cs.findbugs.annotations.NoWarning;
 
 interface IPredicate {
 	/* Usage of this class:
@@ -21,13 +20,9 @@ interface IPredicate {
 	 * // The code below will print out "1".
 	 * foo(new IPredicate(){
 	 * 			public boolean check(Integer i){
-	 * 				System.out.println(i);
+	 * 				return i > 0;
 	 * 			}
 	 * 		}, 1);
-	 * 
-	 * However, instead of fancy side-effects, check()
-	 * should check if some predicate holds for some
-	 * variable and another object, which may be null.
 	 */
 	
 	/**
