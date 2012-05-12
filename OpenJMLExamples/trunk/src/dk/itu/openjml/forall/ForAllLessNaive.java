@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jmlspecs.openjml.JmlTree.JmlQuantifiedExpr;
 
+import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.ListBuffer;
@@ -64,13 +65,34 @@ public class ForAllLessNaive {
 		return forLoops;
 	}
 	
-	private static String getLowerBounds(String identifier, JCExpression e){
+	private static String getLowerBounds(String id, JCExpression e){
+				
+		if(e instanceof JCBinary){
+			
+			// This has nothing to do with id? Then return the highest value possible!
+			if(!e.toString().contains(id)) return "Integer.MAX_VALUE";
+			
+			// Step further until there is an atomic expression present
+			String l = getLowerBounds(id, ((JCBinary) e).lhs);
+			String r = getLowerBounds(id, ((JCBinary) e).rhs);
+			
+			// We're looking for the smaller one
+			if(new Integer(l) > new Integer(r)){
+				return l;
+			}
+			return r;
+			
+		} else if(e.type.toString() == "int"){
+			return e.toString();
+		}
 		
+		// Default return value if no range is defined properly
 		return "Integer.MIN_VALUE";
 	}
 	
 	private static String getUpperBounds(String identifier, JCExpression e){
 		
+		// Default return value if no range is defined properly
 		return "Integer.MAX_VALUE";
 	}
 	
