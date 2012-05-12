@@ -23,12 +23,13 @@ public class Test_ForAllNaive {
 	
 	List<String> qExprsJml;
 	List<JmlQuantifiedExpr> qExprsAst;
+	API openjmlApi;
 	
-	@Before
-	public void addExpressions() {
-		//qExprsJml.add("//@ requires (\\forall int i; ;);"); // Illegal expression?
-		qExprsJml.add("//@ requires (\\forall int i; 0 <= i && i < 10; i < 10);"); // Always true
-		qExprsJml.add("//@ requires (\\forall int i; 0 <= i && i < 10; a[i]);"); // Is this legal if there is no a declared?
+	public void addExpressions(List<String> s) {
+		//s.add("//@ requires (\\forall int i; ;);"); // Illegal expression?
+		s.add("//@ requires (\\forall int i; 0 <= i && i < 10; i < 10);"); // Always true
+		s.add("//@ requires (\\forall int i; 0 <= i && i < 10; a[i]);"); // Is this legal if there is no a declared?
+		s.add("//@requires (\\forall int i, j; 0 <= i && i < 10 && j == i++; i == (j - 1));");
 		
 		// TODO: Add more expressions!
 	}
@@ -56,16 +57,16 @@ public class Test_ForAllNaive {
 			}
 		}
 		return null;
-	}
+	}	
 	
 	@Before
 	public void setUp() throws Exception {
 		
 		qExprsJml = new ArrayList<String>();
 		qExprsAst = new ArrayList<JmlQuantifiedExpr>();
-		addExpressions();		
+		addExpressions(qExprsJml);		
 		
-		API openjmlApi = new API();
+		openjmlApi = new API();
 		
 		// Add all expressions to AST list
 		for(String s: qExprsJml) {
@@ -76,7 +77,11 @@ public class Test_ForAllNaive {
 	@Test
 	public void testGenerateForAll() {
 		for(JmlQuantifiedExpr t: qExprsAst) {
-			Assert.assertEquals(null, t.toString(), ForAllNaive.generateForAll(t));
+			try{
+				openjmlApi.parseString("forAllTest", "class ForAllTest {\n" + ForAllNaive.generateForAll(t) + "\n}");
+			} catch (Exception e){
+				Assert.fail(e.toString());
+			}
 		}
 	}
 
