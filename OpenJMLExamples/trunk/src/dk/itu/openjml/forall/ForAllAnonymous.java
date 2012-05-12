@@ -9,6 +9,8 @@ import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 
+import edu.umd.cs.findbugs.annotations.NoWarning;
+
 interface IPredicate {
 	/* Usage of this class:
 	 * 
@@ -62,27 +64,9 @@ public class ForAllAnonymous {
 	 * @param e The range expression
 	 * @return A list which represents the range
 	 */
-	static /*@ pure @*/ List<Object> getRange(JmlQuantifiedExpr e){
-		List<Object> ranges = new ArrayList<Object>(); 
-		
-		// Get a range for each declared variable
-		for(JCVariableDecl d: e.decls){
-			if(d.vartype.type.isPrimitive()){
-				if(d.vartype.type.tsym == int ||
-					d.vartype.type.tsym == char ||
-					d.vartype.type.tsym == boolean)){
-					
-					// make a proper range list
-						
-				} else {
-					// throw exception stating that only boolean, int and char are cool
-				}
-				
-			} else {
-				// make proper range list for objects -> actually use predicate to filter
-			}
-		}
-		return ranges;
+	static /*@ pure @*/ List<String> getRanges(JmlQuantifiedExpr e){
+		// TODO: Implement!
+		return new ArrayList<String>();
 	}
 		
 	static /*@ pure @*/ List<IPredicate> getPredicates(JCExpression e){
