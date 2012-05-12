@@ -18,15 +18,13 @@ public class ForAll {
 	 * - according to JML 2 the method has to be pure to 
 	 *   be used specified as predicate in a quantifier expression.
 	 *   
-	 * - JML 2 don't like this to be a boolean / int - why ?
-	 *   raises:
-	 *   "error: Syntax error: unexpected token : int"
-	 *   "error: Syntax error: unexpected token : boolean"
+	 * - and always remember to have the / * @ pure @ * / before
+	 *   the type declaration. 
 	 */
-	public static int /*@ pure @*/ intPredicate(int i) {
+	public static /*@ pure @*/ int intPredicate(int i) {
 		return i;
 	}
-	public static boolean /*@ pure @*/ boolPredicate(int i) {
+	public static /*@ pure @*/ boolean boolPredicate(int i) {
 		return i < 10;
 	}
 
