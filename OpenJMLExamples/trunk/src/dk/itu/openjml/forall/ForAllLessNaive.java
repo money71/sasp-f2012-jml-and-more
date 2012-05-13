@@ -20,8 +20,10 @@ public class ForAllLessNaive {
 	public static String generateForAll(JmlQuantifiedExpr tree) {
 		
 		// Storing the code
-		String generated = "static boolean JmlRac$assertForAll(){\n\t";
+		String generated = "static boolean JmlRac$AssertForAll(){\n\t";
 		int lBrackCount = 0;
+		
+		// FIXME: What about parameters?
 		
 		List<String> forLoops = getForLoop(tree.decls, tree.range);
 		List<String> predicates = getPredicate(tree.value);
@@ -56,38 +58,30 @@ public class ForAllLessNaive {
 		// TODO: Ideally, we will replace this by a for(Object i: Iterable){ or something
 		for(JCVariableDecl d: e){
 			String type = d.type.toString();
-			//if(type == "int"){
 			String id = d.name.toString();
-			forLoops.add("for(" + type + " " + id + " = "+ getLowerBounds(id, f) + "; " // Initialize
-					+ id + "<=" + getUpperBounds(id, f) + "; " // Guard
-					+ id + "++){\n"); // Step ahead
+//			forLoops.add("for(" + type + " " + id + ": " + getSet(id, f) + "){\n");
+//			forLoops.add("for(" + type + " " + id + " = "+ getLowerBounds(id, f) + "; " // Initialize
+//					+ id + "<=" + getUpperBounds(id, f) + "; " // Guard
+//					+ id + "++){\n"); // Step ahead
 		}		
 		return forLoops;
 	}
 	
 	private static String getLowerBounds(String id, JCExpression e){
-				
-		if(e instanceof JCBinary){
+		
+		if(e instanceof JCBinary && e.toString().contains(id)){
 			
-			// This has nothing to do with id? Then return the highest value possible!
-			if(!e.toString().contains(id)) return "Integer.MAX_VALUE";
-			
-			// Step further until there is an atomic expression present
+			// Check both expressions
 			String l = getLowerBounds(id, ((JCBinary) e).lhs);
 			String r = getLowerBounds(id, ((JCBinary) e).rhs);
 			
 			// We're looking for the smaller one
-			if(new Integer(l) > new Integer(r)){
-				return l;
-			}
-			return r;
-			
+			return new Integer(l) > new Integer(r) ? r : l;
 		} else if(e.type.toString() == "int"){
 			return e.toString();
+		} else {
+			return "Integer.MAX_VALUE";
 		}
-		
-		// Default return value if no range is defined properly
-		return "Integer.MIN_VALUE";
 	}
 	
 	private static String getUpperBounds(String identifier, JCExpression e){
