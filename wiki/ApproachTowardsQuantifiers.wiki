@@ -1,0 +1,64 @@
+= Approach towards Evaluation of arbitraty Quantifiers =
+
+This is just a document outlining a very high-level definition of an algorithm to evaluate a JML quantified expression. It needs to be re-fined both mathematically and programatically before it will work properly. Also, correctness is at this stage not guaranteed.
+
+=== ToDos ===
+ * Review the outlined approach
+ * Write at least pseudo-code
+ * Try to write specifications for each method
+ * Add more to-do-items
+
+== Outline ==
+
+(Each sub-step can be seen as an additional feature to add to the overlying step.)
+
+The approach is (and I picked that up somewhere during reading through code) *set-based*. Instead of iterating over every possibility (which is probably going to taking longer than the universe will exist for arbitrary object types) we generate an iterator that returns only values which satisfy given guards or *range expressions* in the JML _\forall_ expression. The idea is to write a function that can figure out such a *range expression* of whatever form during RAC-runtime. The call to the function will be generated during compiletime, whatsoever.
+
+The following is intended to give more clarity on this.
+
+=== Proposal on how to evaluate a quantified JML expression ===
+
+==== Definitions ====
+{{{
+qE = \forall D; R; P
+}}}
+
+where
+
+*D* = A set of variable declarations of the form _d_
+*R* = A guard defining the range in which elements in *D* must be
+*P* = A predicate that must hold for each _d_ from *D* that fulfills *R*
+
+==== 1. ====
+For each declared variable _d_ in *D* generate a for-loop.
+ ===== a) =====
+ Nest each following loop within the last.
+ ===== b) =====
+ Instead of using actual guards build a loop-expression of the form
+ {{{
+ for(Object o: evaluateRange(R)){
+ }}}
+  ====== b') ======
+  {{{evaluateRange(R)}}} is a utility-function that interprets a range defined through a guard at RAC-runtime
+==== 2. ====
+In the inner-most body block, evaluate the given predicate *P* for all _d_
+ ===== a) =====
+ Move disjunct predicates that are not relying on race-variables appearing late in the generated for-loop structure further up in the code to optimize runtime
+ ===== b) =====
+ For generalized quantified expressions add a new parameter that determines which function to execute (instead of evaluating an arbitrary predicate *P*)
+
+==== _evaluateRange()_ ====
+This method will be part of the call made during RAC-execution. The code produced by the function outlined above should _in principle_ look like
+
+{{{
+for(T i: evaluateRange(Ri){
+	   for(S j: evaluateRange(Rj){
+	   	      // Evaluate predicate
+	   }
+}}}
+where *T* and *S* are arbitrary types inferred from the original sources.
+
+To make this function possible, we need to figure out how to
+ * give an evaluateable range-expression in code
+ * how to evaluate such an expression correctly and realiably
+ * how to reference possible containers from which we need to pull object
