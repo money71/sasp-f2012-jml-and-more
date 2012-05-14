@@ -7,6 +7,9 @@
 
 = Meeting Notes =
 
+== Meeting with Joe, 14.05.2012 ==
+ * Not yet conducted
+
 == Meeting with Joe, 11.05.2012, 11.00 ==
  * What about recursive deepening for multi-dimensional arrays or nested lists?
   ** There should be semantics for this
