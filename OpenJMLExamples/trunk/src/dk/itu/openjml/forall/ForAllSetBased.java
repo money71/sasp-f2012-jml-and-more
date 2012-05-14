@@ -32,6 +32,11 @@ public class ForAllSetBased {
 			case "boolean": return "Boolean";
 			case "char": return "Character";
 			case "int": return "Integer";
+			// The following datatypes are not supported right now
+			case "long":
+			case "double":
+			case "float":
+			default: return null;
 		}
 		return primitive;
 	}
@@ -43,15 +48,22 @@ public class ForAllSetBased {
 	}
 	
 	// TODO: Write specs
-	public static /*@ pure @*/ <T> List<T> evaluateRange(){
+	public static /*@ pure @*/ <T> List<T> evaluateRange(JCExpression e){
 		return new ArrayList<T>();
 	}
 	
 	// TODO: Write specs
 	private static /*@ pure @*/ String generateForLoop(JmlQuantifiedExpr e){
-		// TODO: generateDeclaration();
-		// TODO: generatePredicate();
-		return "";
+		String gen = "for(" 
+				+ generateDeclaration(e.decls.next())
+				+ ": dk.itu.openjml.forall.ForAllSetBased.evaluateRange()){\n";
+		if(e.decls){
+			// TODO: generateForLoop();
+		} else {
+			gen += generatePredicate(e.value);
+		}
+		gen += "}\n";
+		return gen;
 	}
 	
 	
