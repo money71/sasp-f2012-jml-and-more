@@ -26,7 +26,7 @@ qE = \forall D; R; P
 where
 
 *D* = A set of variable declarations of the form _d_
-*R* = A guard defining the range in which elements in *D* must be
+*R* = A guard or range expression defining the range in which elements in *D* must be
 *P* = A predicate that must hold for each _d_ from *D* that fulfills *R*
 
 ==== 1. ====

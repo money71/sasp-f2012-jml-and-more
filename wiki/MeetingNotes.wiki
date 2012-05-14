@@ -1,7 +1,9 @@
 #summary Notes on various meetings
 
 = Question for the next meeting =
- * To implement quantified expressions with multiple declarations, do we need to alter the parser?
+ * Is the general approach valid or sane?
+ * How to test the code peoperly? We could just copy-paste our results into a test case but that is rather ugly...
+ * Converting Primitive Types into Objects: Memory overhead VS code simplicity (set/sequence)
 
 = Meeting Notes =
 
