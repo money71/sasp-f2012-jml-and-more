@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.jmlspecs.openjml.JmlTree.JmlQuantifiedExpr;
 
+import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
+
 public class ForAllSetBased {
 	/*
 	 * This is a first attempt to formulate a class as outlined in
@@ -20,10 +23,23 @@ public class ForAllSetBased {
 	 * TODO: How to formulate a range-expression that can be evaluated at runtime?
 	 */
 	
+	// These are the allowed types of a declaration
+	private static final String[] ALLOWED_TYPES = {"boolean", "char", "int", "Object"};
+	
+	// Simple replacement
+	private static /*@ pure @*/ String getObjectType(String primitive){
+		switch(primitive){
+			case "boolean": return "Boolean";
+			case "char": return "Character";
+			case "int": return "Integer";
+		}
+		return primitive;
+	}
+	
 	// TODO: Write specs
 	public static /*@ pure @*/ String generateCheck(JmlQuantifiedExpr e){
-		// TODO: call generateForLoop()
-		return "";
+		// TODO: Should this return a whole method body or just a body?
+		return generateForLoop(e);
 	}
 	
 	// TODO: Write specs
@@ -32,19 +48,19 @@ public class ForAllSetBased {
 	}
 	
 	// TODO: Write specs
-	private static /*@ pure @*/ String generateForLoop(){
-		// TODO: call generateDeclaration();
-		// TODO: call generatePredicate();
+	private static /*@ pure @*/ String generateForLoop(JmlQuantifiedExpr e){
+		// TODO: generateDeclaration();
+		// TODO: generatePredicate();
 		return "";
 	}
 	
 	// TODO: Write specs
-	private static /*@ pure @*/ String generateDeclaration(){
+	private static /*@ pure @*/ String generateDeclaration(JCVariableDecl e){
 		return "";
 	}
 	
 	// TODO: Write specs
-	private static /*@ pure @*/ String generatePredicate(){
+	private static /*@ pure @*/ String generatePredicate(JCExpression e){
 		return "";
 	}
 }
