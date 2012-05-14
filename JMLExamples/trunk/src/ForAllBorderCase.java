@@ -6,7 +6,7 @@ class Foo {
 		this.value = value;
 	}
 	
-	public boolean p(){
+	public /*@ pure @*/ boolean p(){
 		System.out.println("Evaluation in Foo was executed!");
 		return value > 10;
 	}
@@ -19,11 +19,11 @@ class Bar {
 		this.value = value;
 	}
 	
-	public int getValue(){
+	public /*@ pure @*/ int getValue(){
 		return this.value;
 	}
 	
-	public boolean p(){
+	public /*@ pure @*/ boolean p(){
 		System.out.println("Evaluation in Bar was executed!");
 		return this.getValue() > 10;
 	}
