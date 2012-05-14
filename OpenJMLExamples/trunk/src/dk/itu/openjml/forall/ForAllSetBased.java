@@ -54,6 +54,7 @@ public class ForAllSetBased {
 		return "";
 	}
 	
+	
 	// TODO: Write specs
 	private static /*@ pure @*/ String generateDeclaration(JCVariableDecl e){
 		return "";
