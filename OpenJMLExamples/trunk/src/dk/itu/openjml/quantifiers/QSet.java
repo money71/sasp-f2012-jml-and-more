@@ -15,7 +15,7 @@ abstract class QSet {
 	}
 	
 	public static QSet generateRange(JmlExpression e, String v){
-		
+		return new QSet(null, null);
 	}
 	
 	public QSet union(QSet l, QSet r){

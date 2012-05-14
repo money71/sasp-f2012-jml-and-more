@@ -35,8 +35,7 @@ public class ForAllSetBased {
 			// The following datatypes are not supported right now
 			case "long":
 			case "double":
-			case "float":
-			default: return null;
+			case "float": return null;
 		}
 		return primitive;
 	}
