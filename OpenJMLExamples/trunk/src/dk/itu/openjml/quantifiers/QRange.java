@@ -192,7 +192,7 @@ class IntersectionQRange extends QRange {
 }
 
 /**
- * Represents a range defined through a boolesn expression
+ * Represents a range defined through a boolean expression
  */
 class LeafQRange extends QRange {
 	
@@ -234,54 +234,52 @@ class LeafQRange extends QRange {
 	 * | o = ">" ==> e[l ">=" (r + 1)]
 	 * | o = "!=" ==> low = (r + 1) && high = (r - 1)
 	 * | o = "==" ==> low = r && high = r
+	 * | _ ==> not defined
 	 * 
 	 * @param left A value or a identifier
 	 * @param op A operator
 	 * @param right A value or an identifier
 	 * @throws Exception if none of the rules apply to this expression
 	 */
+	//@ assignable low, high;
 	private void evaluateExpression(String left, String op, String right) throws Exception{
+		
+		// TODO: Check if var is at all part of this expression!
 		
 		if(right.contains(var) && !left.contains(var)){
 			// Switch left and right part of the expression, change operator orientation
 			evaluateExpression(right, changeOrientation(op), left);
-			return;
 		
 		} else if(op.equals(LEQ)){
 			// Right is the maximum value
 			high = right;
-			return;
 			
 		} else if(op.equals(GEQ)){
 			// Right is the minimum value
 			low = right;
-			return;			
 		
 		} else if(op.equals(LT)){
 			// Replace "i <= x" by "i < x + 1"  
 			evaluateExpression(left, LEQ, right + " - 1");
-			return;
 			
 		} else if(op.equals(GT)){
 			// Replace "i >= x" by "i > x-1"
 			evaluateExpression(left, GEQ, right + " + 1");
-			return;
 		
 		} else if(op.equals(NEQ)){
 			// TODO: Make sure this is correct!
 			// right is the only undefined number
 			low = right + " + 1";
 			high = right + " - 1";
-			return;
 			
 		} else if(op.equals(EQ)){
 			// right is the only defined number
 			low = right;
 			high = right;
-			return;
+
+		} else {
+			throw new Exception("Cannot evaluate quantified expression (" + left + " " + op + " " + right + ")");
 		}
-		
-		throw new Exception("Cannot evaluate quantified expression (" + left + " " + op + " " + right + ")");
 	}
 	
 	/**
