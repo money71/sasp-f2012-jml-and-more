@@ -107,15 +107,6 @@ public class ForAll {
     	}
     	return true;
     }
-
-    
-	
-	
-	
-	
-	
-	
-	
 	
 		
 }

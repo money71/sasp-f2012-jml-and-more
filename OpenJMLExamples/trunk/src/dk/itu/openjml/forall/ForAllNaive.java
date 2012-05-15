@@ -91,7 +91,7 @@ public class ForAllNaive {
 	 * @return True if the \forall expression holds, false otherwise
 	 */
 	public static boolean assertForAll(JmlQuantifiedExpr tree) {
-		
+		// TODO: shouldn't there be a real check when is false returned ?
 		return true;
 	}
 }
