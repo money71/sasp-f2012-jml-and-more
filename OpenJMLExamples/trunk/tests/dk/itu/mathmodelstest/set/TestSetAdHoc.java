@@ -97,7 +97,7 @@ public class TestSetAdHoc {
 		Assert.assertArrayEquals(expected, result);
 
 		
-		// union - addAll()
+		// union = addAll()
 		SortedSet<Integer> s2 = new TreeSet<Integer>();
 		s2.add(1);
 		s2.add(2);
@@ -108,7 +108,7 @@ public class TestSetAdHoc {
 		Object[] result2 = s.toArray();
 		Assert.assertArrayEquals(expected2, result2);		
 		
-		// intersection - retainAll()
+		// intersection = retainAll()
 		SortedSet<Integer> s3 = new TreeSet<Integer>();
 		s3.add(3);
 		s3.add(9);
@@ -118,7 +118,7 @@ public class TestSetAdHoc {
 		Object[] result3 = s3.toArray();
 		Assert.assertArrayEquals(expected3, result3);		
 		
-		// set difference - removeAll() 
+		// set difference = removeAll() 
 		SortedSet<Integer> s4 = new TreeSet<Integer>();
 		s4.add(1);
 		s4.add(3);
