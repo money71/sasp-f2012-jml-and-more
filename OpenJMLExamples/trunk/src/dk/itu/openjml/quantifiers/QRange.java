@@ -14,7 +14,6 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
  * respectively Integer.MIN_VALUE. Through operations on
  * sets these "infinite" margins will be reduced to a valid
  * set of ranges which can also have gaps.
- *
  */
 public abstract class QRange {
 	
@@ -50,11 +49,11 @@ public abstract class QRange {
 		
 		// We only want to process binary expressions
 		if(e instanceof JmlBinary){
-			if(isConjunction((JmlBinary)e)) { 
+			if(hasOperator((JmlBinary)e, CON)) { 
 				// Conjunction is an intersection
 				return new IntersectionQRange((JmlBinary)e, var);
 				
-			} else if(isDisjunction((JmlBinary)e)) {
+			} else if(hasOperator((JmlBinary)e, DIS)) {
 				// Disjunction is a union
 				return new UnionQRange((JmlBinary)e, var);
 				
@@ -67,25 +66,32 @@ public abstract class QRange {
 		throw new Exception("Cannot execute this statement: " + e.toString()); // FIXME: Do this properly
 	}
 	
-	// Build a QRange object that holds QRanges through compute
+	/**
+	 * Build a QRange object that holds QRanges through compute
+	 * @param e A JmlBinay expression which describes a range
+	 * @param var A variable name for which we want to find the range
+	 * @throws Exception If e is not an executable statement
+	 */
 	public QRange(JmlBinary e, String var) throws Exception{
 		left = compute(e.lhs, var);
 		right = compute(e.rhs, var);
 	}
 	
-	// Empty default
+	/**
+	 * Empty default constructor
+	 */
 	protected QRange(){
 		left = null;
 		right = null;
 	}
 	
 	/**
-	 * Checks if an expression contains a variable name
+	 * Checks recursively if an expression contains a variable name
 	 * @param e The expression tree
 	 * @param var The variable name
 	 * @return True if e contains var, false otherwise
 	 */
-	static boolean containsVar(JCExpression e, String var){
+	static /*@ pure @*/ boolean containsVar(JCExpression e, String var){
 		if(e instanceof JmlBinary){
 			return containsVar(((JmlBinary)e).lhs, var) || containsVar(((JmlBinary)e).rhs, var);
 		}
@@ -93,36 +99,43 @@ public abstract class QRange {
 		return e.toString().contains(var);
 	}
 	
-	static // Checks the expression tree for an "&&" operator
-	boolean isConjunction(JmlBinary e){
-		return e.op.toString() == CON;
+	/**
+	 * Checks a JmlBinary expression for a given operator
+	 * @param e A JmlBinary expression
+	 * @param o Some operator
+	 * @return True if o is the operator in e
+	 */
+	static /*@ pure @*/ boolean hasOperator(JmlBinary e, String o){
+		return e.op.toString() == o;
 	}
 	
-	// Checks the expression tree for an "||" operator
-	static boolean isDisjunction(JmlBinary e){
-		return e.op.toString() == DIS;
-	}
-	
-	// Check if the expression is atomic (left and right side hold values
-	static boolean isAtomic(JmlBinary e){
-		return e.op.toString() == GT ||
-				e.op.toString() == EQ ||
-				e.op.toString() == LT ||
-				e.op.toString() == GEQ ||
-				e.op.toString() == LEQ;
+	/**
+	 * Checks if a JmlBinary expression is an atomic boolean expression
+	 * @param e A JmlBinary expression
+	 * @return True if e is an atomic boolean expression, false otherwise
+	 */
+	static /*@ pure @*/ boolean isAtomic(JmlBinary e){
+		return hasOperator(e, GT) ||
+				hasOperator(e, EQ) ||
+				hasOperator(e, LT) ||
+				hasOperator(e, GEQ) ||
+				hasOperator(e, LEQ);
 	}
 	
 	/**
 	 * Generates source code from this QRange.
 	 * @return Source code building a valid range of integers.
 	 */
-	abstract public String translate();
+	abstract public /*@ pure @*/ String translate();
 	
-	public String toString(){
+	public /*@ pure @*/ String toString(){
 		return translate();
 	}
 	
-	public boolean isLeaf(){
+	/**
+	 * @return True if the fields left and right are null
+	 */
+	public /*@ pure @*/ boolean isLeaf(){
 		return left == null && right == null;
 	}
 }
@@ -136,7 +149,10 @@ class UnionQRange extends QRange {
 		super(e, var);
 	}
 	
-	public String translate(){
+	/**
+	 * Generates the code for a union-operation on ranges
+	 */
+	public /*@ pure @*/ String translate(){
 		return "(" + left.translate() + " UNION " + right.translate() + ")";
 	}
 	
@@ -151,7 +167,10 @@ class IntersectionQRange extends QRange {
 		super(e, var);
 	}
 	
-	public String translate(){
+	/**
+	 * Generates the code for an intersect-operation on ranges
+	 */
+	public /*@ pure @*/ String translate(){
 		return "(" + left.translate() + " INTERSECTION " + right.translate() + ")";
 	}
 }
@@ -239,11 +258,11 @@ class LeafQRange extends QRange {
 	}
 	
 	/**
-	 * Inverts a logical operator for when it's 
-	 * @param op
-	 * @return
+	 * Swaps sides of an logical inequality operator
+	 * @param op The operator to switch
+	 * @return The switched operator
 	 */
-	private String changeOrientation(String op){
+	private /*@ pure @*/ String changeOrientation(String op){
 		switch(op){
 		case GEQ: return LEQ;
 		case LEQ: return GEQ;
@@ -253,7 +272,10 @@ class LeafQRange extends QRange {
 		return op;
 	}
 	
-	public String translate(){
+	/**
+	 * Returns the code for a range expression limited by two variables
+	 */
+	public/*@ pure @*/  String translate(){
 		return "[" + left + ", " + right + "]";
 	}
 }
