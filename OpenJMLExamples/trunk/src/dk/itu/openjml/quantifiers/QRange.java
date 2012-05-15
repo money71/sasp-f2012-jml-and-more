@@ -1,6 +1,8 @@
 package dk.itu.openjml.quantifiers;
 
 import org.jmlspecs.openjml.JmlTree.JmlBinary;
+
+import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 
 /**
@@ -48,18 +50,18 @@ public abstract class QRange {
 	public static QRange compute(JCExpression e, String var) throws Exception{
 		
 		// We only want to process binary expressions
-		if(e instanceof JmlBinary){
-			if(hasOperator((JmlBinary)e, CON)) { 
+		if(e instanceof JCBinary){
+			if(hasOperator((JCBinary)e, CON)) { 
 				// Conjunction is an intersection
-				return new IntersectionQRange((JmlBinary)e, var);
+				return new IntersectionQRange((JCBinary)e, var);
 				
-			} else if(hasOperator((JmlBinary)e, DIS)) {
+			} else if(hasOperator((JCBinary)e, DIS)) {
 				// Disjunction is a union
-				return new UnionQRange((JmlBinary)e, var);
+				return new UnionQRange((JCBinary)e, var);
 				
-			} else if(isAtomic((JmlBinary)e)){ 
+			} else if(isAtomic((JCBinary)e)){ 
 				// Leaf node representing actual range definitions
-				return new LeafQRange((JmlBinary)e, var);
+				return new LeafQRange((JCBinary)e, var);
 			} 
 			// TODO: Add pure method calls?
 		}
@@ -72,7 +74,7 @@ public abstract class QRange {
 	 * @param var A variable name for which we want to find the range
 	 * @throws Exception If e is not an executable statement
 	 */
-	public QRange(JmlBinary e, String var) throws Exception{
+	public QRange(JCBinary e, String var) throws Exception{
 		left = compute(e.lhs, var);
 		right = compute(e.rhs, var);
 	}
@@ -105,8 +107,22 @@ public abstract class QRange {
 	 * @param o Some operator
 	 * @return True if o is the operator in e
 	 */
-	static /*@ pure @*/ boolean hasOperator(JmlBinary e, String o){
-		return e.op.toString() == o;
+	static /*@ pure @*/ boolean hasOperator(JCBinary e, String o){
+		return getOperator(e).equals(o);
+	}
+	
+	/**
+	 * Returns a string which is the operator of a JCBinary expression
+	 * @param e A JCBinary expression
+	 * @return The operator in e
+	 */
+	static /*@ pure @*/ String getOperator(JCBinary e){
+		// This hurts my eyes!
+		String op = e.toString();
+		op = op.replace(e.lhs.toString(), "");
+		op = op.replace(e.rhs.toString(), "");
+		op = op.replace(" ", "");
+		return op;
 	}
 	
 	/**
@@ -114,7 +130,7 @@ public abstract class QRange {
 	 * @param e A JmlBinary expression
 	 * @return True if e is an atomic boolean expression, false otherwise
 	 */
-	static /*@ pure @*/ boolean isAtomic(JmlBinary e){
+	static /*@ pure @*/ boolean isAtomic(JCBinary e){
 		return hasOperator(e, GT) ||
 				hasOperator(e, EQ) ||
 				hasOperator(e, LT) ||
@@ -145,7 +161,7 @@ public abstract class QRange {
  */
 class UnionQRange extends QRange {
 	
-	public UnionQRange(JmlBinary e, String var) throws Exception{
+	public UnionQRange(JCBinary e, String var) throws Exception{
 		super(e, var);
 	}
 	
@@ -163,7 +179,7 @@ class UnionQRange extends QRange {
  */
 class IntersectionQRange extends QRange {
 	
-	public IntersectionQRange(JmlBinary e, String var) throws Exception{
+	public IntersectionQRange(JCBinary e, String var) throws Exception{
 		super(e, var);
 	}
 	
@@ -186,19 +202,21 @@ class LeafQRange extends QRange {
 	int ilow;
 	int ihigh;
 	
-	public LeafQRange(JmlBinary e, String var) throws Exception{
+	public LeafQRange(JCBinary e, String var) throws Exception{
 		// Store the variable name
 		this.var = var;
 		
 		ilow = Integer.MIN_VALUE;
 		ihigh = Integer.MAX_VALUE;
+		low = "Integer.MIN_VALUE";
+		high = "Integer.MAX_VALUE";
 		
 		String left = e.lhs.toString();
-		String op = e.op.toString();
+		//String op = e.operator.toString();
+		String op = getOperator(e);
 		String right = e.rhs.toString();
 		
 		evaluateExpression(left, op, right);
-		
 	}
 	
 	// TODO: Write specs!
@@ -225,33 +243,40 @@ class LeafQRange extends QRange {
 		if(right.contains(var) && !left.contains(var)){
 			// Switch left and right part of the expression, change operator orientation
 			evaluateExpression(right, changeOrientation(op), left);
+			return;
 		
-		} else if(op == LEQ){
+		} else if(op.equals(LEQ)){
 			// Replace "i <= x" by "i < x + 1"  
 			evaluateExpression(left, LT, right + " + 1");
+			return;
 			
-		} else if(op == GEQ){
+		} else if(op.equals(GEQ)){
 			// Replace "i >= x" by "i > x-1"
 			evaluateExpression(left, GT, right + " - 1");
+			return;
 		
-		} else if(op == LT){
+		} else if(op.equals(LT)){
 			// Right is the maximum value
 			high = right;
+			return;
 			
-		} else if(op == GT){
+		} else if(op.equals(GT)){
 			// Right is the minimum value
 			low = right;
+			return;
 		
-		} else if(op == NEQ){
+		} else if(op.equals(NEQ)){
 			// TODO: Make sure this is correct!
 			// right is the only undefined number
 			low = right + " + 1";
 			high = right + " - 1";
+			return;
 			
-		} else if(op == EQ){
+		} else if(op.equals(EQ)){
 			// right is the only defined number
 			low = right;
 			high = right;
+			return;
 		}
 		
 		throw new Exception("Cannot evaluate quantified expression (" + left + " " + op + " " + right + ")");
@@ -276,7 +301,6 @@ class LeafQRange extends QRange {
 	 * Returns the code for a range expression limited by two variables
 	 */
 	public/*@ pure @*/  String translate(){
-		return "[" + left + ", " + right + "]";
+		return "[" + low + ", " + high + "]";
 	}
 }
-
