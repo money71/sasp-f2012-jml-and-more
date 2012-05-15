@@ -4,14 +4,16 @@ import org.jmlspecs.openjml.JmlTree.JmlBinary;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 
 /**
+ * Inspired from the QSet class implemented for JML2
+ * 
  * This class represents a quantified range over integers.
  * It walks over an expression tree and translate atomic
  * boolean expressions into a set of values. As an atomic
  * boolean expression can only define one margin of a range,
  * the other margin will by default be Integer.MAX_VALUE or
  * respectively Integer.MIN_VALUE. Through operations on
- * sets these loose margins will be reduced to a valid
- * set of ranges. It should be able 
+ * sets these "infinite" margins will be reduced to a valid
+ * set of ranges which can also have gaps.
  *
  */
 public abstract class QRange {
@@ -19,6 +21,11 @@ public abstract class QRange {
 	// Conjunction and disjunction
 	final static String CON = "&&";
 	final static String DIS = "||";
+	
+	// Implications (FIXME: currently not used)
+	final static String RIMP = "==>";
+	final static String LIMP = "<==";
+	final static String BIMP = "<==>";
 	
 	// Boolean operators on numbers
 	final static String GT = ">";
@@ -43,20 +50,24 @@ public abstract class QRange {
 		
 		// We only want to process binary expressions
 		if(e instanceof JmlBinary){
-			if(isConjunction((JmlBinary)e)) { // Conjunction
+			if(isConjunction((JmlBinary)e)) { 
+				// Conjunction is an intersection
 				return new IntersectionQRange((JmlBinary)e, var);
 				
-			} else if(isDisjunction((JmlBinary)e)) { // Disjunction
+			} else if(isDisjunction((JmlBinary)e)) {
+				// Disjunction is a union
 				return new UnionQRange((JmlBinary)e, var);
 				
-			} else if(isAtomic((JmlBinary)e)){ // Leaf node holding value
+			} else if(isAtomic((JmlBinary)e)){ 
+				// Leaf node representing actual range definitions
 				return new LeafQRange((JmlBinary)e, var);
 			} 
 			// TODO: Add pure method calls?
 		}
-		throw new Exception("Cannot execute this statement."); // FIXME: Do this properly
+		throw new Exception("Cannot execute this statement: " + e.toString()); // FIXME: Do this properly
 	}
 	
+	// Build a QRange object that holds QRanges through compute
 	public QRange(JmlBinary e, String var) throws Exception{
 		left = compute(e.lhs, var);
 		right = compute(e.rhs, var);
@@ -101,9 +112,24 @@ public abstract class QRange {
 				e.op.toString() == LEQ;
 	}
 	
+	/**
+	 * Generates source code from this QRange.
+	 * @return Source code building a valid range of integers.
+	 */
 	abstract public String translate();
+	
+	public String toString(){
+		return translate();
+	}
+	
+	public boolean isLeaf(){
+		return left == null && right == null;
+	}
 }
 
+/**
+ * Represents a union of two ranges
+ */
 class UnionQRange extends QRange {
 	
 	public UnionQRange(JmlBinary e, String var) throws Exception{
@@ -111,11 +137,14 @@ class UnionQRange extends QRange {
 	}
 	
 	public String translate(){
-		return "";
+		return "(" + left.translate() + " UNION " + right.translate() + ")";
 	}
 	
 }
 
+/**
+ * Represents an intersection of two ranges 
+ */
 class IntersectionQRange extends QRange {
 	
 	public IntersectionQRange(JmlBinary e, String var) throws Exception{
@@ -123,10 +152,13 @@ class IntersectionQRange extends QRange {
 	}
 	
 	public String translate(){
-		return "";
+		return "(" + left.translate() + " INTERSECTION " + right.translate() + ")";
 	}
 }
 
+/**
+ * Represents a range defined through a boolesn expression
+ */
 class LeafQRange extends QRange {
 	
 	String var;
@@ -222,7 +254,7 @@ class LeafQRange extends QRange {
 	}
 	
 	public String translate(){
-		return "";
+		return "[" + left + ", " + right + "]";
 	}
 }
 
