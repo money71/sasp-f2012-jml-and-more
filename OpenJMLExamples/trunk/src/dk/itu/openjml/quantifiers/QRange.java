@@ -224,12 +224,14 @@ class LeafQRange extends QRange {
 	 * Evaluates an expression made from three strings, left,
 	 * op, right, after these rules:
 	 * 
+	 * (Note: had to switch rules 1 and 3 and 2 and 4 to guarantee inclusive ranges.)
+	 * 
 	 * e[l o r] =: 
 	 *   r = var && !(l = var) ==> e[l o^(-1) r]
-	 * | o = "<=" ==> e[l "<" (r + 1)]
-	 * | o = ">=" ==> e[l ">" (r - 1)]
-	 * | o = "<" ==> high = r
-	 * | o = ">" ==> low = r
+	 * | o = "<=" ==> high = r
+	 * | o = ">=" ==> low = r
+	 * | o = "<" ==> e[l "<=" (r - 1)]
+	 * | o = ">" ==> e[l ">=" (r + 1)]
 	 * | o = "!=" ==> low = (r + 1) && high = (r - 1)
 	 * | o = "==" ==> low = r && high = r
 	 * 
@@ -246,23 +248,23 @@ class LeafQRange extends QRange {
 			return;
 		
 		} else if(op.equals(LEQ)){
-			// Replace "i <= x" by "i < x + 1"  
-			evaluateExpression(left, LT, right + " + 1");
-			return;
-			
-		} else if(op.equals(GEQ)){
-			// Replace "i >= x" by "i > x-1"
-			evaluateExpression(left, GT, right + " - 1");
-			return;
-		
-		} else if(op.equals(LT)){
 			// Right is the maximum value
 			high = right;
 			return;
 			
-		} else if(op.equals(GT)){
+		} else if(op.equals(GEQ)){
 			// Right is the minimum value
 			low = right;
+			return;			
+		
+		} else if(op.equals(LT)){
+			// Replace "i <= x" by "i < x + 1"  
+			evaluateExpression(left, LEQ, right + " - 1");
+			return;
+			
+		} else if(op.equals(GT)){
+			// Replace "i >= x" by "i > x-1"
+			evaluateExpression(left, GEQ, right + " + 1");
 			return;
 		
 		} else if(op.equals(NEQ)){
