@@ -212,7 +212,7 @@ class UnionQRange extends QRange {
 	 * @returns The code for a union-operation on ranges
 	 */
 	public /*@ pure @*/ String getCode(){
-		return "(" + left.translate() + " UNION " + right.translate() + ")";
+		return "Union(" + left.translate() + ", " + right.translate() + ")";
 	}
 }
 
@@ -229,7 +229,7 @@ class IntersectionQRange extends QRange {
 	 * @returns The code for an intersection-operation on ranges
 	 */
 	protected /*@ pure @*/ String getCode(){
-		return "(" + left.translate() + " INTERSECTION " + right.translate() + ")";
+		return "Intersection(" + left.translate() + ", " + right.translate() + ")";
 	}
 }
 
