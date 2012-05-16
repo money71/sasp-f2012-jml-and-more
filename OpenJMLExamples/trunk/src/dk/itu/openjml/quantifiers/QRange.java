@@ -1,7 +1,5 @@
 package dk.itu.openjml.quantifiers;
 
-import org.jmlspecs.openjml.JmlTree.JmlBinary;
-
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 
@@ -111,10 +109,10 @@ public abstract class QRange {
 	
 	/**
 	 * Checks recursively if an expression defines a variable name,
-	 * i.e. if any subexpression consists only of the variable.
+	 * i.e. if any subexpression consists of only the variable.
 	 * @param e The expression tree
 	 * @param var The variable name
-	 * @return True if e equals var, false otherwise
+	 * @return True if e or any subexpression of e defines var, false otherwise
 	 */
 	static /*@ pure @*/ boolean definesVar(JCExpression e, String var){
 		if(e instanceof JCBinary){
@@ -174,7 +172,7 @@ public abstract class QRange {
 		} else if(right.ignore()){
 			return left.translate();
 		}
-		return getOperator();
+		return getCode();
 	}
 	
 	public /*@ pure @*/ String toString(){
@@ -184,7 +182,7 @@ public abstract class QRange {
 	/**
 	 * @return The actual operation for this range to be performed in source code
 	 */
-	abstract protected /*@ pure @*/ String getOperator();
+	abstract protected /*@ pure @*/ String getCode();
 	
 	/**
 	 * @return True if the fields left and right are null
@@ -196,7 +194,7 @@ public abstract class QRange {
 	/**
 	 * @return True if this is empty, false otherwise
 	 */
-	public boolean ignore(){
+	public /*@ pure @*/ boolean ignore(){
 		return this instanceof IgnoreQRange;
 	}
 }
@@ -213,7 +211,7 @@ class UnionQRange extends QRange {
 	/**
 	 * Generates the code for a union-operation on ranges
 	 */
-	public /*@ pure @*/ String getOperator(){
+	public /*@ pure @*/ String getCode(){
 		return "(" + left.translate() + " UNION " + right.translate() + ")";
 	}
 }
@@ -230,7 +228,7 @@ class IntersectionQRange extends QRange {
 	/**
 	 * Generates the code for an intersection-operation on ranges
 	 */
-	protected /*@ pure @*/ String getOperator(){
+	protected /*@ pure @*/ String getCode(){
 		return "(" + left.translate() + " INTERSECTION " + right.translate() + ")";
 	}
 }
@@ -259,7 +257,6 @@ class LeafQRange extends QRange {
 		high = "Integer.MAX_VALUE";
 		
 		String left = e.lhs.toString();
-		//String op = e.operator.toString();
 		String op = getOperator(e);
 		String right = e.rhs.toString();
 		
@@ -292,28 +289,22 @@ class LeafQRange extends QRange {
 	private void evaluateExpression(String left, String op, String right) throws NotExecutableQuantifiedExpr{
 		
 		if(right.equals(var) && !left.contains(var)){
-			// Switch left and right part of the expression, change operator orientation
 			evaluateExpression(right, changeOrientation(op), left);
 		
 		} else if(op.equals(LEQ)){
-			// Right is the maximum value
 			high = right;
 			
 		} else if(op.equals(GEQ)){
-			// Right is the minimum value
 			low = right;
 		
 		} else if(op.equals(LT)){
-			// Replace "i <= x" by "i < x + 1"  
 			evaluateExpression(left, LEQ, right + " - 1");
 			
 		} else if(op.equals(GT)){
-			// Replace "i >= x" by "i > x-1"
 			evaluateExpression(left, GEQ, right + " + 1");
 		
 		} else if(op.equals(NEQ)){
 			// TODO: Make sure this is correct!
-			// right is the only undefined number
 			low = right + " + 1";
 			high = right + " - 1";
 			
@@ -352,7 +343,7 @@ class LeafQRange extends QRange {
 	/**
 	 * @returns Empty string
 	 */
-	protected /*@ pure @*/ String getOperator(){
+	protected /*@ pure @*/ String getCode(){
 		return "";
 	}
 }
