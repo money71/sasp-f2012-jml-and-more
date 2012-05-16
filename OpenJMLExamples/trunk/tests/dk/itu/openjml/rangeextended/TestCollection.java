@@ -1,8 +1,10 @@
 package dk.itu.openjml.rangeextended;
 
-import static dk.itu.openjml.rangeextended.collection.List;
+import static dk.itu.openjml.rangeextended.collection.List; 
 import static dk.itu.openjml.rangeextended.collection.Array;
 import static dk.itu.openjml.rangeextended.collection.Set;
+import static dk.itu.openjml.rangeextended.collection.Range;
+import static dk.itu.openjml.rangeextended.collection.Date;
 
 
 import java.lang.reflect.Array;
@@ -59,19 +61,36 @@ public class TestCollection {
 	@Test
 	public void testCollectionInstantiationForSetStringInteger()
 	{
-		
-		
+				
 		Set<String> s = Set("a", "b", "c");
 
 		for( String elem : s ){
 			Assert.assertTrue(s.contains(elem));
 		}
-		
-
 
 	}
 	
+
+	@Test
+	public void testCollectionInstantiationForRangeStringInteger()
+	{
+
+		// int
+		Assert.assertTrue( Range( 11, 22 ).contains( 17 ) );
+		Assert.assertFalse( Range( 11, 22 ).contains( 28 ) );
 	
+		
+		// FIXME: look into this one not working yet
+		// date
+//		Assert.assertTrue( Range( Date( "11.04.2005" ), Date( "27.09.2007" ) ).contains( Date( "23.07.2006" ) ) );
+
+		// char - ?
+		Assert.assertTrue( Range( 'a', 'z' ).contains( 'q' ) );
+		// string
+		Assert.assertTrue( Range( "a", "z" ).contains( "q" ) );
+
+	}
+
 	
 	
 	
