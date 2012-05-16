@@ -6,6 +6,18 @@ import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 
 /**
+ * Thrown if a quantified expression can not be evaluated properly so
+ * that it can be executed in RAC. 
+ */
+class NotExecutableQuantifiedExpr extends Exception {
+	private static final long serialVersionUID = 1L;
+
+	public NotExecutableQuantifiedExpr(String expr){
+		super("Cannot evaluate quantified expression [" + expr + "]");
+	}
+}
+
+/**
  * Inspired from the QSet class implemented for JML2
  * 
  * This class represents a quantified range over integers.
@@ -45,12 +57,12 @@ public abstract class QRange {
 	 * @param e An expression defining the range
 	 * @param var A variable for which the range should be computed for
 	 * @return A new QRange for the given expression and variable
-	 * @throws Exception Thrown if the expression contains logical operations we are not willing or able to process.
+	 * @throws NotExecutableQuantifiedExpr Thrown if the expression contains logical operations we are not willing or able to process.
 	 */
-	public static QRange compute(JCExpression e, String var) throws Exception{
+	public static QRange compute(JCExpression e, String var) throws NotExecutableQuantifiedExpr{
 		
-		// Ignore the expression if var is not mentioned
-		if(!containsVar(e, var)){
+		// Ignore the expression if var is not defined anywhere in this expression
+		if(!definesVar(e, var)){
 			return new IgnoreQRange();
 		}
 		
@@ -70,16 +82,19 @@ public abstract class QRange {
 			} 
 			// TODO: Add pure method calls?
 		}
-		throw new Exception("Cannot execute this statement: " + e.toString()); // FIXME: Do this properly
+		throw new NotExecutableQuantifiedExpr(e.toString());
 	}
 	
 	/**
 	 * Build a QRange object that holds QRanges through compute
 	 * @param e A JmlBinay expression which describes a range
 	 * @param var A variable name for which we want to find the range
-	 * @throws Exception If e is not an executable statement
+	 * @throws NotExecutableQuantifiedExpr If e is not an executable statement
 	 */
-	public QRange(JCBinary e, String var) throws Exception{
+	//@ assignable left, right;
+	//@ ensures left != null;
+	//@ ensures right != null;
+	public QRange(JCBinary e, String var) throws NotExecutableQuantifiedExpr{
 		left = compute(e.lhs, var);
 		right = compute(e.rhs, var);
 	}
@@ -87,23 +102,26 @@ public abstract class QRange {
 	/**
 	 * Empty default constructor
 	 */
+	//@ ensures left == null;
+	//@ ensures right == null;
 	protected QRange(){
 		left = null;
 		right = null;
 	}
 	
 	/**
-	 * Checks recursively if an expression contains a variable name
+	 * Checks recursively if an expression defines a variable name,
+	 * i.e. if any subexpression consists only of the variable.
 	 * @param e The expression tree
 	 * @param var The variable name
-	 * @return True if e contains var, false otherwise
+	 * @return True if e equals var, false otherwise
 	 */
-	static /*@ pure @*/ boolean containsVar(JCExpression e, String var){
-		if(e instanceof JmlBinary){
-			return containsVar(((JmlBinary)e).lhs, var) || containsVar(((JmlBinary)e).rhs, var);
+	static /*@ pure @*/ boolean definesVar(JCExpression e, String var){
+		if(e instanceof JCBinary){
+			return definesVar(((JCBinary)e).lhs, var) || definesVar(((JCBinary)e).rhs, var);
 		}
-		// FIXME: Do this the proper way
-		return e.toString().contains(var);
+		// FIXME: Do this the proper way at one point
+		return e.toString().equals(var);
 	}
 	
 	/**
@@ -151,16 +169,11 @@ public abstract class QRange {
 	 * @return Source code to build the range defined by this QRange
 	 */
 	public /*@ pure @*/ String translate(){
-		
-		// Ignore left part entirely if it's empty
 		if(left.ignore()){
 			return right.translate();
-			
-		// Ignore right part entirely if it's empty
 		} else if(right.ignore()){
 			return left.translate();
 		}
-		// Apply intersection to left and right side
 		return getOperator();
 	}
 	
@@ -193,7 +206,7 @@ public abstract class QRange {
  */
 class UnionQRange extends QRange {
 	
-	public UnionQRange(JCBinary e, String var) throws Exception{
+	public UnionQRange(JCBinary e, String var) throws NotExecutableQuantifiedExpr{
 		super(e, var);
 	}
 	
@@ -203,7 +216,6 @@ class UnionQRange extends QRange {
 	public /*@ pure @*/ String getOperator(){
 		return "(" + left.translate() + " UNION " + right.translate() + ")";
 	}
-	
 }
 
 /**
@@ -211,7 +223,7 @@ class UnionQRange extends QRange {
  */
 class IntersectionQRange extends QRange {
 	
-	public IntersectionQRange(JCBinary e, String var) throws Exception{
+	public IntersectionQRange(JCBinary e, String var) throws NotExecutableQuantifiedExpr{
 		super(e, var);
 	}
 	
@@ -239,7 +251,7 @@ class LeafQRange extends QRange {
 		right = null;
 	}
 	
-	public LeafQRange(JCBinary e, String var) throws Exception{
+	public LeafQRange(JCBinary e, String var) throws NotExecutableQuantifiedExpr{
 		// Store the variable name
 		this.var = var;
 		
@@ -262,7 +274,7 @@ class LeafQRange extends QRange {
 	 * (Note: had to switch rules 1 and 3 and 2 and 4 to guarantee inclusive ranges.)
 	 * 
 	 * e[l o r] =: 
-	 *   r = var && !(l = var) ==> e[l o^(-1) r]
+	 *   r = var && !(var not in l) ==> e[l o^(-1) r]
 	 * | o = "<=" ==> high = r
 	 * | o = ">=" ==> low = r
 	 * | o = "<" ==> e[l "<=" (r - 1)]
@@ -274,14 +286,12 @@ class LeafQRange extends QRange {
 	 * @param left A value or a identifier
 	 * @param op A operator
 	 * @param right A value or an identifier
-	 * @throws Exception if none of the rules apply to this expression
+	 * @throws NotExecutableQuantifiedExpr if none of the rules apply to this expression
 	 */
 	//@ assignable low, high;
-	private void evaluateExpression(String left, String op, String right) throws Exception{
+	private void evaluateExpression(String left, String op, String right) throws NotExecutableQuantifiedExpr{
 		
-		// TODO: Check if var is at all part of this expression!
-		
-		if(right.contains(var) && !left.contains(var)){
+		if(right.equals(var) && !left.contains(var)){
 			// Switch left and right part of the expression, change operator orientation
 			evaluateExpression(right, changeOrientation(op), left);
 		
@@ -313,7 +323,7 @@ class LeafQRange extends QRange {
 			high = right;
 
 		} else {
-			throw new Exception("Cannot evaluate quantified expression (" + left + " " + op + " " + right + ")");
+			throw new NotExecutableQuantifiedExpr(left + " " + op + " " + right);
 		}
 	}
 	
