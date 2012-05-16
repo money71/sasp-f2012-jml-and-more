@@ -358,4 +358,8 @@ class IgnoreQRange extends LeafQRange {
 		low = null;
 		high = null;
 	}
+	
+	public /*@ pure @*/ String translate(){
+		return "null";
+	}
 }
