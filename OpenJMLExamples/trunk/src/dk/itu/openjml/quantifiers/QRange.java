@@ -49,6 +49,11 @@ public abstract class QRange {
 	 */
 	public static QRange compute(JCExpression e, String var) throws Exception{
 		
+		// Ignore the expression if var is not mentioned
+		if(!containsVar(e, var)){
+			return new EmptyQRange();
+		}
+		
 		// We only want to process binary expressions
 		if(e instanceof JCBinary){
 			if(hasOperator((JCBinary)e, CON)) { 
@@ -117,7 +122,7 @@ public abstract class QRange {
 	 * @return The operator in e
 	 */
 	static /*@ pure @*/ String getOperator(JCBinary e){
-		// This hurts my eyes!
+		// FIXME: This hurts my eyes!
 		String op = e.toString();
 		op = op.replace(e.lhs.toString(), "");
 		op = op.replace(e.rhs.toString(), "");
@@ -139,20 +144,47 @@ public abstract class QRange {
 	}
 	
 	/**
-	 * Generates source code from this QRange.
-	 * @return Source code building a valid range of integers.
+	 * Generates source code for this range.
+	 * Returns no operator if one of the child ranges is empty
+	 * and instead just returns the opposite child's code.
+	 * 
+	 * @return Source code to build the range defined by this QRange
 	 */
-	abstract public /*@ pure @*/ String translate();
+	public /*@ pure @*/ String translate(){
+		
+		// Ignore left part entirely if it's empty
+		if(left.isEmpty()){
+			return right.translate();
+			
+		// Ignore right part entirely if it's empty
+		} else if(right.isEmpty()){
+			return left.translate();
+		}
+		// Apply intersection to left and right side
+		return getOperator();
+	}
 	
 	public /*@ pure @*/ String toString(){
 		return translate();
 	}
 	
 	/**
+	 * @return The actual operation for this range to be performed in source code
+	 */
+	abstract protected /*@ pure @*/ String getOperator();
+	
+	/**
 	 * @return True if the fields left and right are null
 	 */
 	public /*@ pure @*/ boolean isLeaf(){
 		return left == null && right == null;
+	}
+	
+	/**
+	 * @return True if this is empty, false otherwise
+	 */
+	public boolean isEmpty(){
+		return this instanceof EmptyQRange;
 	}
 }
 
@@ -168,7 +200,7 @@ class UnionQRange extends QRange {
 	/**
 	 * Generates the code for a union-operation on ranges
 	 */
-	public /*@ pure @*/ String translate(){
+	public /*@ pure @*/ String getOperator(){
 		return "(" + left.translate() + " UNION " + right.translate() + ")";
 	}
 	
@@ -184,9 +216,9 @@ class IntersectionQRange extends QRange {
 	}
 	
 	/**
-	 * Generates the code for an intersect-operation on ranges
+	 * Generates the code for an intersection-operation on ranges
 	 */
-	public /*@ pure @*/ String translate(){
+	protected /*@ pure @*/ String getOperator(){
 		return "(" + left.translate() + " INTERSECTION " + right.translate() + ")";
 	}
 }
@@ -199,15 +231,18 @@ class LeafQRange extends QRange {
 	String var;
 	String low;
 	String high;
-	int ilow;
-	int ihigh;
+	
+	public LeafQRange(){
+		low = "Integer.MIN_VALUE";
+		high = "Integer.MAX_VALUE";
+		left = null;
+		right = null;
+	}
 	
 	public LeafQRange(JCBinary e, String var) throws Exception{
 		// Store the variable name
 		this.var = var;
 		
-		ilow = Integer.MIN_VALUE;
-		ihigh = Integer.MAX_VALUE;
 		low = "Integer.MIN_VALUE";
 		high = "Integer.MAX_VALUE";
 		
@@ -298,9 +333,28 @@ class LeafQRange extends QRange {
 	}
 	
 	/**
-	 * Returns the code for a range expression limited by two variables
+	 * @returns The code for a range expression limited by two variables
 	 */
-	public/*@ pure @*/  String translate(){
+	public /*@ pure @*/  String translate(){
 		return "[" + low + ", " + high + "]";
+	}
+	
+	/**
+	 * @returns Empty string
+	 */
+	protected /*@ pure @*/ String getOperator(){
+		return "";
+	}
+}
+
+class EmptyQRange extends LeafQRange {
+	
+	/**
+	 * Creates a leaf that has no meaning for an expression
+	 */
+	public EmptyQRange(){
+		super();
+		low = null;
+		high = null;
 	}
 }

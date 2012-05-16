@@ -30,7 +30,7 @@ public class Test_ForAllNaive {
 		s.add("//@ requires (\\forall int i; 0 <= i && i < 10; i < 10);"); // Always true
 		s.add("//@ requires (\\forall int i; 0 <= i && i < 10; a[i]);"); // Is this legal if there is no a declared?
 		s.add("//@ requires (\\forall int i, j; 0 <= i && i < 10 && j == i++; i == (j - 1));");
-		s.add("//@ requires (\\forall int i, j, h; 0 <= i && i < 10 && j == i++; i == (j - 1));");
+		s.add("//@ requires (\\forall int i, j, h; 0 <= i && i < 10 && 50 < j && j <= 100; i == (j - 1));");
 		s.add("//@requires (\\forall Foo f; f.value < 0; f.cool());");
 		s.add("//@ requires (\\forall int i; -100 < i && i < 0 || 0 < i && i < 100; i != 0);");
 		

@@ -1,13 +1,10 @@
 package dk.itu.openjml.test;
 
-import static org.junit.Assert.*;
-
 import org.jmlspecs.openjml.JmlTree.JmlQuantifiedExpr;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import dk.itu.openjml.forall.ForAllNaive;
 import dk.itu.openjml.quantifiers.QRange;
 
 public class Test_QRange extends Test_ForAllNaive {
