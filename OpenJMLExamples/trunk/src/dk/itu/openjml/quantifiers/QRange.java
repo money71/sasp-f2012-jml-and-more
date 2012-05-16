@@ -51,7 +51,7 @@ public abstract class QRange {
 		
 		// Ignore the expression if var is not mentioned
 		if(!containsVar(e, var)){
-			return new EmptyQRange();
+			return new IgnoreQRange();
 		}
 		
 		// We only want to process binary expressions
@@ -153,11 +153,11 @@ public abstract class QRange {
 	public /*@ pure @*/ String translate(){
 		
 		// Ignore left part entirely if it's empty
-		if(left.isEmpty()){
+		if(left.ignore()){
 			return right.translate();
 			
 		// Ignore right part entirely if it's empty
-		} else if(right.isEmpty()){
+		} else if(right.ignore()){
 			return left.translate();
 		}
 		// Apply intersection to left and right side
@@ -183,8 +183,8 @@ public abstract class QRange {
 	/**
 	 * @return True if this is empty, false otherwise
 	 */
-	public boolean isEmpty(){
-		return this instanceof EmptyQRange;
+	public boolean ignore(){
+		return this instanceof IgnoreQRange;
 	}
 }
 
@@ -347,12 +347,12 @@ class LeafQRange extends QRange {
 	}
 }
 
-class EmptyQRange extends LeafQRange {
+class IgnoreQRange extends LeafQRange {
 	
 	/**
 	 * Creates a leaf that has no meaning for an expression
 	 */
-	public EmptyQRange(){
+	public IgnoreQRange(){
 		super();
 		low = null;
 		high = null;
