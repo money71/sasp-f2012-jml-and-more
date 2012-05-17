@@ -229,6 +229,8 @@ class IntersectionQRange extends QRange {
 	 * @returns The code for an intersection-operation on ranges
 	 */
 	protected /*@ pure @*/ String getCode(){
+		// here its a real code call
+		// imagine on the rac
 		return "Intersection(" + left.translate() + ", " + right.translate() + ")";
 	}
 }
