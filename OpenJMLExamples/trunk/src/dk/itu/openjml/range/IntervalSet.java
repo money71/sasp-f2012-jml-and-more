@@ -9,8 +9,8 @@ import java.util.Iterator;
  * 
  * @note Interval is *left-inclusive* and *right-exclusive*!
  */
-public abstract class IntervalSet implements Iterator<Integer>{
-	
+public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer>{
+
 	IntervalSet left;
 	IntervalSet right;
 	
@@ -19,6 +19,15 @@ public abstract class IntervalSet implements Iterator<Integer>{
 	int low;
 	int high;
 	protected int current;
+	
+	/**
+	 * Cheap trick! FIXME: This is probably not "good practice".
+	 * @returns This, as it is also implements Iterator
+	 */
+	@Override
+	public Iterator<Integer> iterator() {
+		return this;
+	}
 	
 	/**
 	 * Performs union on two IntervalSets
@@ -93,7 +102,7 @@ public abstract class IntervalSet implements Iterator<Integer>{
 	 */
 	protected void getNextRange(){
 		low = getNextLow(current);
-		high = getNextHigh(current);// + 1; // FIXME: This is a hack to get inclusive high boundary
+		high = getNextHigh(current);
 		
 		// Set current to the new low
 		current = low;
@@ -230,7 +239,7 @@ class IntersectionIntervalSet extends IntervalSet {
 class Interval extends IntervalSet {
 		
 	/**
-	 * Creates an actual inclusive interval
+	 * Creates an actual left-inclusive right-exclusive interval
 	 * @param low Lower boundary
 	 * @param high Upper boundary
 	 */
@@ -241,7 +250,7 @@ class Interval extends IntervalSet {
 		this.current = this.low;
 	}
 	
-	public boolean hasNext() {
+	public /*@ pure @*/ boolean hasNext() {
 		return isInside(current);
 	}
 	
