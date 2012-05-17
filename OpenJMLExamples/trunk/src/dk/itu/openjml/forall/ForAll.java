@@ -75,9 +75,9 @@ public class ForAll {
 			addLoopHeader(d.name.toString(), d.type.toString());	
 
 			// Add the next inner loop
-			add(BLOCK_START);
-			addLoops(decls);
-			add(BLOCK_END);
+			add(BLOCK_START); // {
+			addLoops(decls); // <body>
+			add(BLOCK_END); // }
 			
 		} else {
 			addPredicate();
