@@ -212,7 +212,7 @@ class UnionQRange extends QRange {
 	 * @returns The code for a union-operation on ranges
 	 */
 	public /*@ pure @*/ String getCode(){
-		return "Union(" + left.translate() + ", " + right.translate() + ")";
+		return "dk.itu.openjml.range.Intervalset.union(" + left.translate() + ", " + right.translate() + ")";
 	}
 }
 
@@ -231,7 +231,7 @@ class IntersectionQRange extends QRange {
 	protected /*@ pure @*/ String getCode(){
 		// here its a real code call
 		// imagine on the rac
-		return "Intersection(" + left.translate() + ", " + right.translate() + ")";
+		return "dk.itu.openjml.range.IntervalSet.intersect(" + left.translate() + ", " + right.translate() + ")";
 	}
 }
 
@@ -294,7 +294,7 @@ class LeafQRange extends QRange {
 			evaluateExpression(right, changeOrientation(op), left);
 		
 		} else if(op.equals(LEQ)){
-			high = right;
+			high = right + "1"; // TODO: This is to take right-exclusive IntervalSet into account!
 			
 		} else if(op.equals(GEQ)){
 			low = right;
@@ -306,7 +306,7 @@ class LeafQRange extends QRange {
 			evaluateExpression(left, GEQ, right + " + 1");
 		
 		} else if(op.equals(NEQ)){
-			// TODO: Make sure this is correct!
+			// This is correct!
 			low = right + " + 1";
 			high = right + " - 1";
 			
@@ -339,7 +339,7 @@ class LeafQRange extends QRange {
 	 * @returns The code for a range expression limited by two variables
 	 */
 	public /*@ pure @*/  String translate(){
-		return "[" + low + ", " + high + "]";
+		return "dk.itu.openjml.range.IntervalSet.interval(" + low + ", " + high + ")";
 	}
 	
 	/**
