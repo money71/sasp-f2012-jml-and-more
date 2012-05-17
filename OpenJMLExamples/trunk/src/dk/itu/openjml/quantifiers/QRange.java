@@ -4,18 +4,6 @@ import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 
 /**
- * Thrown if a quantified expression can not be evaluated properly so
- * that it can be executed in RAC. 
- */
-class NotExecutableQuantifiedExpr extends Exception {
-	private static final long serialVersionUID = 1L;
-
-	public NotExecutableQuantifiedExpr(String expr){
-		super("Cannot evaluate quantified expression [" + expr + "]");
-	}
-}
-
-/**
  * Inspired from the QSet class implemented for JML2
  * 
  * This class represents a quantified range over integers.
@@ -28,6 +16,18 @@ class NotExecutableQuantifiedExpr extends Exception {
  * set of ranges which can also have gaps.
  */
 public abstract class QRange {
+	
+	/**
+	 * Thrown if a quantified expression can not be evaluated properly so
+	 * that it can be executed in RAC. 
+	 */
+	public static class NotExecutableQuantifiedExpr extends Exception {
+		private static final long serialVersionUID = 1L;
+
+		public NotExecutableQuantifiedExpr(String expr){
+			super("Cannot evaluate quantified expression [" + expr + "]");
+		}
+	}
 	
 	// Conjunction and disjunction
 	final static String CON = "&&";
