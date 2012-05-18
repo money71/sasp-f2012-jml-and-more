@@ -36,7 +36,7 @@ where *p(i)* and *q(j)* are predicates that must hold for all *i* and *j*. Here,
  * The order of the boolean range description is entirely arbitrary.
  * *i* can not only be inside a single well defined range but additionally become a value outside of \math{[1, 100]}.
 
-An expression like given in this example will currently [as of revision [rev]] not be executed when compiled into RAC in OpenJML. This is mostly due to the declaration of two race variables. However, OpenJML RAC relies on a heuristic to identify the set of values which *i* and *j* can take and therefore highly relies on the layout of the expression.
+An expression like given in this example will currently (as of trunk revision [rev]) not be executed when compiled into RAC in OpenJML. This is mostly due to the declaration of two race variables. However, OpenJML RAC relies on a heuristic to identify the set of values which *i* and *j* can take and therefore highly relies on the layout of the expression.
 
 == Naive Approach ==
 
