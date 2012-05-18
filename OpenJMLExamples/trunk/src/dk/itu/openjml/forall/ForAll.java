@@ -1,5 +1,6 @@
 package dk.itu.openjml.forall;
 
+import java.util.AbstractQueue;
 import java.util.List;
 
 import org.jmlspecs.openjml.JmlTree.JmlQuantifiedExpr;
@@ -66,17 +67,18 @@ public class ForAll {
 	 * @throws QRange.NotExecutableQuantifiedExpr
 	 */
 	//@ assignable s;
-	protected void addLoops(/*@ non_null @*/ List<JCVariableDecl> decls) throws QRange.NotExecutableQuantifiedExpr {
+	protected void addLoops(/*@ non_null @*/ ListBuffer<JCVariableDecl> decls) throws QRange.NotExecutableQuantifiedExpr {
+		//if(decls != null && !decls.isEmpty()){
 		if(!decls.isEmpty()){
-			JCVariableDecl d = decls.get(0);
-			decls.remove(0); // FIXME: Doesn't work! #11
+			JCVariableDecl d = decls.next(); // same as next / poll
 			
 			// Add the loop header
-			addLoopHeader(d.name.toString(), d.type.toString());	
+			addLoopHeader(d);	
 
 			// Add the next inner loop
 			add(BLOCK_START); // {
 			addLoops(decls); // <body>
+			//addLoops(decls); // <body>
 			add(BLOCK_END); // }
 			
 		} else {
@@ -88,8 +90,11 @@ public class ForAll {
 	/**
 	 * @return A list containing all JCVariableDecl objects of the expression tree
 	 */
-	protected List<JCVariableDecl> getDeclarations(){
-		return expr.decls.toList();
+	// FIXME: it assumes toList() doesn't do anything in ListBuffer at this point
+	// - can we say anything more in terms om jml specs... #21 
+	protected /*@ pure @*/ ListBuffer<JCVariableDecl> getDeclarations(){
+		// expr.decls is a ListBuffer then turned into a javac List
+		return expr.decls;
 	}
 	
 	/**
@@ -112,15 +117,14 @@ public class ForAll {
 	//@ requires generated != null;
 	//@ assignable s;
 	//@ ensures generated.startsWith(\old(generated));
-	protected void addLoopHeader(/*@ non_null @*/ String type, /*@ non_null @*/ String var) throws QRange.NotExecutableQuantifiedExpr{
+	protected void addLoopHeader(/*@ non_null @*/ JCVariableDecl decl) throws QRange.NotExecutableQuantifiedExpr{
 		
 		// Generate code that generates an interval object during runtime
-		QRange range = QRange.compute(expr.range, var);
+		// - decl.name.toString() should work(TM) though we had odd cases with decl.var being *null*  
+		QRange range = QRange.compute(expr.range, decl.name.toString());
 		
 		add(LOOP_START); // for(
-		add(type);	// int
-		add(SEPARATOR);
-		add(var); // i
+		add(decl.toString()); // type var e.g. int i
 		add(LOOP_SEPARATOR); // :
 		add(range.translate()); // [i_0, ..., i_n]
 		add(LOOP_END); // )
