@@ -7,7 +7,7 @@ import java.util.Iterator;
  * subtype of IntervalSet and can be regarded as a singleton
  * of IntervalSet.
  * 
- * @note Interval is *left-inclusive* and *right-exclusive*!
+ * FIXME: Interval is *left-inclusive* and *right-exclusive*, so we cannot process Integer.MAX_VALUE #19
  */
 public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer>{
 
@@ -21,7 +21,7 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	protected int current;
 	
 	/**
-	 * Cheap trick! FIXME: This is probably not "good practice".
+	 * Cheap trick! FIXME: This is probably not "good practice". #18
 	 * @returns This, as it is also implements Iterator
 	 */
 	@Override

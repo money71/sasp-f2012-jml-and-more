@@ -30,7 +30,7 @@ public class ForAll {
 	final static String SEPARATOR = " ";
 	final static String STATEMENT_END = ";";
 	
-	// TODO: We need a proper assertion check that gives some info
+	// TODO: We need a proper assertion check that gives some info #9
 	final static String ASSERT = "assert";
 	
 	/**
@@ -53,7 +53,7 @@ public class ForAll {
 		try{
 			addLoops(getDeclarations());
 		} catch (QRange.NotExecutableQuantifiedExpr e){
-			// TODO: Report properly!
+			// TODO: Report properly! #10
 			add(STATEMENT_END);
 		}
 	}
@@ -69,7 +69,7 @@ public class ForAll {
 	protected void addLoops(/*@ non_null @*/ List<JCVariableDecl> decls) throws QRange.NotExecutableQuantifiedExpr {
 		if(!decls.isEmpty()){
 			JCVariableDecl d = decls.get(0);
-			decls.remove(0); // FIXME: Doesn't work!
+			decls.remove(0); // FIXME: Doesn't work! #11
 			
 			// Add the loop header
 			addLoopHeader(d.name.toString(), d.type.toString());	
@@ -134,6 +134,7 @@ public class ForAll {
 	//@ ensures generated.startsWith(\old(generated));
 	//@ ensures generated.endsWith(STATEMEND_END);
 	protected void addPredicate(){
+		// TODO: #9
 		add(ASSERT);
 		add(SEPARATOR);
 		add(expr.value.toString());
