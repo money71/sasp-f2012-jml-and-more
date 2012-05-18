@@ -1,6 +1,8 @@
 = Problem Outline =
 
-In this section we will outline the current state of the implementation of quantified expressions in OpenJML RAC (as of trunk revision [rev]). Further we will elaborate on the problem by giving an example of a naive approach towards solving the evaluation of range expressions and point to more cases where the execution of a quantified expression is difficult. For brevity, we will focus on the _\forall_ statement, as all quantified expressions can be evaluated using the same technique just with a minor alteration.
+In this section we will outline the current state of the implementation of quantified expressions in OpenJML RAC (as of trunk revision [rev]). Further we will elaborate on the problem by giving an example of a naive approach towards solving the evaluation of range expressions and point to more cases where the execution of a quantified expression is difficult. 
+
+For brevity and to get a deeper understanding of the underlying implications and problems, we have focussed on the _\forall_ statement over integers during the project. Since all quantified expressions can be evaluated using the same technique just with a minor alteration, it will be possible to apply our results to general quantifiers in OpenJML.
 
 == Current Implementation of Quantifiers in OpenJML ==
 
@@ -24,8 +26,9 @@ where *R* is a boolean expression that defines a range and *P* a boolean express
 
 The OpenJML RAC will compile a check into the method recorated with the above JML statement that runs a _for_-loop for each *i* for which the given *P* is asserted. If the check runs over an *i* for which *P* does not hold, an Exception is thrown, notifying the user about the violation of the condition.
 
-However, conditions in JML using the _\forall_ statement are likely to become more elaborate. For example:
+However, conditions in JML that use the _\forall_ statement are likely to become more elaborate. For example:
 
+<code 1>
 {{{
 \\@ requires (\forall int i, j; (100 >= i && i > 0 || i == 200) && (-100 < j && 100 > j); p(i) && q(j));
 }}}
@@ -40,8 +43,20 @@ An expression like given in this example will currently (as of trunk revision [r
 
 == Naive Approach ==
 
+The most naive approach sees the range expression *R* as a predicate that has to hold for all integers. Code to check for the expression given in <code 1> could look like this.
 
+{{{
+for(int i = Integer.MIN_VALUE; i <= Integer.MAX_VALUE; i++){
+	for(int j = Integer.MIN_VALUE; j <= Integer.MAX_VALUE; j++){
+		if((100 >= i && i > 0 || i == 200) && (-100 < j && 100 > j)){
+			assert p(i) && q(j);
+		}
+	}
+}
+}}}
+
+While this is a valid check, it has a runtime of O(|Integer|^2). This is impractical for conducting actual runtime assertion checks. While it is obvious that running RAC-compiled code is very slow, it should still be runnable within a reasonable time. This illustrates that the naive approach is not a good solution to the question of how to implement quantifiers with multiple race variables.
 
 == Further Difficulties ==
 
-Mention quantifiers over objects, boolean, floats, chars, etc. and deferr the solution to these issues to a later point in time.
+Mention quantifiers over objects, boolean, floats, chars, etc. as well as implications in JML syntax and deferr the solution to these issues to a later point in time.
