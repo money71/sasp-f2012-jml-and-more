@@ -1,3 +1,47 @@
 = Problem Outline =
 
-What is the problem in evaluating OpenJML quantified statements?
+In this section we will outline the current state of the implementation of quantified expressions in OpenJML RAC (as of trunk revision [rev]). Further we will elaborate on the problem by giving an example of a naive approach towards solving the evaluation of range expressions and point to more cases where the execution of a quantified expression is difficult. For brevity, we will focus on the _\forall_ statement, as all quantified expressions can be evaluated using the same technique just with a minor alteration.
+
+== Current Implementation of Quantifiers in OpenJML ==
+
+As of revision [rev] in the OpenJML trunk, the following statement will be compiled into RAC binary code:
+
+{{{
+\\@ requires (\forall int i; 0 <= i && i <= 10; p(i));
+}}}
+
+where *p(i)* is a predicate that should hold for all *i*. A more general form is:
+
+{{{
+\\@ requires (\forall i; R; P);
+}}}
+
+where *R* is a boolean expression that defines a range and *P* a boolean expression that defines the predicate which should hold for all *i*. The notation is similar to the set-builder notation, where the values inside of a set are denoted through a boolean expression:
+
+{{{
+\math{i \in N|0 \leq i \and i \leq 10}
+}}}
+
+The OpenJML RAC will compile a check into the method recorated with the above JML statement that runs a _for_-loop for each *i* for which the given *P* is asserted. If the check runs over an *i* for which *P* does not hold, an Exception is thrown, notifying the user about the violation of the condition.
+
+However, conditions in JML using the _\forall_ statement are likely to become more elaborate. For example:
+
+{{{
+\\@ requires (\forall int i, j; (100 >= i && i > 0 || i == 200) && (-100 < j && 100 > j); p(i) && q(j));
+}}}
+
+where *p(i)* and *q(j)* are predicates that must hold for all *i* and *j*. Here, we have multiple new issues:
+
+ * There is more than one race variable declared in the expression.
+ * The order of the boolean range description is entirely arbitrary.
+ * *i* can not only be inside a single well defined range but additionally become a value outside of \math{[1, 100]}.
+
+An expression like given in this example will currently [as of revision [rev]] not be executed when compiled into RAC in OpenJML. This is mostly due to the declaration of two race variables. However, OpenJML RAC relies on a heuristic to identify the set of values which *i* and *j* can take and therefore highly relies on the layout of the expression.
+
+== Naive Approach ==
+
+
+
+== Further Difficulties ==
+
+Mention quantifiers over objects, boolean, floats, chars, etc. and deferr the solution to these issues to a later point in time.
