@@ -63,7 +63,7 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	 * @param l Left side of the set
 	 * @param r Right side of the set
 	 */
-	protected IntervalSet(IntervalSet l, IntervalSet r){
+	protected IntervalSet(/*@ nullable @*/ IntervalSet l, /*@ nullable @*/ IntervalSet r){
 		left = l;
 		right = r;
 		current = Integer.MIN_VALUE;
@@ -99,7 +99,10 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 		}
 		return current;
 	}
-
+	
+	/**
+	 * This is implemented because Iterator requires it.
+	 */
 	public void remove(){
 		// Does nothing
 	}
@@ -130,7 +133,6 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	 * @param current The current number active.
 	 * @return The new low. If there is no valid new low, return current again.
 	 */
-	//@ ensures \result >= current;
 	abstract protected /*@ pure @*/ int getNextLow(int current);
 	
 	/**
@@ -138,7 +140,6 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	 * @param current
 	 * @return
 	 */
-	//@ ensures \result >= current;
 	abstract protected /*@ pure @*/ int getNextHigh(int current);
 }
 
@@ -281,13 +282,11 @@ class Interval extends IntervalSet {
 		return isInside(current);
 	}
 	
-	//@ also
 	//@ ensures \result == this.low;
 	protected int getNextLow(int current) {
 		return low;
 	}
 	
-	//@ also
 	//@ ensures \result == this.high;
 	protected int getNextHigh(int current) {
 		return high;
