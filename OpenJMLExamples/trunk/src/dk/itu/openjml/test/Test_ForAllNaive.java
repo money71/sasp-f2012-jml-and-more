@@ -27,7 +27,10 @@ public class Test_ForAllNaive {
 	
 	public void addExpressions(List<String> s) {
 		//s.add("//@ requires (\\forall int i; ;);"); // Illegal expression?
+		// do we mean:
+		//s.add("//@ requires (\\forall int i; ; ;"); // Illegal expression?
 		s.add("//@ requires (\\forall int i; 0 <= i && i < 10; i < 10);"); // Always true
+				
 		s.add("//@ requires (\\forall int i; i >= 5 || i < 10; i < 10);"); // Not always true
 		s.add("//@ requires (\\forall int i; i >= 5 || i < 10 && i < 300; i > 0);"); // Always true
 		
