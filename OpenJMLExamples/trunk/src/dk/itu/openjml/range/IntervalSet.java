@@ -11,8 +11,8 @@ import java.util.Iterator;
  */
 public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer>{
 
-	IntervalSet left;
-	IntervalSet right;
+	/*@ nullable @*/ IntervalSet left;
+	/*@ nullable @*/ IntervalSet right;
 	
 	private boolean initialized;
 	
@@ -24,7 +24,6 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	 * Cheap trick! FIXME: This is probably not "good practice". #18
 	 * @returns This, as it is also implements Iterator
 	 */
-	@Override
 	public Iterator<Integer> iterator() {
 		return this;
 	}
@@ -71,7 +70,15 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 		initialized = false;
 	}
 	
-	@Override
+	//@ requires !initialized || current == high;
+	//@ assignable low, high, current;
+	//@ also
+	//@ requires low <= current;
+	//@ requires current < high;
+	//@ ensures \result == true;
+	//@ also
+	//@ requires low > current || current >= high;
+	//@ ensures \result == false;
 	public boolean hasNext() {
 		// Get the next valid range
 		if(!initialized || current == high){
@@ -81,7 +88,8 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 		return low <= current && current < high;
 	}
 
-	@Override
+	//@ ensures \result == current - 1;
+	//@ ensures_redundantly \result == \old(current);
 	public Integer next(){
 		// Check sets up all the ranges, just in case
 		if(hasNext()){
@@ -92,7 +100,6 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 		return current;
 	}
 
-	@Override
 	public void remove(){
 		// Does nothing
 	}
@@ -100,6 +107,9 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	/**
 	 * Find the next valid range for this IntervalSet
 	 */
+	//@ ensures current == low;
+	//@ assignable low, high, current;
+	//@ ensures \old(current) <= current;
 	protected void getNextRange(){
 		low = getNextLow(current);
 		high = getNextHigh(current);
@@ -120,14 +130,16 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	 * @param current The current number active.
 	 * @return The new low. If there is no valid new low, return current again.
 	 */
-	abstract protected int getNextLow(int current);
+	//@ ensures \result >= current;
+	abstract protected /*@ pure @*/ int getNextLow(int current);
 	
 	/**
 	 * Returns the next valid high for current 
 	 * @param current
 	 * @return
 	 */
-	abstract protected int getNextHigh(int current);
+	//@ ensures \result >= current;
+	abstract protected /*@ pure @*/ int getNextHigh(int current);
 }
 
 /**
@@ -139,15 +151,15 @@ class UnionIntervalSet extends IntervalSet {
 		super(l, r);
 	}
 	
-	protected boolean isInside(int current){ 
-		this.current = current;
+	//@ ensures \result == left.isInside(current) || right.isInside(current);
+	protected /*@ pure @*/ boolean isInside(int current){ 
 		return left.isInside(current) || right.isInside(current);
 	}
 	
 	/**
 	 * Union can answer two different lows!
 	 */
-	protected int getNextLow(int current){
+	protected /*@ pure @*/ int getNextLow(int current){
 		int l = left.getNextLow(current);
 		int r = right.getNextLow(current);
 		
@@ -166,8 +178,11 @@ class UnionIntervalSet extends IntervalSet {
 		// If none of this holds, return current again
 		return current;
 	}
-
-	protected int getNextHigh(int current) {
+	
+	/**
+	 * Union can answer two different highs!
+	 */
+	protected /*@ pure @*/ int getNextHigh(int current) {
 		int l = left.getNextHigh(current);
 		int r = right.getNextHigh(current);
 		
@@ -196,14 +211,16 @@ class IntersectionIntervalSet extends IntervalSet {
 	protected IntersectionIntervalSet(IntervalSet l, IntervalSet r){
 		super(l, r);
 	}
-
-	//@ assignable left.current, right.current;
-	public boolean isInside(int current){
-		this.current = current;
+	
+	//@ ensures \result == left.isInside(current) && right.isInside(current);
+	public /*@ pure @*/ boolean isInside(int current){
 		return left.isInside(current) && right.isInside(current);
 	}
-
-	protected int getNextLow(int current) {
+	
+	/**
+	 * Intersection can only answer one low.
+	 */
+	protected /*@ pure @*/ int getNextLow(int current) {
 		int l = left.getNextLow(current);
 		int r = right.getNextLow(current);
 		
@@ -216,8 +233,11 @@ class IntersectionIntervalSet extends IntervalSet {
 		// Else just return current
 		return current;
 	}
-
-	protected int getNextHigh(int current) {
+	
+	/**
+	 * Intersection can only answer one high.
+	 */
+	protected /*@ pure @*/ int getNextHigh(int current) {
 		int l = left.getNextHigh(current);
 		int r = right.getNextHigh(current);
 		
@@ -243,6 +263,7 @@ class Interval extends IntervalSet {
 	 * @param low Lower boundary
 	 * @param high Upper boundary
 	 */
+	//@ assignable left, right, low, high, current;
 	protected Interval(int low, int high){
 		super(null, null);
 		this.low = low;
@@ -250,21 +271,19 @@ class Interval extends IntervalSet {
 		this.current = this.low;
 	}
 	
-	public /*@ pure @*/ boolean hasNext() {
-		return isInside(current);
-	}
-	
-	//@ ensures \result == low <= current && current <= high;
+	//@ ensures low <= current && current <= high;
 	protected /*@ pure @*/ boolean isInside(int current){
 		return low <= current && current <= high;
 	}
 	
-	//@ ensures \result == this.low
+	//@ also
+	//@ ensures \result == this.low;
 	protected int getNextLow(int current) {
 		return low;
 	}
 	
-	//@ ensures \result == this.high
+	//@ also
+	//@ ensures \result == this.high;
 	protected int getNextHigh(int current) {
 		return high;
 	}
