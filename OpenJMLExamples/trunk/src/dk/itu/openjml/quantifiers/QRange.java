@@ -33,7 +33,7 @@ public abstract class QRange {
 	final static String CON = "&&";
 	final static String DIS = "||";
 	
-	// Implications (FIXME: currently not used)
+	// Implications (FIXME: currently not used #12)
 	final static String RIMP = "==>";
 	final static String LIMP = "<==";
 	final static String BIMP = "<==>";
@@ -78,7 +78,7 @@ public abstract class QRange {
 				// Leaf node representing actual range definitions
 				return new LeafQRange((JCBinary)e, var);
 			} 
-			// TODO: Add pure method calls?
+			// TODO: Add pure method calls? #13
 		}
 		throw new NotExecutableQuantifiedExpr(e.toString());
 	}
@@ -118,7 +118,7 @@ public abstract class QRange {
 		if(e instanceof JCBinary){
 			return definesVar(((JCBinary)e).lhs, var) || definesVar(((JCBinary)e).rhs, var);
 		}
-		// FIXME: Do this the proper way at one point
+		// FIXME: Do this the proper way at one point #14
 		return e.toString().equals(var);
 	}
 	
@@ -138,7 +138,7 @@ public abstract class QRange {
 	 * @return The operator in e
 	 */
 	static /*@ pure @*/ String getOperator(JCBinary e){
-		// FIXME: This hurts my eyes!
+		// FIXME: This hurts my eyes! #15
 		String op = e.toString();
 		op = op.replace(e.lhs.toString(), "");
 		op = op.replace(e.rhs.toString(), "");
@@ -265,7 +265,7 @@ class LeafQRange extends QRange {
 		evaluateExpression(left, op, right);
 	}
 	
-	// TODO: Write specs!
+	// TODO: Write specs! #16
 	/**
 	 * Evaluates an expression made from three strings, left,
 	 * op, right, after these rules:
@@ -294,7 +294,7 @@ class LeafQRange extends QRange {
 			evaluateExpression(right, changeOrientation(op), left);
 		
 		} else if(op.equals(LEQ)){
-			high = right + "1"; // TODO: This is to take right-exclusive IntervalSet into account!
+			high = right + "1"; // TODO: This "+ 1" is to take right-exclusive IntervalSet into account! 17
 			
 		} else if(op.equals(GEQ)){
 			low = right;
