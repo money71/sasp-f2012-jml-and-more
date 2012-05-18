@@ -1,0 +1,3 @@
+= Discussion =
+
+What did we show in this report? Is our contribution of any benefit? How does it compete with polynomial analysis? What is missing to make this a full-blown part of OpenJML?

@@ -1,0 +1,3 @@
+= Future Work =
+
+How could our solution be extended? How could the pattern matcher be modified to deal with implications? How could we process other quantifiers like _\exists_ or _\sum_?
