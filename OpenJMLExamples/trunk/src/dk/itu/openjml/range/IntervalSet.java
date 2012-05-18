@@ -276,6 +276,11 @@ class Interval extends IntervalSet {
 		return low <= current && current <= high;
 	}
 	
+	//@ ensures \result == isInside(current);
+	public /*@ pure @*/ boolean hasNext(){
+		return isInside(current);
+	}
+	
 	//@ also
 	//@ ensures \result == this.low;
 	protected int getNextLow(int current) {
