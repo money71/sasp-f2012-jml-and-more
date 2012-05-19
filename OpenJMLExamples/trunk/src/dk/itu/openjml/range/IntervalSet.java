@@ -11,11 +11,13 @@ import java.util.Iterator;
  */
 public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer>{
 
+	// FIXME: shouldn't they be private ?
 	/*@ nullable @*/ IntervalSet left;
 	/*@ nullable @*/ IntervalSet right;
 	
 	private boolean initialized;
-	
+
+	// FIXME: shouldn't they be private ?
 	int low;
 	int high;
 	protected int current;
@@ -34,6 +36,7 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	 * @param r Right IntervalSet
 	 * @return An IntervalSet of type UnionIntervalSet
 	 */
+	//@ ensures \fresh(\result)
 	public static IntervalSet union(IntervalSet l, IntervalSet r){
 		return new UnionIntervalSet(l, r);
 	}
@@ -44,16 +47,20 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	 * @param r Right IntervalSet
 	 * @return An IntervalSet of type IntersectionIntervalSet
 	 */
+	//@ ensures \fresh(\result)
 	public static IntervalSet intersect(IntervalSet l, IntervalSet r){
 		return new IntersectionIntervalSet(l, r);
 	}
 	
 	/**
 	 * Only factory that can produce an IntervalSet without two IntervalSets
+	 * - both values are inclusive in the interval.
+	 * 
 	 * @param low The lower boundary
 	 * @param high The upper boundary
 	 * @return An IntervalSet of type Interval describing an interval over integers
 	 */
+	//@ ensures \fresh(\result)
 	public static IntervalSet interval(int low, int high){
 		return new Interval(low, high);
 	}
@@ -104,7 +111,7 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	 * This is implemented because Iterator requires it.
 	 */
 	public void remove(){
-		// Does nothing
+        throw new UnsupportedOperationException();
 	}
 	
 	/**
