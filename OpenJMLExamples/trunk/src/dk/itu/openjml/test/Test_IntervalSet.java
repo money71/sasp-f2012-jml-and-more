@@ -43,6 +43,9 @@ public class Test_IntervalSet {
 			Iterator<Integer> ite = i.iterator();
 			while(ite.hasNext()){
 				System.out.println(ite.toString());
+				// The above line line should instead say:
+				//System.out.println(ite.next().toString());
+				// or toString() should perform the call to next().
 			}
 			- whats going on ?
 		 */		
