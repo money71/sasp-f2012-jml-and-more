@@ -47,8 +47,8 @@ public abstract class QRange {
 	final static String NEQ = "!=";
 	
 	// Branches
-	QRange left;
-	QRange right;
+	protected /*@ spec_public @*/ QRange left;
+	protected /*@ spec_public @*/ QRange right;
 	
 	/**
 	 * Returns an instance of QRange that represents a (set of) range(s)
@@ -128,7 +128,7 @@ public abstract class QRange {
 	 * @param o Some operator
 	 * @return True if o is the operator in e
 	 */
-	static /*@ pure @*/ boolean hasOperator(JCBinary e, String o){
+	public static /*@ pure @*/ boolean hasOperator(JCBinary e, String o){
 		return getOperator(e).equals(o);
 	}
 	
@@ -137,8 +137,8 @@ public abstract class QRange {
 	 * @param e A JCBinary expression
 	 * @return The operator in e
 	 */
-	//@ ensures fresh(\result)
-	static /*@ pure @*/ String getOperator(JCBinary e){
+	//@ ensures fresh(\result);
+	public static /*@ pure @*/ String getOperator(JCBinary e){
 		// NOTE: Could probably be improved #15
 		String op = e.toString();
 		op = op.replace(e.lhs.toString(), "");
@@ -152,7 +152,7 @@ public abstract class QRange {
 	 * @param e A JmlBinary expression
 	 * @return True if e is an atomic boolean expression, false otherwise
 	 */
-	static /*@ pure @*/ boolean isAtomic(JCBinary e){
+	public static /*@ pure @*/ boolean isAtomic(JCBinary e){
 		return hasOperator(e, GT) ||
 				hasOperator(e, EQ) ||
 				hasOperator(e, LT) ||
