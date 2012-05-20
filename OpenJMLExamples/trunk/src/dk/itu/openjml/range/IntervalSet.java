@@ -36,7 +36,7 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	 * @param r Right IntervalSet
 	 * @return An IntervalSet of type UnionIntervalSet
 	 */
-	//@ ensures \fresh(\result)
+	//@ ensures \fresh(\result);
 	public static IntervalSet union(IntervalSet l, IntervalSet r){
 		return new UnionIntervalSet(l, r);
 	}
@@ -47,7 +47,7 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	 * @param r Right IntervalSet
 	 * @return An IntervalSet of type IntersectionIntervalSet
 	 */
-	//@ ensures \fresh(\result)
+	//@ ensures \fresh(\result);
 	public static IntervalSet intersect(IntervalSet l, IntervalSet r){
 		return new IntersectionIntervalSet(l, r);
 	}
@@ -60,7 +60,7 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	 * @param high The upper boundary
 	 * @return An IntervalSet of type Interval describing an interval over integers
 	 */
-	//@ ensures \fresh(\result)
+	//@ ensures \fresh(\result);
 	public static IntervalSet interval(int low, int high){
 		return new Interval(low, high);
 	}
