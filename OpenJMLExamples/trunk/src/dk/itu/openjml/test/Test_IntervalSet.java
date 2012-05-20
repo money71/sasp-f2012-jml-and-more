@@ -27,7 +27,7 @@ public class Test_IntervalSet {
 	}
 
 	@Test
-	public void testIntervalSetBasicIterator() {
+	public void testIntervalSetBasicForEach() {
 				
 		IntervalSet i = IntervalSet.interval(0, 10);
 
@@ -39,19 +39,25 @@ public class Test_IntervalSet {
 		
 		assertEquals(11, count);
 		
-		/* FIXME: before doing for each I tried a quick Iterator example but it raised infinite loop
-			Iterator<Integer> ite = i.iterator();
-			while(ite.hasNext()){
-				System.out.println(ite.toString());
-				// The above line line should instead say:
-				//System.out.println(ite.next().toString());
-				// or toString() should perform the call to next().
-			}
-			- whats going on ?
-		 */		
 	}
 	
+	@Test
+	public void testIntervalSetBasicIterator() {
+				
+		IntervalSet i = IntervalSet.interval(0, 10);
+		int count = 0;
+		Iterator<Integer> ite = i.iterator();
 
+		while(ite.hasNext()){
+			assertNotNull(ite.next());
+			count++;
+		}
+
+		assertEquals(11, count);
+		
+	}
+	
+	
 	@Test
 	public void testUnionGap() {
 		IntervalSet u = IntervalSet.union(IntervalSet.interval(0, 10), IntervalSet.interval(11, 20));
