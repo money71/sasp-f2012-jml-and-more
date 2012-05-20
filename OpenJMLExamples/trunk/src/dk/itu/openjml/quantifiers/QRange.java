@@ -137,8 +137,9 @@ public abstract class QRange {
 	 * @param e A JCBinary expression
 	 * @return The operator in e
 	 */
+	//@ ensures fresh(\result)
 	static /*@ pure @*/ String getOperator(JCBinary e){
-		// FIXME: This hurts my eyes! #15
+		// NOTE: Could probably be improved #15
 		String op = e.toString();
 		op = op.replace(e.lhs.toString(), "");
 		op = op.replace(e.rhs.toString(), "");
