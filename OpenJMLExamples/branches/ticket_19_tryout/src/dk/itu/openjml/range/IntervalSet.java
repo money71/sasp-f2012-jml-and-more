@@ -77,22 +77,33 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 		initialized = false;
 	}
 	
-	//@ requires !initialized || current == high;
+	//@ requires !initialized || current > high;
 	//@ assignable low, high, current;
 	//@ also
-	//@ requires low <= current;
-	//@ requires current < high;
-	//@ ensures \result == true;
+	//@   requires low <= current;
+	//@   requires current <= high;
+	//@   ensures \result == true;
 	//@ also
-	//@ requires low > current || current >= high;
-	//@ ensures \result == false;
+	//@   requires low > current || current >= high;
+	//@   ensures \result == false;
 	public boolean hasNext() {
 		// Get the next valid range
-		if(!initialized || current == high){
+		// #19 FIXME: cleanup when *approved*
+		// if(!initialized || current == high){
+		// or current > high - remember to set spec right
+		//if(!initialized || current > high){
+		//if(!initialized || current >= high){
+		if(!initialized || current > high){	
 			initialized = true;
 			getNextRange();
 		}
-		return low <= current && current < high;
+		// #19 FIXME: cleanup when *approved*
+		// -2147483646 <= -2147483646 && -2147483646 <= -2147483647
+//		boolean foo = low <= current && current <= high;
+//		System.out.println(foo);
+//		System.out.println("low: "+low+" current: "+current+" high: "+high);
+		// return low <= current && current < high;
+		return low <= current && current <= high;
 	}
 
 	//@ ensures \result == current - 1;
@@ -172,14 +183,19 @@ class UnionIntervalSet extends IntervalSet {
 		int r = right.getNextLow(current);
 		
 		// If both are higher than current
+		// #19
 		if(current < l && current < r){
+		//if(current <= l && current < r){
 			// Return the smaller low
 			return l < r ? l : r;
 		
 		// Else return the one that is higher than current
+		// #19
 		} else if(current < l){
+		//} else if(current <= l){
 			return l;
 		} else if(current < r){
+		//} else if(current > r){
 			return r;
 		}
 		
