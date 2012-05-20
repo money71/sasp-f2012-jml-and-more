@@ -138,7 +138,7 @@ public abstract class QRange {
 	 * @return The operator in e
 	 */
 	//@ ensures fresh(\result);
-	public static /*@ pure @*/ String getOperator(JCBinary e){
+	public static String getOperator(JCBinary e){
 		// NOTE: Could probably be improved #15
 		String op = e.toString();
 		op = op.replace(e.lhs.toString(), "");
@@ -334,8 +334,11 @@ class LeafQRange extends QRange {
 		switch(op){
 		case GEQ: return LEQ;
 		case LEQ: return GEQ;
-		case GT: return LT;
-		case LT: return GT;
+		case GT:  return LT;
+		case LT:  return GT;
+		// other examples do the return here as:
+		// default:  return op;
+		// but then jml 2 check complains: Method "changeOrientation" must return a value
 		}
 		return op;
 	}
