@@ -60,15 +60,11 @@ public class Test_IntervalSet {
 	
 	@Test
 	public void testUnionGap() {
-		IntervalSet u = IntervalSet.union(IntervalSet.interval(0, 10), IntervalSet.interval(11, 20));
-		
+		IntervalSet u = IntervalSet.union(IntervalSet.interval(0, 9), IntervalSet.interval(11, 20));
 		try{
-			String su = "Union: ";
 			for(int n: u){
-				su += n + "; ";
-				assertTrue(0 <= n && n <= 9 || 11 <= n && n <= 19);
+				assertTrue("Failed with " + n, 0 <= n && n <= 9 || 11 <= n && n <= 20);
 			}
-			System.out.println(su);
 		} catch (Exception e){
 			Assert.fail();
 		}
@@ -78,12 +74,9 @@ public class Test_IntervalSet {
 	public void testIntersection() {
 		IntervalSet i = IntervalSet.intersect(IntervalSet.interval(0, 11), IntervalSet.interval(5, 15));
 		try{
-			String si = "Intersection: ";
 			for(int n: i){
-				si += n + "; ";
-				assertTrue(0 <= n && n <= 10 && 5 <= n && n <= 14);
+				assertTrue("Failed with " + n, 0 <= n && n <= 11 && 5 <= n && n <= 15);
 			}
-		System.out.println(si);
 		} catch (Exception e){
 			Assert.fail();
 		}
@@ -91,15 +84,12 @@ public class Test_IntervalSet {
 	
 	@Test
 	public void testIntersectedUnion() {
-		IntervalSet u = IntervalSet.union(IntervalSet.interval(0, 11), IntervalSet.interval(20, 31));
-		IntervalSet iu = IntervalSet.intersect(u, IntervalSet.interval(5, 26));
+		IntervalSet u = IntervalSet.union(IntervalSet.interval(0, 10), IntervalSet.interval(20, 30));
+		IntervalSet iu = IntervalSet.intersect(u, IntervalSet.interval(5, 25));
 		try{
-			String siu = "Intersected union: ";
 			for(int n: iu){
-				siu += n + "; ";
-				assertTrue(0 <= n && n <= 10 || 20 <= n && n <= 30 && 5 <= n && n <= 25);
+				assertTrue("Failed with " + n, 0 <= n && n <= 10 || 20 <= n && n <= 30 && 5 <= n && n <= 25);
 			}	
-			System.out.println(siu);
 		} catch (Exception e){
 			Assert.fail();
 		}
@@ -107,15 +97,12 @@ public class Test_IntervalSet {
 	
 	@Test
 	public void testUnitedIntersection() {
-		IntervalSet i = IntervalSet.intersect(IntervalSet.interval(0, 101), IntervalSet.interval(50, 151));
-		IntervalSet ui = IntervalSet.union(i, IntervalSet.interval(40, 61));
+		IntervalSet i = IntervalSet.intersect(IntervalSet.interval(0, 100), IntervalSet.interval(50, 150));
+		IntervalSet ui = IntervalSet.union(i, IntervalSet.interval(40, 60));
 		try{				
-			String sui = "United intersection: ";
 			for(int n: ui){
-				sui += n + "; ";
-				assertTrue(0 <= n && n <= 100 && 50 <= n && n <= 150 || 40 <= n && n <= 60);
+				assertTrue("Failed with " + n, 0 <= n && n <= 100 && 50 <= n && n <= 150 || 40 <= n && n <= 60);
 			}
-			System.out.println(sui);
 		} catch (Exception e){
 			Assert.fail();
 		}
@@ -123,14 +110,11 @@ public class Test_IntervalSet {
 	
 	@Test
 	public void testNotInside() {
-		IntervalSet ni = IntervalSet.union(IntervalSet.interval(0, 101), IntervalSet.interval(51, 50));
+		IntervalSet ni = IntervalSet.union(IntervalSet.interval(0, 100), IntervalSet.interval(51, 49));
 		try{				
-			String sni = "Union without 50: ";
 			for(int n: ni){
-				sni += n + "; ";
-				assertTrue(0 <= n && n <= 100 && n != 50);
+				assertTrue("Failed with " + n, 0 <= n && n <= 100 && n != 50);
 			}
-			System.out.println(sni);
 		} catch (Exception e){
 			Assert.fail();
 		}
@@ -142,18 +126,15 @@ public class Test_IntervalSet {
 	 */	
 	@Test
 	public void testUnionMaxValue() {
-		IntervalSet u = IntervalSet.union(IntervalSet.interval(Integer.MAX_VALUE-2, Integer.MAX_VALUE), IntervalSet.interval(Integer.MAX_VALUE-2, Integer.MAX_VALUE));
+		IntervalSet u = IntervalSet.interval(Integer.MAX_VALUE-2, Integer.MAX_VALUE);
 		try{
-			String su = "Union: ";
 			int count = 0;
 			for(int n: u){
-				su += n + "; ";
-				assertTrue(Integer.MAX_VALUE-2 <= n && n <= Integer.MAX_VALUE);
+				assertTrue("Failed with " + n, Integer.MAX_VALUE-2 <= n && n <= Integer.MAX_VALUE);
 				count++;
 			}
 			// #19 should be adjusts to 3 if solved
-			assertEquals(2, count);			
-			System.out.println(su);
+			assertEquals(3, count);			
 		} catch (Exception e){
 			Assert.fail();
 		}
@@ -165,18 +146,15 @@ public class Test_IntervalSet {
 	 */	
 	@Test
 	public void testUnionMinValue() {
-		IntervalSet u = IntervalSet.union(IntervalSet.interval(Integer.MIN_VALUE, Integer.MIN_VALUE+2), IntervalSet.interval(Integer.MIN_VALUE, Integer.MIN_VALUE+2));
+		IntervalSet u = IntervalSet.interval(Integer.MIN_VALUE, Integer.MIN_VALUE+2);
 		try{
-			String su = "Union: ";
 			int count = 0;
 			for(int n: u){
-				su += n + "; ";
-				assertTrue(Integer.MIN_VALUE <= n && n <= Integer.MIN_VALUE+2);
+				assertTrue("Failed with " + n, Integer.MIN_VALUE <= n && n <= Integer.MIN_VALUE+2);
 				count++;
 			}
 			// #19 should be adjusts to 3 if solved
-			assertEquals(2, count);			
-			System.out.println(su);
+			assertEquals(3, count);			
 		} catch (Exception e){
 			Assert.fail();
 		}
