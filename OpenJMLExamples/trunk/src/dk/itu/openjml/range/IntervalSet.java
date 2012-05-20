@@ -11,15 +11,11 @@ import java.util.Iterator;
  */
 public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer>{
 
-	// FIXME: shouldn't they be private ?
-	/*@ nullable @*/ IntervalSet left;
-	/*@ nullable @*/ IntervalSet right;
-	
+	protected /*@ nullable @*/ IntervalSet left;
+	protected /*@ nullable @*/ IntervalSet right;
 	private boolean initialized;
-
-	// FIXME: shouldn't they be private ?
-	int low;
-	int high;
+	protected int low;
+	protected int high;
 	protected int current;
 	
 	/**
