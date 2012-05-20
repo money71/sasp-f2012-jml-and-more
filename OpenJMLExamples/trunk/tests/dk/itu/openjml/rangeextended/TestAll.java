@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
 	TestSequenceInteger.class,
 	TestSequenceCharacter.class,
 	TestRange.class,
-	TestCollection.class
+	TestCollection.class,
+	TestIntervalSet.class
 } )
 public class TestAll {
 
