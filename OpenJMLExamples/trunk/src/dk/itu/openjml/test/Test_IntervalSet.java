@@ -134,12 +134,11 @@ public class Test_IntervalSet {
 		} catch (Exception e){
 			Assert.fail();
 		}
-	}
-	
+	}	
 	
 	/**
-	 * (2147483645, 2147483647] => 
-	 * (2147483645, 2147483646)
+	 * (2147483645, 2147483647) => 
+	 * (2147483645, 2147483646, 2147483647)
 	 */	
 	@Test
 	public void testUnionMaxValue() {
@@ -152,7 +151,7 @@ public class Test_IntervalSet {
 				assertTrue(Integer.MAX_VALUE-2 <= n && n <= Integer.MAX_VALUE);
 				count++;
 			}
-			assertEquals(2, count);			
+			assertEquals(3, count);			
 			System.out.println(su);
 		} catch (Exception e){
 			Assert.fail();
@@ -160,8 +159,8 @@ public class Test_IntervalSet {
 	}
 
 	/** 
-	 * (-2147483648, -2147483646] => 
-	 * (-2147483648, -2147483647)
+	 * (-2147483648, -2147483646) => 
+	 * (-2147483648, -2147483647, -2147483646)
 	 */	
 	@Test
 	public void testUnionMinValue() {
@@ -174,13 +173,11 @@ public class Test_IntervalSet {
 				assertTrue(Integer.MIN_VALUE <= n && n <= Integer.MIN_VALUE+2);
 				count++;
 			}
-			assertEquals(2, count);			
+			assertEquals(3, count);			
 			System.out.println(su);
 		} catch (Exception e){
 			Assert.fail();
 		}
 	}
-	
-	
 	
 }
