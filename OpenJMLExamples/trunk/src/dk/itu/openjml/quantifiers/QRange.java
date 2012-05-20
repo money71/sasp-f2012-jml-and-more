@@ -78,7 +78,7 @@ public abstract class QRange {
 				// Leaf node representing actual range definitions
 				return new LeafQRange((JCBinary)e, var);
 			} 
-			// TODO: Add pure method calls? #13
+			// NOTE: #13
 		}
 		throw new NotExecutableQuantifiedExpr(e.toString());
 	}
