@@ -90,8 +90,8 @@ public abstract class QRange {
 	 * @throws NotExecutableQuantifiedExpr If e is not an executable statement
 	 */
 	//@ assignable left, right;
-	//@ ensures left != null;
-	//@ ensures right != null;
+	//@ ensures \fresh(left);
+	//@ ensures \fresh(right);
 	public QRange(JCBinary e, String var) throws NotExecutableQuantifiedExpr{
 		left = compute(e.lhs, var);
 		right = compute(e.rhs, var);
