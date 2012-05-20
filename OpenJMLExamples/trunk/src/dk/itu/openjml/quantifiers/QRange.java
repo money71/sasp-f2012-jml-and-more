@@ -227,11 +227,12 @@ class IntersectionQRange extends QRange {
 	}
 	
 	/**
+	 * Get code
+	 * - here its a real code call, imagine on the rac.
 	 * @returns The code for an intersection-operation on ranges
 	 */
 	protected /*@ pure @*/ String getCode(){
-		// here its a real code call
-		// imagine on the rac
+		// FIXME: #23 set right package path when project is moved to final.
 		return "dk.itu.openjml.range.IntervalSet.intersect(" + left.translate() + ", " + right.translate() + ")";
 	}
 }
@@ -295,7 +296,7 @@ class LeafQRange extends QRange {
 			evaluateExpression(right, changeOrientation(op), left);
 		
 		} else if(op.equals(LEQ)){
-			high = right + "1"; // TODO: This "+ 1" is to take right-exclusive IntervalSet into account! 17
+			high = right + "1"; // TODO: This "+ 1" is to take right-exclusive IntervalSet into account! #17
 			
 		} else if(op.equals(GEQ)){
 			low = right;
@@ -340,6 +341,7 @@ class LeafQRange extends QRange {
 	 * @returns The code for a range expression limited by two variables
 	 */
 	public /*@ pure @*/  String translate(){
+		// FIXME: #23 set right package path when project is moved to final.
 		return "dk.itu.openjml.range.IntervalSet.interval(" + low + ", " + high + ")";
 	}
 	
