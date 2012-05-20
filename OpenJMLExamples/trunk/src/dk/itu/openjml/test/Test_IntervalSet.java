@@ -160,4 +160,18 @@ public class Test_IntervalSet {
 		}
 	}
 	
+	@Test
+	public void testSingleValue() {
+		IntervalSet i = IntervalSet.interval(0, 0);
+		try{
+			int count = 0;
+			for(int n: i){
+				assertTrue(n == 0);
+				count++;
+			}
+			assertEquals(1, count);	
+		} catch (Exception e){
+			Assert.fail();
+		}
+	}
 }
