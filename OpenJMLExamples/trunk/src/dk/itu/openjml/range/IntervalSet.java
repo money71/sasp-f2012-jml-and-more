@@ -23,7 +23,8 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	 * 
 	 * Normally we would return new SomeIterator<Integer>().
 	 * 
-	 * @returns This, as it is also implements Iterator
+	 * @returns This, as it is also implements Iterator and for that
+	 * reason full fills the interface.
 	 */
 	public Iterator<Integer> iterator() {
 		return this;

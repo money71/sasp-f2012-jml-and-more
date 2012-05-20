@@ -11,6 +11,16 @@ import org.junit.Test;
 
 import dk.itu.openjml.range.IntervalSet;
 
+
+/**
+ * 
+ * Test class for the IntervalSet
+ * 
+ * Keep the specific min /max values in <b>fresh</b> mind: 
+ * Min value: -2147483648
+ * Max value: 2147483647
+ *
+ */
 public class Test_IntervalSet {
 	
 	@Before
@@ -20,41 +30,31 @@ public class Test_IntervalSet {
 	
 	@Test
 	public void testIntervalSetBasic() {
-				
 		IntervalSet i = IntervalSet.interval(0, 10);		
 		assertNotNull(i);
-		
 	}
 
 	@Test
 	public void testIntervalSetBasicForEach() {
-				
 		IntervalSet i = IntervalSet.interval(0, 10);
-
 		int count = 0;
 		for(int n: i){
 			assertNotNull(n);
 			count++;
 		}
-		
 		assertEquals(11, count);
-		
 	}
 	
 	@Test
 	public void testIntervalSetBasicIterator() {
-				
 		IntervalSet i = IntervalSet.interval(0, 10);
 		int count = 0;
 		Iterator<Integer> ite = i.iterator();
-
 		while(ite.hasNext()){
 			assertNotNull(ite.next());
 			count++;
 		}
-
 		assertEquals(11, count);
-		
 	}
 	
 	
@@ -135,4 +135,52 @@ public class Test_IntervalSet {
 			Assert.fail();
 		}
 	}
+	
+	
+	/**
+	 * (2147483645, 2147483647] => 
+	 * (2147483645, 2147483646)
+	 */	
+	@Test
+	public void testUnionMaxValue() {
+		IntervalSet u = IntervalSet.union(IntervalSet.interval(Integer.MAX_VALUE-2, Integer.MAX_VALUE), IntervalSet.interval(Integer.MAX_VALUE-2, Integer.MAX_VALUE));
+		try{
+			String su = "Union: ";
+			int count = 0;
+			for(int n: u){
+				su += n + "; ";
+				assertTrue(Integer.MAX_VALUE-2 <= n && n <= Integer.MAX_VALUE);
+				count++;
+			}
+			assertEquals(2, count);			
+			System.out.println(su);
+		} catch (Exception e){
+			Assert.fail();
+		}
+	}
+
+	/** 
+	 * (-2147483648, -2147483646] => 
+	 * (-2147483648, -2147483647)
+	 */	
+	@Test
+	public void testUnionMinValue() {
+		IntervalSet u = IntervalSet.union(IntervalSet.interval(Integer.MIN_VALUE, Integer.MIN_VALUE+2), IntervalSet.interval(Integer.MIN_VALUE, Integer.MIN_VALUE+2));
+		try{
+			String su = "Union: ";
+			int count = 0;
+			for(int n: u){
+				su += n + "; ";
+				assertTrue(Integer.MIN_VALUE <= n && n <= Integer.MIN_VALUE+2);
+				count++;
+			}
+			assertEquals(2, count);			
+			System.out.println(su);
+		} catch (Exception e){
+			Assert.fail();
+		}
+	}
+	
+	
+	
 }
