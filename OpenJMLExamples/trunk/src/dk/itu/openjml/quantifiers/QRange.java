@@ -167,6 +167,9 @@ public abstract class QRange {
 	 * 
 	 * @return Source code to build the range defined by this QRange
 	 */
+	//@ requires left != null;
+	//@ requires right != null;
+	
 	public /*@ pure @*/ String translate(){
 		if(left.ignore()){
 			return right.translate();
@@ -296,7 +299,7 @@ class LeafQRange extends QRange {
 			evaluateExpression(right, changeOrientation(op), left);
 		
 		} else if(op.equals(LEQ)){
-			high = right + "1"; // TODO: This "+ 1" is to take right-exclusive IntervalSet into account! #17
+			high = right;
 			
 		} else if(op.equals(GEQ)){
 			low = right;
@@ -308,7 +311,7 @@ class LeafQRange extends QRange {
 			evaluateExpression(left, GEQ, right + " + 1");
 		
 		} else if(op.equals(NEQ)){
-			// This is correct!
+			// This is correct for inclusive intervals!
 			low = right + " + 1";
 			high = right + " - 1";
 			
@@ -323,7 +326,7 @@ class LeafQRange extends QRange {
 	}
 	
 	/**
-	 * Swaps sides of an logical inequality operator
+	 * Swaps orientation of a logical inequality operator
 	 * @param op The operator to switch
 	 * @return The switched operator
 	 */
