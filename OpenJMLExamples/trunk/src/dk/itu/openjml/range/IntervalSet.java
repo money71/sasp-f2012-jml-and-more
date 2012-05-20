@@ -19,7 +19,10 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	protected int current;
 	
 	/**
-	 * Cheap trick! FIXME: This is probably not "good practice". #18
+	 * Cheap trick! But it works(TM) #18
+	 * 
+	 * Normally we would return new SomeIterator<Integer>().
+	 * 
 	 * @returns This, as it is also implements Iterator
 	 */
 	public Iterator<Integer> iterator() {
