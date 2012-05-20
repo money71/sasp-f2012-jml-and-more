@@ -141,6 +141,8 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	 */
 	abstract protected boolean isInside(int current);
 	
+	//@ invariant initialized ==> isInside(current);
+	
 	/**
 	 * Returns the next valid low after current
 	 * @param current The current number active.
@@ -278,6 +280,7 @@ class Interval extends IntervalSet {
 	 * @param high Upper boundary
 	 */
 	//@ assignable left, right, low, high, current;
+	//@ ensures left == null && right == null;
 	protected Interval(int low, int high){
 		super(null, null);
 		this.low = low;

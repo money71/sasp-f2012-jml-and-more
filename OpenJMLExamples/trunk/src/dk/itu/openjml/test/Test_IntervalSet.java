@@ -174,4 +174,19 @@ public class Test_IntervalSet {
 			Assert.fail();
 		}
 	}
+	
+	@Test
+	public void testUnionSingleton() {
+		IntervalSet u = IntervalSet.union(IntervalSet.interval(10, 10), IntervalSet.interval(0, 0));
+		try{
+			int count = 0;
+			for(int n: u){
+				assertTrue(n == 0 || n == 10);
+				count++;
+			}
+			assertEquals(2, count);	
+		} catch (Exception e){
+			Assert.fail();
+		}
+	}
 }
