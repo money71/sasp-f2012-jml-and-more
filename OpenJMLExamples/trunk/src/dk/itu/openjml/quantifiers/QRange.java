@@ -33,7 +33,7 @@ public abstract class QRange {
 	final static String CON = "&&";
 	final static String DIS = "||";
 	
-	// Implications (FIXME: currently not used #12)
+	// Implications (NOTE: Currently not supported #12)
 	final static String RIMP = "==>";
 	final static String LIMP = "<==";
 	final static String BIMP = "<==>";
