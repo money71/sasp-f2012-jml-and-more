@@ -55,8 +55,10 @@ for(int i = Integer.MIN_VALUE; i <= Integer.MAX_VALUE; i++){
 }
 }}}
 
-While this is a valid check, it has a runtime of O(|Integer|^2). This is impractical for conducting actual runtime assertion checks. While it is obvious that running RAC-compiled code is very slow, it should still be runnable within a reasonable time. This illustrates that the naive approach is not a good solution to the question of how to implement quantifiers with multiple race variables.
+While this is a valid check, this approach has a runtime of O(|Integer|^(Number of race variables)). This is impractical for conducting actual runtime assertion checks. While it is obvious that running RAC-compiled code is very slow, it should still be runnable within a reasonable time. This illustrates that the naive approach is not a good solution to the question of how to implement quantifiers with multiple race variables.
 
 == Further Difficulties ==
 
-Mention quantifiers over objects, boolean, floats, chars, etc. as well as implications in JML syntax and deferr the solution to these issues to a later point in time.
+Of course, quantifiers should not only be applicable to integers as race variables but also for other primitive datatypes like booleans, chars or even floats and as well for any kind of object in Java, for which a range can be defined. Due to time difficulties we omitted work on these cases and instead tried to build a solid foundation for integer quantification. If our foundational work is properly executed, it may be possible to extend our approaches to include more of the mentioned cases.
+
+However, our approach is mainly targeted towards primitive types as there are other techniques and approaches to assert quantified expressions for arbitrary objects. These aim to manipulate the actual behavior of objects to be able to verify conditions that these must hold without having to generate every possible instance of this type.
