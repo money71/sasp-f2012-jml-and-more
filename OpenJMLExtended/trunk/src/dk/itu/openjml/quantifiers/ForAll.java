@@ -31,7 +31,7 @@ public class ForAll {
 	final static String SEPARATOR = " ";
 	final static String STATEMENT_END = ";";
 	
-	// TODO: We need a proper assertion check that gives some info #9
+	// NOTE: #9
 	final static String ASSERT = "assert";
 	
 	/**

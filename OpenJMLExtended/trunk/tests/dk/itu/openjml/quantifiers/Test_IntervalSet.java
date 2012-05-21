@@ -173,6 +173,8 @@ public class Test_IntervalSet {
 		}
 	}
 	
+	
+	// NOTE: #26 
 	@Test
 	public void testUnionSingleton() {
 		IntervalSet u = IntervalSet.union(IntervalSet.interval(10, 10), IntervalSet.interval(0, 0));
