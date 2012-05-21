@@ -26,6 +26,8 @@ match op with
 | _ ==> Exception
 }}}
 
+Note that if the first line's condition is hit, a QRange of type Ignore is returned. If the expression that is being evaluated is the only given one, our convention for the definition for this variable through Ignore will be _[Integer.MIN_VALUE, Integer.MAX_VALUE]_, as we presume that the user actually wants to check _every_ possible integer.
+
 The second level of the pattern matcher performs a unification-like algorithm. First, note that a single atomic boolean expression can only define a single margin value of an interval. Mathematically this means that one of the two boundaries of the interval will be either infinity or negative infinity. Programmatically however, this is not a real problem as the lowest and highest representable integers are discrete values.
 
 Because of this fact, the low and high border of an interval are set initially to Integer.MIN_VALUE, Integer.MAX_VALUE respectively. Then, the pattern matcher determines if the expression defines the lower or the upper border of the interval. The algorithm then unifies the expression so that the variable always takes the left part of the expression. Afterwards it is trivial to infer if the expression defines a high or a low boundary.
