@@ -1,5 +1,6 @@
 package dk.itu.openjml.quantifiers;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class Test_ForAll {
 	
 	List<String> qExprsJml;
 	List<JmlQuantifiedExpr> qExprsAst;
-	API openjmlApi;
+	API openJmlApi;
 	
 	final static String FORALL_CLASS_HEAD = "class JML$ITU$ForAll"; 
 	final static String FORALL_CLASS_TOP = "{ public static void forAll() {";
@@ -32,7 +33,7 @@ public class Test_ForAll {
 		s.add("//@ requires (\\forall int i; i >= 5 || i < 10; i < 10);"); 
 		s.add("//@ requires (\\forall int i; i >= 5 || i < 10 && i < 300; i > 0);"); 
 		s.add("//@ requires (\\forall int i; i >= 5 || i < 10 && i < 300 && i != 500; i > 10 );"); 
-		s.add("//@ requires (\\forall int i, j; 0 <= i && i < 10 && j == i++; i == (j - 1));");
+		s.add("//@ requires (\\forall int i, j; 0 <= i && i < 10 && j == i + 1; i == (j - 1));");
 		s.add("//@ requires (\\forall int i, j, h; 0 <= i && i < 10 && 50 < j && j <= 100; i == (j - 1));");
 		s.add("//@ requires (\\forall int i; -100 < i && i < 0 || 0 < i && i < 100; i != 0);");
 		// #27 
@@ -70,28 +71,29 @@ public class Test_ForAll {
 		qExprsAst = new ArrayList<JmlQuantifiedExpr>();
 		addExpressions(qExprsJml);		
 		
-		openjmlApi = new API();
+		openJmlApi = new API();
 		
 		// Add all expressions to AST list
 		int count = 1;
 		for(String s: qExprsJml) {
-			JmlCompilationUnit t = openjmlApi.parseString("test$" + count, TEST_CLASS_HEAD + count + TEST_CLASS_TOP + s + TEST_CLASS_BOTTOM);
+			JmlCompilationUnit t = openJmlApi.parseString("test$" + count, TEST_CLASS_HEAD + count + TEST_CLASS_TOP + s + TEST_CLASS_BOTTOM);
 			qExprsAst.add(pullOutQuantifier(t));
 			count++;
 		}
+		
+		openJmlApi.setOption("-noPurityCheck");
+		openJmlApi.parseAndCheck(new File("src/dk/itu/openjml/quantifiers/IntervalSet.java"));
 	}
 
 	@Test
 	public void testForAll() {
-		openjmlApi.setOption("-noPurityCheck");
 		int count = 1;
 		for(JmlQuantifiedExpr t: qExprsAst) {
 			ForAll f = new ForAll(t);
 			try{
-				JmlCompilationUnit cForAll = openjmlApi.parseString("forAll$" + count, FORALL_CLASS_HEAD + count + FORALL_CLASS_TOP + f.translate() + FORALL_CLASS_BOTTOM);
-				openjmlApi.enterAndCheck(cForAll);
-			} catch (AssertionError a){
-				// Ignore, as assertions are part of the code and should fail, given the \forall expression
+				JmlCompilationUnit cForAll = openJmlApi.parseString("forAll$" + count, FORALL_CLASS_HEAD + count + FORALL_CLASS_TOP + f.translate() + FORALL_CLASS_BOTTOM);
+				System.out.println(openJmlApi.prettyPrint(cForAll, false));
+				Assert.assertEquals(f.toString(), 0, openJmlApi.enterAndCheck(cForAll));
 			} catch (Exception e){
 				Assert.fail(t.toString() + ", " + f.toString() + ", " + e.toString());
 			} finally {
