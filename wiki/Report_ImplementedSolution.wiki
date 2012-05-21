@@ -34,6 +34,7 @@ Let op be a binary boolean operator on integers, E1, E2 either the variable that
 
 {{{
 [E1, op, E2] ->
+if ++ in E1, E2 || -- in E1, E2 then Exception else
 if E2 = var & var not in E1 then [E2, op^(-1), E1] else
 match op with
 | <= ==> high = E2
@@ -45,7 +46,7 @@ match op with
 | _  ==> Exception
 }}}
 
-The rule for the operator != is a way to define an interval where only a single value is not defined. The implementation of IntervalSet, which will execute the values computed here, allows this definition and produces valid results, as we will describe in the next section.
+Pre- and postfix in- or decrementors are not allowed, as they would alter the value of race variables while defining another one. The rule for the operator != is a way to define an interval where only a single value is not defined. The implementation of IntervalSet, which will execute the values computed here, allows this definition and produces valid results, as we will describe in the next subsection. However, there are cases where the pattern-matcher does not apply correctly. We will outline these in the next section.
 
 === Code Generation ===
 
@@ -53,9 +54,28 @@ The outlined algorithm builds a binary tree of objects of type QRange, where the
 
 Translate walks the tree recursively. It is implemented on each sub-type differently and therefore returns the type-specific operation. I.e. the union type of QRange returns code to build a union of IntervalSet, the singleton type returns code to build a singleton of IntervalSet and so on. If a ignore type is found, the set operation is omitted and the respective other sub-tree's code is returned exclusively.
 
-== Binary Tree Representing Set Operations ==
+== IntervalSet - Binary Tree Representing Set Operations ==
 
+IntervalSet is also implemented as a binary tree. Structure-wise, it is very similar to QRange. This makes sense, since QRange is a meta-level implementation of IntervalSet. During compile time, the structure of a QRange instance is projected one-to-one on the structure of a IntervalSet instance.
 
-== Generating For-Loops for Multiple Race Variables ==
+Additionally, IntervalSet implements Iterator and Iterable of Integer. This makes it convenient and quick to run over all values in an IntervalSet using a shorthand for.
+
+{{{
+for(int i: IntervalSet.interval(0, 10){
+	System.out.println(i);
+}
+}}}
+
+This will print out all numbers from and including 0 to 10.
+
+IntervalSet has subclasses that represent union, intersection and a singleton, for the reasons outlined. Again, only the singleton type actually holds values that represent interval borders. While in QRange, these subclasses mostly only differ in the way they generate source code, they have three methods each that differ in behaviour. One simply determines through boolean operations, if a given value is inside the set. The methods getNextLow and getNextHigh can however calculate a new low or high value given the tree structure is interpreted as set-operations.
+
+The main difference is, that the union subclass can answer two different lows, highs respectively, depending on what the current value is, when iterating over an IntervalSet, while intersection will only always answer the higher low or the lower high. If neither heigh nor low is greater than the current value, the current value itself is returned instead. Following this, the condition to stop iteration is that current equals low and high at the same time.
+
+Due to set-builder notations not necessarily being properly written, it is not given that a balanced tree will result from parsing and evaluating a JML forall statement. Still, walking an un-balanced tree is faster as implementing the naive approach, especially because expressions usually are rather brief and therefore would not result in very deep trees.
+
+There are still certain issues outstanding with this implementation, which we will describe in the next section. 
+
+== ForAll - Generating For-Loops for Multiple Race Variables ==
 
 How does our implementation work? What is special about it? What is novel?
