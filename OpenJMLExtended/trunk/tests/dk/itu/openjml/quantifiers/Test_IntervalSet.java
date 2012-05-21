@@ -58,7 +58,7 @@ public class Test_IntervalSet {
 	
 	@Test
 	public void testUnionGap() {
-		IntervalSet u = IntervalSet.union(IntervalSet.interval(0, 9), IntervalSet.interval(11, 20));
+		IntervalSet u = IntervalSet.union(IntervalSet.interval(11, 20), IntervalSet.interval(0, 9));
 		try{
 			for(int n: u){
 				assertTrue("Failed with " + n, 0 <= n && n <= 9 || 11 <= n && n <= 20);
@@ -82,7 +82,7 @@ public class Test_IntervalSet {
 	
 	@Test
 	public void testIntersectedUnion() {
-		IntervalSet u = IntervalSet.union(IntervalSet.interval(0, 10), IntervalSet.interval(20, 30));
+		IntervalSet u = IntervalSet.union(IntervalSet.interval(20, 30), IntervalSet.interval(0, 10));
 		IntervalSet iu = IntervalSet.intersect(u, IntervalSet.interval(5, 25));
 		try{
 			for(int n: iu){
@@ -131,7 +131,6 @@ public class Test_IntervalSet {
 				assertTrue("Failed with " + n, Integer.MAX_VALUE-2 <= n && n <= Integer.MAX_VALUE);
 				count++;
 			}
-			// #19 should be adjusts to 3 if solved
 			assertEquals(3, count);			
 		} catch (Exception e){
 			Assert.fail();
@@ -151,7 +150,6 @@ public class Test_IntervalSet {
 				assertTrue("Failed with " + n, Integer.MIN_VALUE <= n && n <= Integer.MIN_VALUE+2);
 				count++;
 			}
-			// #19 should be adjusts to 3 if solved
 			assertEquals(3, count);			
 		} catch (Exception e){
 			Assert.fail();
@@ -177,7 +175,7 @@ public class Test_IntervalSet {
 	// NOTE: #26 
 	@Test
 	public void testUnionSingleton() {
-		IntervalSet u = IntervalSet.union(IntervalSet.interval(10, 10), IntervalSet.interval(0, 0));
+		IntervalSet u = IntervalSet.union(IntervalSet.interval(0, 0), IntervalSet.interval(10, 10));
 		try{
 			int count = 0;
 			for(int n: u){
@@ -185,6 +183,18 @@ public class Test_IntervalSet {
 				count++;
 			}
 			assertEquals(2, count);	
+		} catch (Exception e){
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void testOverlappingIntersection() {
+		IntervalSet i = IntervalSet.intersect(IntervalSet.interval(0, 20), IntervalSet.interval(0, 10));
+		try{
+			for(int n: i){
+				assertTrue("Failed with " + n, 0 <= n && n <= 20 && n <= 10);
+			}
 		} catch (Exception e){
 			Assert.fail();
 		}
