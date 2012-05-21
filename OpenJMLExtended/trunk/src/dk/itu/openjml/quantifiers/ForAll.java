@@ -26,7 +26,7 @@ public class ForAll {
 	private final static String BLOCK_END = "}";
 	
 	private final static String SEPARATOR = " ";
-	private final static /*@ spec_public @*/ String STATEMENT_END = ";";
+	private final static String STATEMENT_END = ";";
 	
 	// NOTE: #9
 	private final static String ASSERT = "assert";
@@ -127,7 +127,7 @@ public class ForAll {
 	 */
 	//@ requires generated != null;
 	//@ ensures generated.startsWith(\old(generated));
-	//@ ensures generated.endsWith(";");
+	//@ ensures generated.endsWith(STATEMENT_END);
 	protected void addPredicate(){
 		// NOTE: #9
 		add(ASSERT);
