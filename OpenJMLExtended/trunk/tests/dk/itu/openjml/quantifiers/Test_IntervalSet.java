@@ -199,4 +199,16 @@ public class Test_IntervalSet {
 			Assert.fail();
 		}
 	}
+	
+	@Test
+	public void testOverlappingUnion() {
+		IntervalSet u = IntervalSet.union(IntervalSet.interval(0, 20), IntervalSet.interval(0, 10));
+		try{
+			for(int n: u){
+				assertTrue("Failed with " + n, 0 <= n && (n <= 20 || n <= 10));
+			}
+		} catch (Exception e){
+			Assert.fail();
+		}
+	}
 }
