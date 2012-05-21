@@ -7,7 +7,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses( {  
 	Test_ForAll.class,
 	Test_IntervalSet.class,
-	Test_QRange.class
+	Test_QRange.class,
+	Test_ForAllCompiledForRAC.class
 } )
 public class TestAll {
 
