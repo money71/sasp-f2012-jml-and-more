@@ -1,4 +1,4 @@
-package dk.itu.openjml.range;
+package dk.itu.openjml.quantifiers;
 
 import java.util.Iterator;
 

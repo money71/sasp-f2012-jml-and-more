@@ -1,4 +1,4 @@
-package dk.itu.openjml.test;
+package dk.itu.openjml.quantifiers;
 
 import org.jmlspecs.openjml.JmlTree.JmlQuantifiedExpr; 
 import org.junit.Assert;
@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import dk.itu.openjml.quantifiers.QRange;
 
-public class Test_QRange extends Test_ForAllNaive {
+public class Test_QRange extends Test_ForAll {
 
 	@Before
 	public void setUp() throws Exception {
@@ -28,11 +28,4 @@ public class Test_QRange extends Test_ForAllNaive {
 		}
 	}
 	
-	public void testGenerateForAll(){
-		// No need to check this today
-	}
-	
-	public void testAssertForAll(){
-		// No need to check this today
-	}
 }
