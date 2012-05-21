@@ -1,6 +1,7 @@
 package dk.itu.openjml.quantifiers;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -53,7 +54,7 @@ public class Test_ForAllCompiledForRAC {
 		try{
 			JML$ITU$ForAll5.forAll();
 		} catch (AssertionError a){
-			Assert.assertEquals("junit.framework.AssertionFailedError: null", a.toString());
+			assertEquals("java.lang.AssertionError: ", a.toString());
 		} catch (Exception e){
 			Assert.fail();
 		}
