@@ -273,22 +273,24 @@ class LeafQRange extends QRange {
 		evaluateExpression(left, op, right);
 	}
 	
-	// TODO: Write specs! #16
+	// #16
 	/**
 	 * Evaluates an expression made from three strings, left,
 	 * op, right, after these rules:
 	 * 
 	 * (Note: had to switch rules 1 and 3 and 2 and 4 to guarantee inclusive ranges.)
 	 * 
-	 * e[l o r] =: 
-	 *   r = var && (var not in l) ==> e[l o^(-1) r]
-	 * | o = "<=" ==> high = r
-	 * | o = ">=" ==> low = r
-	 * | o = "<" ==> e[l "<=" (r - 1)]
-	 * | o = ">" ==> e[l ">=" (r + 1)]
-	 * | o = "!=" ==> low = (r + 1) && high = (r - 1)
-	 * | o = "==" ==> low = r && high = r
-	 * | _ ==> not defined
+	 * e[l o r] =:
+	 *   if "++", "--" in l, r then Exception else
+	 *   if r = var && (var not in l) ==> e[l o^(-1) r] else
+	 *   match o with
+	 * | "<=" ==> high = r
+	 * | ">=" ==> low = r
+	 * | "<" ==> e[l "<=" (r - 1)]
+	 * | ">" ==> e[l ">=" (r + 1)]
+	 * | "!=" ==> low = (r + 1) && high = (r - 1)
+	 * | "==" ==> low = r && high = r
+	 * | _ ==> Exception
 	 * 
 	 * @param left A value or a identifier
 	 * @param op A operator
