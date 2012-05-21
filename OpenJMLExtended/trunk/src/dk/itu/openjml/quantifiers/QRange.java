@@ -235,7 +235,6 @@ class IntersectionQRange extends QRange {
 	 * @returns The code for an intersection-operation on ranges
 	 */
 	protected /*@ pure @*/ String getCode(){
-		// FIXME: #23 set right package path when project is moved to final.
 		return "dk.itu.openjml.quantifiers.IntervalSet.intersect(" + left.translate() + ", " + right.translate() + ")";
 	}
 }
@@ -331,14 +330,12 @@ class LeafQRange extends QRange {
 	 * @return The switched operator
 	 */
 	private /*@ pure @*/ String changeOrientation(String op){
+		// NOTE: #24
 		switch(op){
 		case GEQ: return LEQ;
 		case LEQ: return GEQ;
 		case GT:  return LT;
 		case LT:  return GT;
-		// other examples do the return here as:
-		// default:  return op;
-		// but then jml 2 check complains: Method "changeOrientation" must return a value
 		}
 		return op;
 	}
@@ -347,7 +344,6 @@ class LeafQRange extends QRange {
 	 * @returns The code for a range expression limited by two variables
 	 */
 	public /*@ pure @*/  String translate(){
-		// FIXME: #23 set right package path when project is moved to final.
 		return "dk.itu.openjml.quantifiers.IntervalSet.interval(" + low + ", " + high + ")";
 	}
 	
