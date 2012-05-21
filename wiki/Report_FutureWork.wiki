@@ -4,11 +4,11 @@ As hinted before, our solution is not yet complete. There are multiple issues th
 
 == Pattern Matching ==
 
-While the pattern matcher behaves correctly and is error prone than the JML2 pedant for the most expressions, there are cases we do not yet cover. The pattern matcher does not properly take care of relational expressions of the form
+While the pattern matcher behaves correctly and is error prone than the JML2 pedant for the most expressions, there are cases we do not yet cover. The pattern matcher does not properly take care of relational expressions of the form:
 
 {{{
 \forall int i, j; 0 < i && i < 10 && j == i + 1; p(i) && p(j);
-}}}.
+}}}
 
 These are simply disregarded entirely. The pattern matcher will produce arbitrary results as the heuristic we use is not strong enough to determine if an expression mentioning a variable name is defining the variable or defining another one.
 
