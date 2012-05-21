@@ -1,3 +1,45 @@
 = Future Work =
 
-How could our solution be extended? How could the pattern matcher be modified to deal with implications? How could we process other quantifiers like _\exists_ or _\sum_?
+As hinted before, our solution is not yet complete. There are multiple issues that we were unable to fix given the short period of time during which this project was conducted. The following subsections will go into detail regarding errors in our code.
+
+== Pattern Matching ==
+
+While the pattern matcher behaves correctly and is error prone than the JML2 pedant for the most expressions, there are cases we do not yet cover. The pattern matcher does not properly take care of relational expressions of the form
+
+{{{
+\forall int i, j; 0 < i && i < 10 && j == i + 1; p(i) && p(j);
+}}}.
+
+These are simply disregarded entirely. The pattern matcher will produce arbitrary results as the heuristic we use is not strong enough to determine if an expression mentioning a variable name is defining the variable or defining another one.
+
+Also, recursive definitions are not checked against. This is important to not have the virtual machine crash when crossing recursive variable definitions.
+
+Another important part which the current implementation does not take care of is the use of JML operators such as implications in the range expression. Since these are still extremely useful for writing specifications, it would be vital to support them.
+
+== Interval Representation ==
+
+The interval representation implemented in Intervalset is complete except for the representation of an interval of the form [n, n]. Since in this case
+
+{{{
+curent == low && current == high
+}}}
+
+this interval would fullfil the stop condition on the iterator, hence hasNext() always returns false. Therefore, no value would ever be produced in a for-loop, even though the method next() would return the (single only valid) value.
+
+To avoid these issues and to avoid over-compilcating the code by introducing several borderline cases, it might be easier to implement an algorithm outlined by [citation]. While polyhedra analysis is an NP-hard problem [citation], correctness is of more importance when doing program analysis.
+
+Still, we will keep working on the problem of interval representation to find a solution without turning to polyhedra analysis.
+
+== Loop Generation ==
+
+The loop generation in ForAll produces nested loops. To do so it relies on the order of the race variable declaration. An expression of the following form would not be accepted and result in an error:
+
+{{{
+\forall int i, j; 0 < j && j < 10 && i == j; p(i) && p(j);
+}}}
+
+To make sure that, regardless of the order of declaration, the loops would be executable, it would be necessary to check for relational definitions and to change the order of loops accordingly.
+
+Additional, it would be easy to extend our approach towards implementing the _\forall_ expression by dynamically identifying the type of the quantified expression. Instead of only inserting assertions then, a sum expression could be stated or the assertion could be reversed in its assertion context to provide the functionality for an exists quantifier. We were unable to implement this due to time constraints in this project.
+
+== Rigorous Specification of Code ==
