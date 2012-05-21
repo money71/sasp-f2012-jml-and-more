@@ -84,7 +84,10 @@ public class Test_ForAll {
 		openJmlApi.setOption("-noPurityCheck");
 		openJmlApi.parseAndCheck(new File("src/dk/itu/openjml/quantifiers/IntervalSet.java"));
 	}
-
+	
+	/**
+	 * Runs the ForAll class on a JmlQuantifiedExpr and typechecks the result.
+	 */
 	@Test
 	public void testForAll() {
 		int count = 1;
@@ -92,7 +95,6 @@ public class Test_ForAll {
 			ForAll f = new ForAll(t);
 			try{
 				JmlCompilationUnit cForAll = openJmlApi.parseString("forAll$" + count, FORALL_CLASS_HEAD + count + FORALL_CLASS_TOP + f.translate() + FORALL_CLASS_BOTTOM);
-				System.out.println(openJmlApi.prettyPrint(cForAll, false));
 				Assert.assertEquals(f.toString(), 0, openJmlApi.enterAndCheck(cForAll));
 			} catch (Exception e){
 				Assert.fail(t.toString() + ", " + f.toString() + ", " + e.toString());
