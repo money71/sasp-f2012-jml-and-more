@@ -96,6 +96,7 @@ public class Test_ForAll {
 			try{
 				JmlCompilationUnit cForAll = openJmlApi.parseString("forAll$" + count, FORALL_CLASS_HEAD + count + FORALL_CLASS_TOP + f.translate() + FORALL_CLASS_BOTTOM);
 				Assert.assertEquals(f.toString(), 0, openJmlApi.enterAndCheck(cForAll));
+				System.out.println(openJmlApi.prettyPrint(cForAll, false));
 			} catch (Exception e){
 				Assert.fail(t.toString() + ", " + f.toString() + ", " + e.toString());
 			} finally {

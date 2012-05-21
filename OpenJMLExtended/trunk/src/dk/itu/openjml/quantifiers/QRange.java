@@ -46,6 +46,9 @@ public abstract class QRange {
 	final static String EQ = "==";
 	final static String NEQ = "!=";
 	
+	final static String PPLUS = "++";
+	final static String MMINUS = "--";
+	
 	// Branches
 	protected /*@ spec_public @*/ QRange left;
 	protected /*@ spec_public @*/ QRange right;
@@ -155,6 +158,7 @@ public abstract class QRange {
 	public static /*@ pure @*/ boolean isAtomic(JCBinary e){
 		return hasOperator(e, GT) ||
 				hasOperator(e, EQ) ||
+				hasOperator(e, NEQ) ||
 				hasOperator(e, LT) ||
 				hasOperator(e, GEQ) ||
 				hasOperator(e, LEQ);
@@ -293,7 +297,11 @@ class LeafQRange extends QRange {
 	//@ assignable low, high;
 	private void evaluateExpression(String left, String op, String right) throws NotExecutableQuantifiedExpr{
 		
-		if(right.equals(var) && !left.contains(var)){
+		if(right.contains(PPLUS) || right.contains(MMINUS) ||
+				left.contains(PPLUS) || left.contains(MMINUS)){
+			throw new NotExecutableQuantifiedExpr("[" + left + " " + op + " " + right + "] contains a pre- or postfix operator.");
+		}
+		else if(right.equals(var) && !left.contains(var)){
 			evaluateExpression(right, changeOrientation(op), left);
 		
 		} else if(op.equals(LEQ)){
