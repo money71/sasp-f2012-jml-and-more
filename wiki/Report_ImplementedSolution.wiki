@@ -78,4 +78,10 @@ There are still certain issues outstanding with this implementation, which we wi
 
 == ForAll - Generating For-Loops for Multiple Race Variables ==
 
-How does our implementation work? What is special about it? What is novel?
+To generate a quantified expression including multiple race variables, we implemented a class that recurses over each declared variable in the quantified expression. It looks for a valid definition inside the range expression contained in the quantified expression and generates a nested for-loop for each variable. After the last variable has been processed, an assertion, as it is stated in the quantified expression, is placed in the body of the inner most for-loop.
+
+The class returns the generated code on a call to translate(). In ForAll, there are as well still issues that need to be resolved as pointed out in the next section.
+
+== Specifications in JML ==
+
+Write about our JML specifications...
