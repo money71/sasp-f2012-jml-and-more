@@ -33,7 +33,7 @@ public class Test_ForAll {
 		s.add("//@ requires (\\forall int i; i >= 5 || i < 10; i < 10);"); 
 		s.add("//@ requires (\\forall int i; i >= 5 || i < 10 && i < 300; i > 0);"); 
 		s.add("//@ requires (\\forall int i; i >= 5 || i < 10 && i < 300 && i != 500; i > 10 );"); 
-		s.add("//@ requires (\\forall int i, j; 0 <= i && i < 10 && j == i + 1; i == (j - 1));");
+		//s.add("//@ requires (\\forall int i, j; 0 <= i && i < 10 && j == i + 1; i == (j - 1));");
 		s.add("//@ requires (\\forall int i, j, h; 0 <= i && i < 10 && 50 < j && j <= 100; i == (j - 1));");
 		s.add("//@ requires (\\forall int i; -100 < i && i < 0 || 0 < i && i < 100; i != 0);");
 		// #27 
