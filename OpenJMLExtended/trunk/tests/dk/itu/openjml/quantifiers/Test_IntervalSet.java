@@ -1,4 +1,4 @@
-package dk.itu.openjml.test;
+package dk.itu.openjml.quantifiers;
 
 import static org.junit.Assert.*;
 
@@ -8,8 +8,6 @@ import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import dk.itu.openjml.range.IntervalSet;
 
 
 /**

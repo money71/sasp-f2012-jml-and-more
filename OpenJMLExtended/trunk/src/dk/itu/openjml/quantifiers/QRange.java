@@ -216,7 +216,7 @@ class UnionQRange extends QRange {
 	 * @returns The code for a union-operation on ranges
 	 */
 	public /*@ pure @*/ String getCode(){
-		return "dk.itu.openjml.range.Intervalset.union(" + left.translate() + ", " + right.translate() + ")";
+		return "dk.itu.openjml.quantifiers.Intervalset.union(" + left.translate() + ", " + right.translate() + ")";
 	}
 }
 
@@ -236,7 +236,7 @@ class IntersectionQRange extends QRange {
 	 */
 	protected /*@ pure @*/ String getCode(){
 		// FIXME: #23 set right package path when project is moved to final.
-		return "dk.itu.openjml.range.IntervalSet.intersect(" + left.translate() + ", " + right.translate() + ")";
+		return "dk.itu.openjml.quantifiers.IntervalSet.intersect(" + left.translate() + ", " + right.translate() + ")";
 	}
 }
 
@@ -348,7 +348,7 @@ class LeafQRange extends QRange {
 	 */
 	public /*@ pure @*/  String translate(){
 		// FIXME: #23 set right package path when project is moved to final.
-		return "dk.itu.openjml.range.IntervalSet.interval(" + low + ", " + high + ")";
+		return "dk.itu.openjml.quantifiers.IntervalSet.interval(" + low + ", " + high + ")";
 	}
 	
 	/**

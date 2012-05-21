@@ -1,4 +1,4 @@
-package dk.itu.openjml.forall;
+package dk.itu.openjml.quantifiers;
 
 import java.util.AbstractQueue;
 import java.util.List;
