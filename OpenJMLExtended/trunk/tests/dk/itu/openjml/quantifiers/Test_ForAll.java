@@ -88,7 +88,6 @@ public class Test_ForAll {
 	@Test
 	public void testForAll() {
 		openjmlApi.setOption("-noPurityCheck");
-		openjmlApi.setOption("-cp", "$CLASSPATH:../src/");
 		int count = 1;
 		for(JmlQuantifiedExpr t: qExprsAst) {
 			ForAll f = new ForAll(t);
