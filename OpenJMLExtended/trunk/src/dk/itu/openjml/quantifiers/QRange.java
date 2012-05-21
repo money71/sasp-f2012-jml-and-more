@@ -276,7 +276,7 @@ class LeafQRange extends QRange {
 	 * (Note: had to switch rules 1 and 3 and 2 and 4 to guarantee inclusive ranges.)
 	 * 
 	 * e[l o r] =: 
-	 *   r = var && !(var not in l) ==> e[l o^(-1) r]
+	 *   r = var && (var not in l) ==> e[l o^(-1) r]
 	 * | o = "<=" ==> high = r
 	 * | o = ">=" ==> low = r
 	 * | o = "<" ==> e[l "<=" (r - 1)]
@@ -361,11 +361,11 @@ class IgnoreQRange extends LeafQRange {
 	 */
 	public IgnoreQRange(){
 		super();
-		low = null;
-		high = null;
+		low = "Integer.MIN_VALUE";
+		high = "Integer.MAX_VALUE";
 	}
 	
 	public /*@ pure @*/ String translate(){
-		return "null";
+		return IntervalSet.class.getName() + ".interval(" + low + ", " + high + ")";
 	}
 }
