@@ -118,7 +118,7 @@ public abstract class QRange {
 		if(e instanceof JCBinary){
 			return definesVar(((JCBinary)e).lhs, var) || definesVar(((JCBinary)e).rhs, var);
 		}
-		// FIXME: Do this the proper way at one point #14
+		// NOTE: #14
 		return e.toString().equals(var);
 	}
 	
