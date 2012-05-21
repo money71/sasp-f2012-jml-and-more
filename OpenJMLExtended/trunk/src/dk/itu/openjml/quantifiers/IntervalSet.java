@@ -6,8 +6,6 @@ import java.util.Iterator;
  * A set of intervals over integers. The Interval is a
  * subtype of IntervalSet and can be regarded as a singleton
  * of IntervalSet.
- * 
- * FIXME: Interval is *left-inclusive* and *right-exclusive*, so we cannot process Integer.MAX_VALUE #19
  */
 public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer>{
 
@@ -105,9 +103,7 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	public Integer next(){
 		// Check sets up all the ranges, just in case
 		if(hasNext()){
-			int r = current;
-			current++;
-			return r;
+			return current++;
 		}
 		
 		return current;
