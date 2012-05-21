@@ -140,10 +140,10 @@ public abstract class QRange {
 	 * @param e A JCBinary expression
 	 * @return The operator in e
 	 */
-	// #21
+	// NOTE: #21
 	//@ ensures fresh(\result);
 	public static String getOperator(JCBinary e){
-		// NOTE: Could probably be improved #15
+		// NOTE: #15
 		String op = e.toString();
 		op = op.replace(e.lhs.toString(), "");
 		op = op.replace(e.rhs.toString(), "");
