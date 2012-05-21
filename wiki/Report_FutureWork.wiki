@@ -42,4 +42,6 @@ To make sure that, regardless of the order of declaration, the loops would be ex
 
 Additional, it would be easy to extend our approach towards implementing the _\forall_ expression by dynamically identifying the type of the quantified expression. Instead of only inserting assertions then, a sum expression could be stated or the assertion could be reversed in its assertion context to provide the functionality for an exists quantifier. We were unable to implement this due to time constraints in this project.
 
-== Rigorous Specification of Code ==
+== Validation ==
+
+Unfortunately, JML2, while still being the most complete tool for checking JML specifications together with ESC/Java2, is not able to perform properly on Java 7. Due to this we ran the current OpenJML extended static checker on it to find the most basic flaws in our design. However, this proved to impossible due to many JML related errors in the OpenJML trunk that have not yet been taken care of. We were unable to check out specifications properly. Hence, this is part of future work on this project.

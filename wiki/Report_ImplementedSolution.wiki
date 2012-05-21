@@ -86,4 +86,4 @@ The class returns the generated code on a call to translate(). In ForAll, there 
 
 == Specifications in JML ==
 
-Write about our JML specifications...
+We providede JML specifications throughout our implementation in as many places in the code as possible. 
