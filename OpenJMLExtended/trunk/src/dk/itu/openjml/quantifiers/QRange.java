@@ -29,8 +29,6 @@ public abstract class QRange {
 		}
 	}
 	
-	final static String PACKAGE = "dk.itu.openjml.quantifiers";
-	
 	// Conjunction and disjunction
 	final static String CON = "&&";
 	final static String DIS = "||";
@@ -217,7 +215,7 @@ class UnionQRange extends QRange {
 	 * @returns The code for a union-operation on ranges
 	 */
 	protected /*@ pure @*/ String getCode(){
-		return PACKAGE + "." + IntervalSet.class.getName() + ".union(" + left.translate() + ", " + right.translate() + ")";
+		return IntervalSet.class.getName() + ".union(" + left.translate() + ", " + right.translate() + ")";
 	}
 }
 
@@ -236,7 +234,7 @@ class IntersectionQRange extends QRange {
 	 * @returns The code for an intersection-operation on ranges
 	 */
 	protected /*@ pure @*/ String getCode(){
-		return PACKAGE + "." + IntervalSet.class.getName() + ".intersect(" + left.translate() + ", " + right.translate() + ")";
+		return IntervalSet.class.getName() + ".intersect(" + left.translate() + ", " + right.translate() + ")";
 	}
 }
 
@@ -345,7 +343,7 @@ class LeafQRange extends QRange {
 	 * @returns The code for a range expression limited by two variables
 	 */
 	public /*@ pure @*/  String translate(){
-		return PACKAGE + "." + IntervalSet.class.getName() + ".interval(" + low + ", " + high + ")";
+		return IntervalSet.class.getName() + ".interval(" + low + ", " + high + ")";
 	}
 	
 	/**

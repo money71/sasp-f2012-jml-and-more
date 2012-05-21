@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jmlspecs.openjml.API;
-import org.jmlspecs.openjml.JmlTree.JmlClassDecl;
-import org.jmlspecs.openjml.JmlTree.JmlCompilationUnit;
-import org.jmlspecs.openjml.JmlTree.JmlMethodClauseExpr;
-import org.jmlspecs.openjml.JmlTree.JmlMethodDecl;
-import org.jmlspecs.openjml.JmlTree.JmlQuantifiedExpr;
+import org.jmlspecs.openjml.JmlTree.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
