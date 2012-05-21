@@ -114,7 +114,7 @@ public abstract class QRange {
 	 * @param var The variable name
 	 * @return True if e or any subexpression of e defines var, false otherwise
 	 */
-	static /*@ pure @*/ boolean definesVar(JCExpression e, String var){
+	private static /*@ pure @*/ boolean definesVar(JCExpression e, String var){
 		if(e instanceof JCBinary){
 			return definesVar(((JCBinary)e).lhs, var) || definesVar(((JCBinary)e).rhs, var);
 		}

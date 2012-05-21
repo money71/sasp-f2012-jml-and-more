@@ -1,8 +1,5 @@
 package dk.itu.openjml.quantifiers;
 
-import java.util.AbstractQueue;
-import java.util.List;
-
 import org.jmlspecs.openjml.JmlTree.JmlQuantifiedExpr;
 
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -21,18 +18,18 @@ public class ForAll {
 	String generated;
 	JmlQuantifiedExpr expr;
 	
-	final static String LOOP_START = "for(";
-	final static String LOOP_SEPARATOR = " : ";
-	final static String LOOP_END = ")";
+	private final static String LOOP_START = "for(";
+	private final static String LOOP_SEPARATOR = " : ";
+	private final static String LOOP_END = ")";
 	
-	final static String BLOCK_START = "{";
-	final static String BLOCK_END = "}";
+	private final static String BLOCK_START = "{";
+	private final static String BLOCK_END = "}";
 	
-	final static String SEPARATOR = " ";
-	final static String STATEMENT_END = ";";
+	private final static String SEPARATOR = " ";
+	private final static /*@ spec_public @*/ String STATEMENT_END = ";";
 	
 	// NOTE: #9
-	final static String ASSERT = "assert";
+	private final static String ASSERT = "assert";
 	
 	/**
 	 * Constructs a string that holds code to evaluate the 
@@ -54,7 +51,7 @@ public class ForAll {
 		try{
 			addLoops(getDeclarations());
 		} catch (QRange.NotExecutableQuantifiedExpr e){
-			// TODO: Report properly! #10
+			// NOTE: #10
 			add(STATEMENT_END);
 		}
 	}
@@ -66,25 +63,20 @@ public class ForAll {
 	 * @param list
 	 * @throws QRange.NotExecutableQuantifiedExpr
 	 */
-	//@ assignable s;
+	//@ assignable decls;
 	protected void addLoops(/*@ non_null @*/ ListBuffer<JCVariableDecl> decls) throws QRange.NotExecutableQuantifiedExpr {
 		//if(decls != null && !decls.isEmpty()){
 		if(!decls.isEmpty()){
 			JCVariableDecl d = decls.next(); // same as next / poll
-			
 			// Add the loop header
 			addLoopHeader(d);	
-
 			// Add the next inner loop
 			add(BLOCK_START); // {
 			addLoops(decls); // <body>
-			//addLoops(decls); // <body>
 			add(BLOCK_END); // }
-			
 		} else {
 			addPredicate();
 		}
-		
 	}
 	
 	/**
@@ -115,7 +107,7 @@ public class ForAll {
 	 * @throws QRange.NotExecutableQuantifiedExpr if QRange cannot evaluate a proper range for the variable
 	 */
 	//@ requires generated != null;
-	//@ assignable s;
+	//@ assignable decl;
 	//@ ensures generated.startsWith(\old(generated));
 	protected void addLoopHeader(/*@ non_null @*/ JCVariableDecl decl) throws QRange.NotExecutableQuantifiedExpr{
 		
@@ -134,11 +126,10 @@ public class ForAll {
 	 * Adds a predicate check to the code.
 	 */
 	//@ requires generated != null;
-	//@ assignable s;
 	//@ ensures generated.startsWith(\old(generated));
-	//@ ensures generated.endsWith(STATEMEND_END);
+	//@ ensures generated.endsWith(";");
 	protected void addPredicate(){
-		// TODO: #9
+		// NOTE: #9
 		add(ASSERT);
 		add(SEPARATOR);
 		add(expr.value.toString());
