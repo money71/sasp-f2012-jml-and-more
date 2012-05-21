@@ -3,15 +3,23 @@
 This project report for the course Advanced Models and Program in spring 2012 documents our efforts to extend the OpenJML framework. Our project focuses on implementing quantified statements into the runtime assertion checker of OpenJML. 
 
 == An overview of OpenJML ==
-OpenJML is a tool to verify the correctness of Java code by specifying the behaviour of classes and methods using mathematical models. [citation\footnote] It is built on top of the OpenJDK compiler and has a Java-like syntax (the JML syntax) to add pre- and post-conditions to source code as well as invariants. These conditions are written by the developer in comments throughout the sources or in a spearate file. The tool then comes with three different variants to check the correctness of source code specifications:
+OpenJML is a tool to verify the correctness of Java code by specifying the behaviour of classes and methods using mathematical models. [citation\footnote] It is built on top of the OpenJDK compiler and has a Java-like syntax (the JML syntax) to add pre- and post-conditions to source code as well as invariants. These conditions are written by the developer in comments throughout the sources or in a separate file. The tool then comes with three different variants to check the correctness of source code specifications:
 
  * Static analysis
  * Extended static analysis (ESC)
  * Runtime assertion checker (RAC)
 
-While the static analysis only checks the correctness of the JML statements, the ESC is able to verify the correctness of the progam's behavior to a certain extend by emplying automated or interactive proovers, like Yices. [citation\footnote]
+While the static analysis only checks the correctness of the JML statements, the ESC is able to verify the correctness of the progam's behavior to a certain extend by implying automated or interactive provers, like Yices. [citation\footnote]
 
 The RAC compiles the JML specifications in to the binary code and checks that invariants and pre- and post-conditions hold during executing the program. As the OpenJDK compiler is part of OpenJML, the AST generated during compile-time is altered so that actual assertions will be executed before and after each call of a method. Using aditional tools, it is possible to generate test-suites for the RAC-compiled Java binaries to quickly get huge coverage of unit testing. [citation\footnote]
+
+==== How OpenJML differs from other JML's ====
+
+suggested topics:
+
+... JML 2 / JML 4 ...
+
+Based on OpenJDK and for that reason can rely/use the compiler of OpenJML (explain more). [citation\footnote]
 
 == Overview of the Report ==
 
