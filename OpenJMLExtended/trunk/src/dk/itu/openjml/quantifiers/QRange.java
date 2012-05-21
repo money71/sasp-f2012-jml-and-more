@@ -216,8 +216,8 @@ class UnionQRange extends QRange {
 	/**
 	 * @returns The code for a union-operation on ranges
 	 */
-	public /*@ pure @*/ String getCode(){
-		return PACKAGE + "." + IntervalSet.class.toString() + ".union(" + left.translate() + ", " + right.translate() + ")";
+	protected /*@ pure @*/ String getCode(){
+		return PACKAGE + "." + IntervalSet.class.getName() + ".union(" + left.translate() + ", " + right.translate() + ")";
 	}
 }
 
@@ -236,7 +236,7 @@ class IntersectionQRange extends QRange {
 	 * @returns The code for an intersection-operation on ranges
 	 */
 	protected /*@ pure @*/ String getCode(){
-		return PACKAGE + "." + IntervalSet.class.toString() + ".intersect(" + left.translate() + ", " + right.translate() + ")";
+		return PACKAGE + "." + IntervalSet.class.getName() + ".intersect(" + left.translate() + ", " + right.translate() + ")";
 	}
 }
 
@@ -345,7 +345,7 @@ class LeafQRange extends QRange {
 	 * @returns The code for a range expression limited by two variables
 	 */
 	public /*@ pure @*/  String translate(){
-		return PACKAGE + "." + IntervalSet.class.toString() + ".interval(" + low + ", " + high + ")";
+		return PACKAGE + "." + IntervalSet.class.getName() + ".interval(" + low + ", " + high + ")";
 	}
 	
 	/**
