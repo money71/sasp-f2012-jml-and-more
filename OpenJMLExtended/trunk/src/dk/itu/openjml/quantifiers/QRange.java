@@ -137,7 +137,7 @@ public abstract class QRange {
 	 * @param e A JCBinary expression
 	 * @return The operator in e
 	 */
-	//@ ensures fresh(\result);
+	//@ ensures fresh(\result); #21
 	public static String getOperator(JCBinary e){
 		// NOTE: Could probably be improved #15
 		String op = e.toString();
@@ -169,7 +169,6 @@ public abstract class QRange {
 	 */
 	//@ requires left != null;
 	//@ requires right != null;
-	
 	public /*@ pure @*/ String translate(){
 		if(left.ignore()){
 			return right.translate();
