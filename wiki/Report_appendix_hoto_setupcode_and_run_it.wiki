@@ -76,7 +76,7 @@ And now no errors in the log *only* a bunch of warnings.
 Check out the code from svn (public repository):
 
 {{{
-svn co https://sasp-f2012-jml-and-more.googlecode.com/svn/OpenJMLExtended/tags/final_handin OpenJMLExtended
+svn co http://sasp-f2012-jml-and-more.googlecode.com/svn/OpenJMLExtended/tags/final_handin OpenJMLExtended
 }}}
 
 Then import OpenJMLExtended as Eclipse existing projects (here copying can safely be done).
