@@ -9,10 +9,12 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-
 /**
  * 
  * Test class for the IntervalSet
+ * 
+ * This test class requires to be run with the launch configuration:
+ *  - "Test_IntervalSet OpenJMLExtended.launch" 
  * 
  * Keep the specific min /max values in <b>fresh</b> mind: 
  * Min value: -2147483648
