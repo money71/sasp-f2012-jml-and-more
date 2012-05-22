@@ -26,7 +26,7 @@ curent == low && current == high
 
 this interval would fullfil the stop condition on the iterator, hence hasNext() always returns false. Therefore, no value would ever be produced in a for-loop, even though the method next() would return the (single only valid) value.
 
-To avoid these issues and to avoid over-compilcating the code by introducing several borderline cases, it might be easier to implement an algorithm outlined by [8]. While polyhedra analysis is an NP-hard problem [8], correctness is of more importance when doing program analysis.
+To avoid these issues and to avoid over-compilcating the code by introducing several borderline cases, it might be easier to implement the polyhedra analysis algorithm outlined by [8]. Polyhedra analysis seems to provide greater reliability, this technique has a high complexity, the problem is NP-hard [8], correctness is of more importance when doing program analysis.
 
 Still, we will keep working on the problem of interval representation to find a solution without turning to polyhedra analysis.
 
