@@ -28,7 +28,7 @@
   tabsize=2,                      % sets default tabsize to 2 spaces
   captionpos=b,                   % sets the caption-position to bottom
   breaklines=true,                % sets automatic line breaking
-  breakatwhitespace=true,        % sets if automatic breaks should only happen at whitespace
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
  % title=\lstname,                   % show the filename of files included with \lstinputlisting;
                                   % also try caption instead of title
   keywordstyle=\color{blue},          % keyword style
@@ -62,10 +62,10 @@
 \paperfontsize default
 \spacing single
 \use_hyperref true
-\pdf_title "A case study on the Point Cloud Library"
-\pdf_author "Lauge Groes, Florian Biermann"
-\pdf_subject "SASU Hand-in Spring 2012"
-\pdf_keywords "Point Cloud Library, Mockus et al. , Software Engineering, ITU"
+\pdf_title "Implementing Quantified Expressions for OpenJML"
+\pdf_author "Pelle Krøgholt, Florian Biermann"
+\pdf_subject "SASP Project Spring 2012"
+\pdf_keywords "JML, OpenJML, Quantified Expression, Pattern Matching"
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
 \pdf_bookmarksopen false
@@ -81,7 +81,7 @@
 \use_esint 1
 \use_mhchem 1
 \use_mathdots 1
-\cite_engine basic
+\cite_engine natbib_authoryear
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -290,7 +290,15 @@ Conclusion
 \end_layout
 
 \begin_layout Standard
-Put bibliography here.
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintAll"
+bibfiles "sasp"
+options "abbrvnat"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -318,7 +326,7 @@ name "sec:ForAll.java"
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -346,7 +354,7 @@ name "sec:QRange.java"
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -374,7 +382,7 @@ name "sec:IntervalSet.java"
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -406,7 +414,7 @@ Test_ForAll.java
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -427,7 +435,7 @@ Test_QRange.java
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -448,7 +456,7 @@ Test_IntervalSet.java
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -469,7 +477,7 @@ TestAll.java
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -490,7 +498,7 @@ Test_ForAllCompiledForRAC.java
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -505,5 +513,25 @@ ers/Test_ForAllCompiledForRAC.java}
 
 \end_layout
 
+\begin_layout Section
+Weblinks
+\end_layout
+
+\begin_layout Itemize
+Google Code SVN 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "https://sasp-f2012-jml-and-more.googlecode.com/svn/OpenJMLExtended/tags/final_handin"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
