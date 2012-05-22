@@ -6,6 +6,6 @@ We showed that it is possible to use pattern matching to efficiently determine i
 
 Our approach does not try to calculate values initially but represents the constraints as set-operations in a binary tree. Our implementation takes advantage of the Iterator and Iterable classes, so that a one can simply iterate over the interval representing object. It answers sub-intervals when asked for in combination with the current race value with regard to set operations inferred from the range expression. Therefore we avoid heavy calculations.
 
-We solved the issue of multiple race variables by introducing nested for-loops for quantified expressions with more than one declaration. However, there are still outstanding issues, like relying on declaration order, which can interfere with relational definitions of the declarations' ranges.
+We solved the issue of multiple race variables by introducing nested for-loops for quantified expressions with more than one declaration. However, there are still outstanding issues, like relying on declaration order, which can interfere with relational definitions inside the range expression.
 
 Throughout the report we reflected upon these implementations and outstanding issues extensively and pointed out further difficulties that need to be engaged for future work. Our implementation does still produce runnable code for the given test cases, and is, to a major extend, supported by JML specifications.
