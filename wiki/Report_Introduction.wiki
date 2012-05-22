@@ -13,14 +13,6 @@ While the static analysis only checks the correctness of the JML statements, the
 
 The RAC compiles the JML specifications in to the binary code and checks that invariants and pre- and post-conditions hold during executing the program. As the OpenJDK compiler is part of OpenJML, the AST generated during compile-time is altered so that actual assertions will be executed before and after each call of a method. Using aditional tools, it is possible to generate test-suites for the RAC-compiled Java binaries to quickly get huge coverage of unit testing. [citation\footnote]
 
-==== How OpenJML differs from other JML's ====
-
-suggested topics:
-
-... JML 2 / JML 4 ...
-
-Based on OpenJDK and for that reason can rely/use the compiler of OpenJML (explain more). [citation\footnote]
-
 == Overview of the Report ==
 
 In this project, we have investigated and implemented a solution for evaluating quantified statements over integers. In the current OpenJML trunk version [revision], quantified statements can only be evaluated for one race variable. As the ESC of OpenJML is currently being overhauled entirely, we focussed on developing a solution for the OpenJML RAC.
