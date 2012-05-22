@@ -1,3 +1,11 @@
-= Discussion =
+= Conclusion =
 
-What did we show in this report? Is our contribution of any benefit? How does it compete with polynomial analysis? What is missing to make this a full-blown part of OpenJML?
+In this report we described our approach towards implementing quantified expressions (more precisely the for all expression) in an efficient way for OpenJML. While the described implementation is still experimental and not using all the internal structures of OpenJML, it should be possible to implement our approach in a more tied-in fashion. This would mean that instead of returning strings containing code, the implementation would modify a given AST before compilation so that the quantified expressions would be executed during RAC, much like it is performed with other checks already.
+
+We showed that it is possible to use pattern matching to efficiently determine interval borders, even though our implementation is still lacking some rigorousness. Relational or recursive definitions are not properly matched yet. However, we believe that it would be possible to implement both similar to how it has been implemented originally in JML2. While polyhedra analysis seems to provide greater reliability, this technique has a high complexity, the problem is NP-hard [citation].
+
+Our approach does not try to calculate values initially but represents the constraints as set-operations in a binary tree. Our implementation takes advantage of the Iterator and Iterable classes, so that a one can simply iterate over the interval representing object. It answers sub-intervals when asked for in combination with the current race value with regard to set operations inferred from the range expression. Therefore we avoid heavy calculations.
+
+We solved the issue of multiple race variables by introducing nested for-loops for quantified expressions with more than one declaration. However, there are still outstanding issues, like relying on declaration order, which can interfere with relational definitions of the declarations' ranges.
+
+Throughout the report we reflected upon these implementations and outstanding issues extensively and pointed out further difficulties that need to be engaged for future work. Our implementation does still produce runnable code for the given test cases, and is, to a major extend, supported by JML specifications.
