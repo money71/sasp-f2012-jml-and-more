@@ -202,20 +202,388 @@ LatexCommand tableofcontents
 Introduction
 \end_layout
 
+\begin_layout Standard
+This project report for the course Advanced Models and Program in spring
+ 2012 documents our efforts to extend the OpenJML
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "http://jmlspecs.sourceforge.net/"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ framework.
+ Our project focuses on implementing quantified statements into the runtime
+ assertion checker of OpenJML.
+\end_layout
+
 \begin_layout Subsection
 An Overview of OpenJML
+\end_layout
+
+\begin_layout Standard
+OpenJML is a tool to verify the correctness of Java 7 code by specifying
+ the behavior of classes and methods using mathematical models 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "cok_openjml:_2011,cok_openjml_2011"
+
+\end_inset
+
+.
+ It is built on top of the OpenJDK
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "http://www.openjdk.org"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ compiler and has a Java-like syntax (the JML syntax) to add pre- and post-condi
+tions to source code as well as invariants.
+ These conditions are written by the developer in comments throughout the
+ sources or in a separate file.
+ The tool then comes with three different variants to check the correctness
+ of source code specifications:
+\end_layout
+
+\begin_layout Itemize
+Static analysis
+\end_layout
+
+\begin_layout Itemize
+Extended static analysis (ESC)
+\end_layout
+
+\begin_layout Itemize
+Runtime assertion checker (RAC)
+\end_layout
+
+\begin_layout Standard
+While the static analysis only checks the correctness of the JML statements,
+ the ESC is able to verify the correctness of the program's behavior to
+ a certain extend by implying automated like Yices or interactive provers
+ like Coq 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "cok_openjml:_2011,burdy_overview_2005,chalin_beyond_2006"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The RAC compiles the JML specifications in to the binary code and checks
+ that invariants and pre- and post-conditions hold during executing the
+ program.
+ Because the OpenJDK compiler is part of OpenJML, the AST generated during
+ compile-time can be altered directly so that actual assertions will be
+ executed before and after each call of a method.
+ Using additional tools, it is possible to generate test-suites for the
+ RAC-compiled Java binaries to quickly get huge coverage of unit testing
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "cheon_runtime_2002,zimmerman_jmlunit:_2011"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
 Overview of the Report
 \end_layout
 
+\begin_layout Standard
+In this project, we have investigated and implemented a solution for evaluating
+ quantified statements over integers.
+ In the current OpenJML trunk version
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "http://sourceforge.net/apps/trac/jmlspecs/log/OpenJML/trunk/"
+
+\end_inset
+
+, Revision 2543
+\end_layout
+
+\end_inset
+
+, quantified statements can only be evaluated for one race variable.
+ As the ESC of OpenJML is currently being overhauled entirely, we focused
+ on developing a solution for the OpenJML RAC.
+\end_layout
+
+\begin_layout Standard
+In the following report, we will outline the problem further and give examples
+ of currently not evaluated quantified statements.
+ For brevity, we will focus only on the implementation of the 
+\emph on
+for all
+\emph default
+ expression.
+ Next we will describe a number of possible solutions, starting with the
+ most naive approach, and explain our design decisions in the solution.
+ We will then explain our solution in detail, followed by a section to outline
+ future work on our proposed solution
+\end_layout
+
 \begin_layout Section
 Problem Outline
 \end_layout
 
+\begin_layout Standard
+In this section we will outline the current state of the implementation
+ of quantified expressions in OpenJML RAC
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+ [6]
+\end_layout
+
+\end_inset
+
+.
+ Further we will elaborate on the problem by giving an example of a naive
+ approach towards solving the evaluation of range expressions and point
+ to more cases where the execution of a quantified expression is difficult.
+ 
+\end_layout
+
+\begin_layout Standard
+For brevity and to get a deeper understanding of the underlying implications
+ and problems, we have focused on the 
+\emph on
+
+\backslash
+forall
+\emph default
+ statement over integers during the project.
+ Since all quantified expressions can be evaluated using the same technique
+ just with a minor alteration, it will be possible to apply our results
+ to general quantifiers in OpenJML.
+\end_layout
+
 \begin_layout Subsection
 Current Implementation of Quantifiers in OpenJML
+\end_layout
+
+\begin_layout Standard
+As of revision [rev] in the OpenJML trunk, the following statement will
+ be compiled into RAC binary code:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+//@ requires (
+\backslash
+forall int i; 0 <= i && i <= 10; p(i));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $p(i)$
+\end_inset
+
+ is a predicate that should hold for all 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ A more general form is:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+//@ requires (
+\backslash
+forall i; R; P); 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $R$
+\end_inset
+
+ is a boolean expression that defines a range and 
+\begin_inset Formula $P$
+\end_inset
+
+ a boolean expression that defines the predicate which should hold for all
+ 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ The notation is similar to the set-builder notation, where the values inside
+ of a set are denoted through a boolean expression:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+i\in N|0\leq i\wedge i\leq10
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The OpenJML RAC will compile a check into the method decorated with the
+ above JML statement that runs a 
+\emph on
+for-loop
+\emph default
+ for each 
+\begin_inset Formula $i$
+\end_inset
+
+ for which the given 
+\begin_inset Formula $P$
+\end_inset
+
+ is asserted.
+ If the check runs over an 
+\begin_inset Formula $i$
+\end_inset
+
+ for which 
+\begin_inset Formula $P$
+\end_inset
+
+ does not hold, an Exception is thrown, notifying the user about the violation
+ of the condition.
+\end_layout
+
+\begin_layout Standard
+However, conditions in JML that use the 
+\emph on
+
+\backslash
+forall
+\emph default
+ statement are likely to become more elaborate.
+ For example:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+//@ requires (
+\backslash
+forall int i, j; (100 >= i && i > 0 || i == 200) && (-100 < j && 100 > j);
+ p(i) && q(j));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $p(i)$
+\end_inset
+
+ and 
+\begin_inset Formula $q(j)$
+\end_inset
+
+ are predicates that must hold for all 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $j$
+\end_inset
+
+.
+ Here, we have multiple new issues:
+\end_layout
+
+\begin_layout Itemize
+There is more than one race variable declared in the expression.
+\end_layout
+
+\begin_layout Itemize
+The order of the boolean range description is entirely arbitrary.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $i$
+\end_inset
+
+ can not only be inside a single well defined range but additionally become
+ a value outside of 
+\begin_inset Formula $[1,100]$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+An expression like given in this example will currently (as of trunk revision
+ 2543) not be executed when compiled into RAC in OpenJML.
+ This is mostly due to the declaration of two race variables.
+ However, OpenJML RAC relies on a heuristic to identify the set of values
+ which 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $j$
+\end_inset
+
+ can take and therefore highly relies on the layout of the expression.
 \end_layout
 
 \begin_layout Subsection
