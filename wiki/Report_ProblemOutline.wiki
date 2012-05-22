@@ -1,6 +1,6 @@
 = Problem Outline =
 
-In this section we will outline the current state of the implementation of quantified expressions in OpenJML RAC (as of trunk revision [rev]). Further we will elaborate on the problem by giving an example of a naive approach towards solving the evaluation of range expressions and point to more cases where the execution of a quantified expression is difficult. 
+In this section we will outline the current state of the implementation of quantified expressions in OpenJML RAC [6]. Further we will elaborate on the problem by giving an example of a naive approach towards solving the evaluation of range expressions and point to more cases where the execution of a quantified expression is difficult. 
 
 For brevity and to get a deeper understanding of the underlying implications and problems, we have focussed on the _\forall_ statement over integers during the project. Since all quantified expressions can be evaluated using the same technique just with a minor alteration, it will be possible to apply our results to general quantifiers in OpenJML.
 
@@ -24,7 +24,7 @@ where *R* is a boolean expression that defines a range and *P* a boolean express
 \math{i \in N|0 \leq i \and i \leq 10}
 }}}
 
-The OpenJML RAC will compile a check into the method recorated with the above JML statement that runs a _for_-loop for each *i* for which the given *P* is asserted. If the check runs over an *i* for which *P* does not hold, an Exception is thrown, notifying the user about the violation of the condition.
+The OpenJML RAC will compile a check into the method decorated with the above JML statement that runs a _for_-loop for each *i* for which the given *P* is asserted. If the check runs over an *i* for which *P* does not hold, an Exception is thrown, notifying the user about the violation of the condition.
 
 However, conditions in JML that use the _\forall_ statement are likely to become more elaborate. For example:
 
