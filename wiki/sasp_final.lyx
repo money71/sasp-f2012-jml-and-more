@@ -202,16 +202,80 @@ LatexCommand tableofcontents
 Introduction
 \end_layout
 
+\begin_layout Subsection
+An Overview of OpenJML
+\end_layout
+
+\begin_layout Subsection
+Overview of the Report
+\end_layout
+
 \begin_layout Section
 Problem Outline
+\end_layout
+
+\begin_layout Subsection
+Current Implementation of Quantifiers in OpenJML
+\end_layout
+
+\begin_layout Subsection
+The Naive Approach
+\end_layout
+
+\begin_layout Subsection
+Further Difficulties
 \end_layout
 
 \begin_layout Section
 Implementation
 \end_layout
 
+\begin_layout Subsection
+QRange - Implementation of a Pattern Matcher
+\end_layout
+
+\begin_layout Subsubsection
+Rigorous Pattern Matching
+\end_layout
+
+\begin_layout Subsubsection
+Code Generation
+\end_layout
+
+\begin_layout Subsection
+IntervalSet - Binary Tree Representing Set Operations
+\end_layout
+
+\begin_layout Subsection
+ForAll - Generating For-Loops for Multiple Race Variables
+\end_layout
+
+\begin_layout Subsection
+JML Specifications
+\end_layout
+
+\begin_layout Subsection
+Testing
+\end_layout
+
 \begin_layout Section
 Outstanding Issues and Future Work
+\end_layout
+
+\begin_layout Subsection
+Pattern Matching
+\end_layout
+
+\begin_layout Subsection
+Interval Representation
+\end_layout
+
+\begin_layout Subsection
+Loop Generation
+\end_layout
+
+\begin_layout Subsection
+Validation
 \end_layout
 
 \begin_layout Section
@@ -238,7 +302,18 @@ Put bibliography here.
 
 \begin_layout Section
 \start_of_appendix
+Instructions on How to Execute the Code
+\end_layout
+
+\begin_layout Section
 ForAll.java
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:ForAll.java"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -260,6 +335,13 @@ s/ForAll.java}
 
 \begin_layout Section
 QRange.java
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:QRange.java"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -281,6 +363,13 @@ s/QRange.java}
 
 \begin_layout Section
 IntervalSet.java
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:IntervalSet.java"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -302,6 +391,13 @@ s/IntervalSet.java}
 
 \begin_layout Section
 JUnit Tests
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:JUnit-Tests"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
