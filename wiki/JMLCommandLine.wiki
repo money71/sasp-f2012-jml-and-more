@@ -32,6 +32,14 @@ type and syntax checking
 which surpriced me a bit - had not expected compiling yet... todo?)
 
 
+Lets accept genrics with *-G*:
+
+::
+
+    $ sh /usr/local/JML/bin/jmlc-unix -G -R src -d jml-compiled
+
+
+
 jmlc
 ----
 compile 
