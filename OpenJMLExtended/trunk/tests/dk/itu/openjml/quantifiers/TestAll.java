@@ -10,6 +10,11 @@ import org.junit.runners.Suite;
 	Test_QRange.class,
 	Test_ForAllCompiledForRAC.class
 } )
+
+/**
+ * This test case requires to be run with the launch configuration:
+ * - TestAllOpenJMLExtended.launch
+ */
 public class TestAll {
 
 }

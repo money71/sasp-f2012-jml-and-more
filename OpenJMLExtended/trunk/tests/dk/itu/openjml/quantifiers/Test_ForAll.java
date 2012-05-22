@@ -12,7 +12,10 @@ import org.junit.Test;
 
 import com.sun.tools.javac.tree.JCTree.JCParens;
 
-
+/**
+ * This test class requires to be run with the launch configuration:
+ * - "Test_ForAll OpenJMLExtended.launch"
+ */
 public class Test_ForAll {
 	
 	List<String> qExprsJml;
