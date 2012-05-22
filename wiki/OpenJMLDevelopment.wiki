@@ -23,7 +23,7 @@ Create a standalone folder/workspace for the code:
 
 }}}
 
-Create a seperate Eclipse workspace which contains no code:
+Create a separate Eclipse workspace which contains no code:
 
 {{{
 
