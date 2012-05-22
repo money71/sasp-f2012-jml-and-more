@@ -16,28 +16,24 @@ Works for us at OSX 10.6.8 and Ubuntu 12.4.
 Create a standalone folder/workspace for the code:
 
 {{{
+$ cat open_jml_trunk_sourcecode/svn_update.sh 
+#!/bin/sh
 
-    $ cat open_jml_trunk_sourcecode/svn_update.sh 
-    #!/bin/sh
-
-    svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/JMLAnnotations/trunk JMLAnnotations
-    svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJDK OpenJDK
-    svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJML OpenJML
-    svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJML-UpdateSite OpenJML-UpdateSite
-    svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJMLFeature OpenJMLFeature
-    svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJMLUI OpenJMLUI
-    svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/Specs/trunk Specs
-    svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/vendor vendor
-
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/JMLAnnotations/trunk JMLAnnotations
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJDK OpenJDK
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJML OpenJML
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJML-UpdateSite OpenJML-UpdateSite
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJMLFeature OpenJMLFeature
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJMLUI OpenJMLUI
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/Specs/trunk Specs
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/vendor vendor
 }}}
 
 Create a separate Eclipse workspace which contains no code:
 
 {{{
-
-    $ ls -a open_jml_trunk_workspace
-    .  ..  .metadata
-
+$ ls -a open_jml_trunk_workspace
+.  ..  .metadata
 }}}
 
 Get a *fresh* Eclipse SDK (both 32/64 bit 3.7.2 worked for us).
@@ -80,12 +76,10 @@ And now no errors in the log *only* a bunch of warnings.
 Check out the code from svn (public repository):
 
 {{{
-    svn co https://sasp-f2012-jml-and-more.googlecode.com/svn/OpenJMLExtended/tags/final_handin OpenJMLExtended
+svn co https://sasp-f2012-jml-and-more.googlecode.com/svn/OpenJMLExtended/tags/final_handin OpenJMLExtended
 }}}
 
-
 Then import OpenJMLExtended as Eclipse existing projects (here copying can safely be done).
-
 
 == Run OpenJMLExtended Eclipse project  ==
 
