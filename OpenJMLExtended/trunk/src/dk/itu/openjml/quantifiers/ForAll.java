@@ -82,10 +82,8 @@ public class ForAll {
 	/**
 	 * @return A list containing all JCVariableDecl objects of the expression tree
 	 */
-	// FIXME: it assumes toList() doesn't do anything in ListBuffer at this point
-	// - can we say anything more in terms om jml specs... #21 
 	protected /*@ pure @*/ ListBuffer<JCVariableDecl> getDeclarations(){
-		// expr.decls is a ListBuffer then turned into a javac List
+		// Note: expr.decls is a ListBuffer which can be turned into a javac List w. toList()
 		return expr.decls;
 	}
 	
