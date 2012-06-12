@@ -82,7 +82,7 @@ public class Test_ForAll {
 		// s.add("//@ requires (\\forall int i; 0 <= i && i <= dk.itu.openjml.quantifiers.Test_ForAll.array.length; i < 4 );");
 		// s.add("//@ requires (\\forall int i; 0 <= i && i <= array.length; i < 4 );");
 		// - don't use "i" here use "x" because of the limitations pattern matcher (long story look into: Test_AdHoc + #15) 
-		//s.add("//@ requires (\\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Test_ForAll.array.length; x <= 4 );");
+		s.add("//@ requires (\\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Test_ForAll.array.length; x <= 4 );");
 		//s.add("//@ requires (\\forall int x; 0 <= x && x < dk.itu.openjml.quantifiers.Test_ForAll.array.length-1; x < 4 );");
 		// - the 2 following expressions generate currently the same as the above ^^
 		// Expression 8:
