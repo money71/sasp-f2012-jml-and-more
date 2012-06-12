@@ -143,12 +143,9 @@ public abstract class QRange {
 	// NOTE: #21
 	//@ ensures fresh(\result);
 	public static String getOperator(JCBinary e){
-		// NOTE: #15
+		// NOTE: #15 #31
 		String op = e.toString();
-		op = op.replace(e.lhs.toString(), "");
-		op = op.replace(e.rhs.toString(), "");
-		op = op.replace(" ", "");
-		return op;
+		return op.replace(e.lhs.toString(), "").replace(e.rhs.toString(), "").replace(" ", "");
 	}
 	
 	/**

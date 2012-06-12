@@ -5,8 +5,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import dk.itu.openjml.quantifiers.QRange;
-
 public class Test_QRange extends Test_ForAll {
 
 	@Before
@@ -27,5 +25,14 @@ public class Test_QRange extends Test_ForAll {
 			System.out.println(p);
 		}
 	}
+	
+	/**
+	 * Hack: Shadow super.testForAll()
+	 * NB! The drawback of doing sub class in unit test class
+	 * is that it also do run the tests from class we inherit from 
+	 * so we lose the atomic approach - we e.g. just want to run testCompute()... 
+	 */
+	@Test
+	public void testForAll() { }
 	
 }
