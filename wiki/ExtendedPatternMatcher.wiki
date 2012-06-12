@@ -39,9 +39,10 @@ match op with
 | "&&" => Intersection({E1}, {E2})
 | "||" => Union({E1}, {E2})
 
-| "==>" => 
-| "<==" =>
-| "<==>" =>
+# This requires alteration of the AST
+| "==>" => {(E1 && E2) || !E1}
+| "<==" => {(E2 && E1) || !E2}
+| "<==>" => {
 
 | "<" => {E1, "<=" , E2 − 1}
 | ">" => {E1, ">=" , E2 + 1}
@@ -49,7 +50,12 @@ match op with
 | "<=" => high = E2
 | ">=" => low = E2
 
-| "==" => low = E2 , high = E2
+# This requires alteration of the AST
+| "==" => match E2 with
+       	  | CONSTANT => low = E2, high = E2
+	  | var => Ignore()
+	  | another_var => 
+	  
 | "!=" => low = E2 + 1, high = E2 − 1
 
 | _ => Exception
