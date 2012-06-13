@@ -30,10 +30,6 @@ public class Test_ForAll {
 	final static String FORALL_CLASS_HEAD = "class JML$ITU$ForAll"; 
 	final static String FORALL_CLASS_TOP = "{ public static void forAll() {";
 	final static String FORALL_CLASS_BOTTOM = "}}";
-
-	// Reguired for \forall expressions referencing 'array' #31 
-	public static int[] array = {1,2,3,4};
-	public final static int[] arrayFinal = {1,2,3,4};
 	
 	// Do not remove escape sequences!
 	final static String TEST_CLASS_HEAD = "class Test";
@@ -82,12 +78,12 @@ public class Test_ForAll {
 		// s.add("//@ requires (\\forall int i; 0 <= i && i <= dk.itu.openjml.quantifiers.Test_ForAll.array.length; i < 4 );");
 		// s.add("//@ requires (\\forall int i; 0 <= i && i <= array.length; i < 4 );");
 		// - don't use "i" here use "x" because of the limitations pattern matcher (long story look into: Test_AdHoc + #15) 
-		s.add("//@ requires (\\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Test_ForAll.array.length; x <= 4 );");
+		s.add("//@ requires (\\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Utils.array.length; x <= 4 );");
 		//s.add("//@ requires (\\forall int x; 0 <= x && x < dk.itu.openjml.quantifiers.Test_ForAll.array.length-1; x < 4 );");
 		// - the 2 following expressions generate currently the same as the above ^^
 		// Expression 8:
-		s.add("//@ requires (\\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Test_ForAll.array.length || 0 <= dk.itu.openjml.quantifiers.Test_ForAll.array.length ; x <= 4 );");		
-		//s.add("//@ requires (\\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Test_ForAll.array.length && 2 <= dk.itu.openjml.quantifiers.Test_ForAll.array.length ; x <= 4 );");
+		s.add("//@ requires (\\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Utils.array.length || 0 <= dk.itu.openjml.quantifiers.Test_ForAll.array.length ; x <= 4 );");		
+		//s.add("//@ requires (\\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Utils.array.length && 2 <= dk.itu.openjml.quantifiers.Test_ForAll.array.length ; x <= 4 );");
 		
 	}
 
@@ -134,7 +130,12 @@ public class Test_ForAll {
 		}
 		
 		openJmlApi.setOption("-noPurityCheck");
+		
+		// Add class's the RAC should know about: 
 		openJmlApi.parseAndCheck(new File("src/dk/itu/openjml/quantifiers/IntervalSet.java"));
+		// - though entire test class's don't work well: 
+		// openJmlApi.parseAndCheck(new File("tests/dk/itu/openjml/quantifiers/Test_ForAll.java"));
+		openJmlApi.parseAndCheck(new File("tests/dk/itu/openjml/quantifiers/Utils.java"));
 	}
 	
 	/**
@@ -148,9 +149,7 @@ public class Test_ForAll {
 			ForAll f = new ForAll(t);
 			try{
 				JmlCompilationUnit cForAll = openJmlApi.parseString("forAll$" + count, FORALL_CLASS_HEAD + count + FORALL_CLASS_TOP + f.translate() + FORALL_CLASS_BOTTOM);
-				// Note: #31 we compromise a bit here and for now only fail on direct exceptions 
-				// - related to the "forAll$<some number>:1: error: package dk.itu.openjml.quantifiers.Test_ForAll does not exist"
-				// Assert.assertEquals(f.toString(), 0, openJmlApi.enterAndCheck(cForAll));
+				Assert.assertEquals(f.toString(), 0, openJmlApi.enterAndCheck(cForAll));
 				System.out.println(openJmlApi.prettyPrint(cForAll, false));
 			} catch (Exception e){
 				Assert.fail(t.toString() + ", " + f.toString() + ", " + e.toString());
