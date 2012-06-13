@@ -41,21 +41,6 @@ public class Test_ForAll {
 		s.add("//@ requires (\\forall int i, j, h; 0 <= i && i < 10 && 50 < j && j <= 100; i == (j - 1));");
 		s.add("//@ requires (\\forall int i; -100 < i && i < 0 || 0 < i && i < 100; i != 0);");
 		// #27 
-
-		// Expression 7:
-		// #31: 
-		// Note: "i < 4" just represent some predicate - at the moment our solution requires 
-		// Specifying an predicate - at least in the tests - s.add("//@ requires (\\forall int i; 0 < i && i < 4; ; );");
-		// s.add("//@ requires (\\forall int i; 0 <= i && i <= dk.itu.openjml.quantifiers.Test_ForAll.array.length; i < 4 );");
-		// s.add("//@ requires (\\forall int i; 0 <= i && i <= array.length; i < 4 );");
-		// - don't use "i" here use "x" because of the limitations pattern matcher (long story look into: Test_AdHoc + #15) 
-		s.add("//@ requires (\\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Utils.array.length; x <= 4 );");
-		//s.add("//@ requires (\\forall int x; 0 <= x && x < dk.itu.openjml.quantifiers.Test_ForAll.array.length-1; x < 4 );");
-		// - the 2 following expressions generate currently the same as the above ^^
-		// Expression 8:
-		s.add("//@ requires (\\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Utils.array.length || 0 <= dk.itu.openjml.quantifiers.Test_ForAll.array.length ; x <= 4 );");		
-		//s.add("//@ requires (\\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Utils.array.length && 2 <= dk.itu.openjml.quantifiers.Test_ForAll.array.length ; x <= 4 );");
-		
 	}
 
 	
@@ -101,12 +86,7 @@ public class Test_ForAll {
 		}
 		
 		openJmlApi.setOption("-noPurityCheck");
-		
-		// Add class's the RAC should know about: 
 		openJmlApi.parseAndCheck(new File("src/dk/itu/openjml/quantifiers/IntervalSet.java"));
-		// - though entire test class's don't work well: 
-		// openJmlApi.parseAndCheck(new File("tests/dk/itu/openjml/quantifiers/Test_ForAll.java"));
-		openJmlApi.parseAndCheck(new File("tests/dk/itu/openjml/quantifiers/Utils.java"));
 	}
 	
 	/**
