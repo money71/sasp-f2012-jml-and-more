@@ -64,6 +64,7 @@ public class Test_IntervalSet {
 		try{
 			for(int n: u){
 				assertTrue("Failed with " + n, 0 <= n && n <= 9 || 11 <= n && n <= 20);
+				System.out.println("Union Gap " + n);
 			}
 		} catch (Exception e){
 			Assert.fail();
@@ -102,6 +103,7 @@ public class Test_IntervalSet {
 		try{				
 			for(int n: ui){
 				assertTrue("Failed with " + n, 0 <= n && n <= 100 && 50 <= n && n <= 150 || 40 <= n && n <= 60);
+				System.out.println("United Intersection " + n);
 			}
 		} catch (Exception e){
 			Assert.fail();
@@ -183,6 +185,7 @@ public class Test_IntervalSet {
 			for(int n: u){
 				assertTrue(n == 0 || n == 10);
 				count++;
+				System.out.println("Union Singleton: " + n);
 			}
 			assertEquals(2, count);	
 		} catch (Exception e){

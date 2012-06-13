@@ -86,16 +86,17 @@ public abstract class IntervalSet implements Iterator<Integer>, Iterable<Integer
 	//@ ensures \result == false;
 	public boolean hasNext() {
 		// Get the next valid range
-		if(!initialized || current < high){
+//		if(!initialized || current < high){
+		if(!initialized || current == high){
 			initialized = true;
 			getNextRange();
 		}
 		
 		// This assures that false is returned if we reached
 		// the end of the interval and the interval is right inclusive!
-		if(low == current && high == current){
-			return false;
-		}
+//		if(low == current && high == current){
+//			return false;
+//		}
 		
 		return low <= current && current <= high;
 	}
