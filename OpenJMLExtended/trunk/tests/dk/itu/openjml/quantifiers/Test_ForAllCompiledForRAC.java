@@ -69,6 +69,25 @@ public class Test_ForAllCompiledForRAC {
 		}
 	}
 	
+	@Test
+	public void testJML$ITU$ForAll7() {
+		try{
+			JML$ITU$ForAll7.forAll();
+		} catch (Exception e){
+			Assert.fail();
+		}
+	}
+	
+	@Test
+	public void testJML$ITU$ForAll8() {
+		try{
+			JML$ITU$ForAll8.forAll();
+		} catch (Exception e){
+			Assert.fail();
+		}
+	}
+
+	
 }
 
 
@@ -105,7 +124,7 @@ class JML$ITU$ForAll2 {
     for (int i : dk.itu.openjml.quantifiers.IntervalSet.union(dk.itu.openjml.quantifiers.IntervalSet.interval(5, Integer.MAX_VALUE), dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, 10 - 1))) {
       assert i < 10;
       // Repeat for JUNIT: 
-      assertTrue(i < 10);      
+      assertTrue(i < 10);
     }
   }
 }
@@ -189,3 +208,55 @@ class JML$ITU$ForAll6 {
     }
   }
 }
+
+
+/* 
+ *  //@ requires \\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Test_ForAll.array.length; x <= 4;
+ *  P holds true for 0,1,2,3,4
+ *  dk.itu.openjml.quantifiers.Test_ForAll.array.length is 4
+ */
+class JML$ITU$ForAll7 { 
+	
+	JML$ITU$ForAll7() {
+		super();
+	}
+	
+	public static void forAll() {
+		for(int x : dk.itu.openjml.quantifiers.IntervalSet.intersect(
+				dk.itu.openjml.quantifiers.IntervalSet.interval(0, Integer.MAX_VALUE), 
+				dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, dk.itu.openjml.quantifiers.Test_ForAll.array.length))) {
+			assert x <= 4;
+		    // Repeat for JUNIT: 
+			assertTrue(x <= 4);
+			}
+	}
+}
+
+/*
+ * //@ requires \\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Test_ForAll.array.length || 0 <= dk.itu.openjml.quantifiers.Test_ForAll.array.length ; x <= 4;
+ *  P holds true for 0,1,2,3,4
+ *  dk.itu.openjml.quantifiers.Test_ForAll.array.length is 4
+ */
+class JML$ITU$ForAll8 { 
+	public static void forAll() {
+		for(int x : dk.itu.openjml.quantifiers.IntervalSet.intersect(
+				dk.itu.openjml.quantifiers.IntervalSet.interval(0, Integer.MAX_VALUE), 
+				dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, dk.itu.openjml.quantifiers.Test_ForAll.array.length))) {
+			assert x <= 4;
+		    // Repeat for JUNIT: 
+			assertTrue(x <= 4);			
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
