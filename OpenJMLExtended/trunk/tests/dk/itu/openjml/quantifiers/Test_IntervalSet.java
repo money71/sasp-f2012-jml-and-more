@@ -194,6 +194,24 @@ public class Test_IntervalSet {
 	}
 	
 	@Test
+	public void testUnionSingletonReverse() {
+		IntervalSet u = IntervalSet.union(IntervalSet.interval(10, 10), IntervalSet.interval(0, 0));
+		try{
+			int count = 0;
+			for(int n: u){
+				assertTrue(n == 0 || n == 10);
+				count++;
+			}
+			assertEquals(2, count);	
+		} catch (Exception e){
+			Assert.fail();
+		}
+	}
+
+	
+	
+	
+	@Test
 	public void testOverlappingIntersection() {
 		IntervalSet i = IntervalSet.intersect(IntervalSet.interval(0, 20), IntervalSet.interval(0, 10));
 		try{
@@ -216,4 +234,59 @@ public class Test_IntervalSet {
 			Assert.fail();
 		}
 	}
+	
+	// 0 < i && i < 10
+	@Test
+	public void testAdHocExpression_1() {
+		IntervalSet u = IntervalSet.intersect(
+				IntervalSet.interval(
+						0+1,Integer.MAX_VALUE), IntervalSet.interval(
+						Integer.MIN_VALUE, 10-1));
+		try{
+			int count = 0;
+			for(int n: u){
+				assertTrue(n == count+1);
+				count++;
+			}
+			assertEquals(9, count);	
+		} catch (Exception e){
+			Assert.fail();
+		}
+
+	}
+	
+	// 0 < i && i < 10 || 11 
+	@Test
+	public void testAdHocExpression_2() {
+		IntervalSet u = IntervalSet.union(
+			IntervalSet.intersect(
+					IntervalSet.interval(1,Integer.MAX_VALUE), 
+					IntervalSet.interval(Integer.MIN_VALUE, 10-1)), 
+					IntervalSet.interval(11,11)
+					);
+		for(int n: u){
+			assertTrue("Failed with " + n, 0 < n && n <= 9 || 11 == n);
+			System.out.println(n);
+		}
+		
+		try{
+			int count = 0;
+			for(int n: u){
+				assertTrue(n == count+1);
+				count++;
+			}
+			assertEquals(10, count);	
+		} catch (Exception e){
+			Assert.fail();
+		}
+
+	}	
+	
+	
+
+	
+	
+	
+	
+	
 }
