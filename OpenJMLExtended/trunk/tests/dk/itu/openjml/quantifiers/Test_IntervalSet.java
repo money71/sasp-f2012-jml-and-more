@@ -62,10 +62,13 @@ public class Test_IntervalSet {
 	public void testUnionGap() {
 		IntervalSet u = IntervalSet.union(IntervalSet.interval(11, 20), IntervalSet.interval(0, 9));
 		try{
+			int count = 0;
 			for(int n: u){
 				assertTrue("Failed with " + n, 0 <= n && n <= 9 || 11 <= n && n <= 20);
-				System.out.println("Union Gap " + n);
+				//System.out.println("Union Gap " + n);
+				count++;
 			}
+			assertEquals("Failed with wrong counts" + count,20, count);			
 		} catch (Exception e){
 			Assert.fail();
 		}
@@ -101,10 +104,13 @@ public class Test_IntervalSet {
 		IntervalSet i = IntervalSet.intersect(IntervalSet.interval(0, 100), IntervalSet.interval(50, 150));
 		IntervalSet ui = IntervalSet.union(i, IntervalSet.interval(40, 60));
 		try{				
+			int count = 0;
 			for(int n: ui){
 				assertTrue("Failed with " + n, 0 <= n && n <= 100 && 50 <= n && n <= 150 || 40 <= n && n <= 60);
-				System.out.println("United Intersection " + n);
+				// System.out.println("United Intersection " + n);
+				count++;
 			}
+			assertEquals("Failed with wrong counts" + count, 61, count);
 		} catch (Exception e){
 			Assert.fail();
 		}
@@ -277,11 +283,33 @@ public class Test_IntervalSet {
 
 	}	
 	
-	
 
-	
-	
-	
+	// 0 < i && i < 10 || 11 < i && i < 20  
+	@Test
+	public void testAdHocExpression_3() {
+		IntervalSet u = IntervalSet.union(
+			IntervalSet.intersect(
+					IntervalSet.interval(1,Integer.MAX_VALUE), 
+					IntervalSet.interval(Integer.MIN_VALUE, 10-1)
+					), 
+					IntervalSet.union(
+						IntervalSet.interval(12,Integer.MAX_VALUE),
+						IntervalSet.interval(Integer.MIN_VALUE,19)
+					)
+				);
+		try{
+			int count = 0;
+			for(int n: u){
+				assertTrue("Failed with n as: " + n, 0 < n && n <= 9 || 11 < n && n <= 19);
+				count++;
+			}
+			// 9 + 7
+			assertEquals(16, count);	
+		} catch (Exception e){
+			Assert.fail();
+		}
+
+	}	
 	
 	
 }
