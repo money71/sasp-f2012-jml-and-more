@@ -22,7 +22,8 @@ public class Test_ForAllCompiledForRAC {
 			Assert.fail(e.toString());
 		}
 	}
-	
+
+	// Note: intended to fail
 	@Test
 	public void testJML$ITU$ForAll2() {
 		try{
@@ -32,15 +33,18 @@ public class Test_ForAllCompiledForRAC {
 		}
 	}
 
-//	@Test
-//	public void testJML$ITU$ForAll3() {
-//		try{
-//			JML$ITU$ForAll3.forAll();
-//		} catch (Exception e){
-//			Assert.fail(e.toString());
-//		}
-//	}
+	// NB! Reduced to 100 iterations
+	@Test
+	public void testJML$ITU$ForAll3() {
+		try{
+			JML$ITU$ForAll3.forAll();
+		} catch (Exception e){
+			Assert.fail(e.toString());
+		}
+	}
 	
+	
+	// Note: intended to fail
 	@Test
 	public void testJML$ITU$ForAll4() {
 		try{
@@ -113,7 +117,7 @@ class JML$ITU$ForAll1 {
 
 /**
  * s.add("//@ requires (\\forall int i; i >= 5 || i < 10; i < 10);");
- * P, predicate does NOT hold always true for this one.RAC 
+ * P, predicate does NOT hold always true for this one on RAC. 
  */
 class JML$ITU$ForAll2 {
   
@@ -123,9 +127,9 @@ class JML$ITU$ForAll2 {
   
   public static void forAll() {
     for (int i : dk.itu.openjml.quantifiers.IntervalSet.union(dk.itu.openjml.quantifiers.IntervalSet.interval(5, Integer.MAX_VALUE), dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, 10 - 1))) {
-      assert i < 10;
-      // Repeat for JUNIT: 
-      assertTrue("Fails with i == " + i, i < 10);
+      assert i < 10;    	
+      // Repeat for JUNIT:
+      assertFalse("Intended fail with i == " + i, i < 10);
     }
   }
 }
@@ -141,16 +145,21 @@ class JML$ITU$ForAll3 {
   }
   
   public static void forAll() {
+	int count = 0;
+	foralllabel:
     for (int i : dk.itu.openjml.quantifiers.IntervalSet.union(dk.itu.openjml.quantifiers.IntervalSet.interval(5, Integer.MAX_VALUE), dk.itu.openjml.quantifiers.IntervalSet.intersect(dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, 10 - 1), dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, 300 - 1)))) {
       assert i > 0;
       // Repeat for JUNIT: 
       assertTrue("Fails with i == " + i, i > 0);
+      count++;
+      if(count >= 100) break foralllabel; 
     }
   }
 }
 
 /*
  * //@ requires (\\forall int i; i >= 5 || i < 10 && i < 300 && i != 500; i > 10 )
+ * P, predicate does NOT hold always true for this one on RAC.
  */
 class JML$ITU$ForAll4 {
   
@@ -162,7 +171,7 @@ class JML$ITU$ForAll4 {
     for (int i : dk.itu.openjml.quantifiers.IntervalSet.union(dk.itu.openjml.quantifiers.IntervalSet.interval(5, Integer.MAX_VALUE), dk.itu.openjml.quantifiers.IntervalSet.intersect(dk.itu.openjml.quantifiers.IntervalSet.intersect(dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, 10 - 1), dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, 300 - 1)), dk.itu.openjml.quantifiers.IntervalSet.interval(500 + 1, 500 - 1)))) {
       assert i > 10;
       // Repeat for JUNIT: 
-      assertTrue("Fails with i == " + i, i > 10);
+      assertFalse("Intended fail with i == " + i, i > 10);
     }
   }
 }
@@ -179,24 +188,36 @@ class JML$ITU$ForAll5 {
 	  
 	  public static void forAll() {
 	    for (int i : dk.itu.openjml.quantifiers.IntervalSet.intersect(dk.itu.openjml.quantifiers.IntervalSet.interval(0, Integer.MAX_VALUE), dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, 10 - 1))) {
-	    	System.out.println("i: " + i);
-	    	for (int j : dk.itu.openjml.quantifiers.IntervalSet.intersect(dk.itu.openjml.quantifiers.IntervalSet.interval(50 + 1, Integer.MAX_VALUE), dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, 100))) {
-	    		System.out.println("j: " + j);
-	    		for (int h : dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, Integer.MAX_VALUE)) {
-	    			System.out.println("h: " + h);
-	    			
-	    			//assert i == (j - 1);
-	  	          // Repeat for JUNIT: 
-	  	          //assertTrue(i == (j - 1));
-	  	          // should be:
-	  	    			assertFalse(i == (j - 1));
+	      for (int j : dk.itu.openjml.quantifiers.IntervalSet.intersect(dk.itu.openjml.quantifiers.IntervalSet.interval(50 + 1, Integer.MAX_VALUE), dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, 100))) {
+	        for (int h : dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, Integer.MAX_VALUE)) {
+	          assert i == (j - 1);
 	          
+	          /*
+	            
+	           NB/Note:
+	           
+	          System.out.println("i: " + i);
+	          System.out.println("j: " + j);
+	          System.out.println("h: " + h);
+	          prints:
+	          	i: 0
+				j: 51
+				h: -2147483648
+			  
+			  and test pass - wrong
+			  
+			  */
+	          
+	          
+	          // Repeat for JUNIT: 	          
+	          assertTrue(i == (j - 1));
+	          // should rather have been
+	          assertFalse(i == (j - 1));
 	        }
 	      }
 	    }
 	  }
 	}
-
 
 /*
  * //@ requires (\\forall int i; -100 < i && i < 0 || 0 < i && i < 100; i != 0)
