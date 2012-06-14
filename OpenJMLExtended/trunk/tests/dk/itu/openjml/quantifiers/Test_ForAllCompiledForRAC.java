@@ -1,6 +1,7 @@
 package dk.itu.openjml.quantifiers;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
 import junit.framework.Assert;
 
@@ -112,7 +113,7 @@ class JML$ITU$ForAll1 {
 
 /**
  * s.add("//@ requires (\\forall int i; i >= 5 || i < 10; i < 10);");
- * P, predicate holds always true for this one. 
+ * P, predicate does NOT hold always true for this one.RAC 
  */
 class JML$ITU$ForAll2 {
   
@@ -178,11 +179,18 @@ class JML$ITU$ForAll5 {
 	  
 	  public static void forAll() {
 	    for (int i : dk.itu.openjml.quantifiers.IntervalSet.intersect(dk.itu.openjml.quantifiers.IntervalSet.interval(0, Integer.MAX_VALUE), dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, 10 - 1))) {
-	      for (int j : dk.itu.openjml.quantifiers.IntervalSet.intersect(dk.itu.openjml.quantifiers.IntervalSet.interval(50 + 1, Integer.MAX_VALUE), dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, 100))) {
-	        for (int h : dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, Integer.MAX_VALUE)) {
-	          assert i == (j - 1);
-	          // Repeat for JUNIT:
-	          assertTrue(i == (j - 1));
+	    	System.out.println("i: " + i);
+	    	for (int j : dk.itu.openjml.quantifiers.IntervalSet.intersect(dk.itu.openjml.quantifiers.IntervalSet.interval(50 + 1, Integer.MAX_VALUE), dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, 100))) {
+	    		System.out.println("j: " + j);
+	    		for (int h : dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, Integer.MAX_VALUE)) {
+	    			System.out.println("h: " + h);
+	    			
+	    			//assert i == (j - 1);
+	  	          // Repeat for JUNIT: 
+	  	          //assertTrue(i == (j - 1));
+	  	          // should be:
+	  	    			assertFalse(i == (j - 1));
+	          
 	        }
 	      }
 	    }
