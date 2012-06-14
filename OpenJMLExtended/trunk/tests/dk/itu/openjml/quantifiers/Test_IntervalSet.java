@@ -182,7 +182,7 @@ public class Test_IntervalSet {
 	}
 	
 	
-	// NOTE: #26 
+	// Note: fails because of the singleton error #26 
 	@Test
 	public void testUnionSingleton() {
 		IntervalSet u = IntervalSet.union(IntervalSet.interval(0, 0), IntervalSet.interval(10, 10));
@@ -199,6 +199,7 @@ public class Test_IntervalSet {
 		}
 	}
 	
+	// Note: fails because of the singleton error #26
 	@Test
 	public void testUnionSingletonReverse() {
 		IntervalSet u = IntervalSet.union(IntervalSet.interval(10, 10), IntervalSet.interval(0, 0));
@@ -261,6 +262,9 @@ public class Test_IntervalSet {
 
 	}
 	
+	
+	
+	// NOTE: fails because of the singleton error #26
 	// 0 < i && i < 10 || 11 
 	@Test
 	public void testAdHocExpression_2() {
@@ -292,24 +296,26 @@ public class Test_IntervalSet {
 					IntervalSet.interval(1,Integer.MAX_VALUE), 
 					IntervalSet.interval(Integer.MIN_VALUE, 10-1)
 					), 
-					IntervalSet.union(
-						IntervalSet.interval(12,Integer.MAX_VALUE),
-						IntervalSet.interval(Integer.MIN_VALUE,19)
-					)
-				);
+			IntervalSet.intersect(
+				IntervalSet.interval(12,Integer.MAX_VALUE),
+				IntervalSet.interval(Integer.MIN_VALUE,19)
+			)
+		);
 		try{
 			int count = 0;
 			for(int n: u){
 				assertTrue("Failed with n as: " + n, 0 < n && n <= 9 || 11 < n && n <= 19);
 				count++;
 			}
-			// 9 + 7
-			assertEquals(16, count);	
+			// 9 + 8
+			assertEquals(17, count);	
 		} catch (Exception e){
 			Assert.fail();
 		}
 
 	}	
+	
+	
 	
 	
 }
