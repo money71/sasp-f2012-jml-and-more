@@ -224,7 +224,7 @@ class JML$ITU$ForAll7 {
 	public static void forAll() {
 		for(int x : dk.itu.openjml.quantifiers.IntervalSet.intersect(
 				dk.itu.openjml.quantifiers.IntervalSet.interval(0, Integer.MAX_VALUE), 
-				dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, dk.itu.openjml.quantifiers.Test_ForAll.array.length))) {
+				dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, dk.itu.openjml.quantifiers.Utils.array.length))) {
 			assert x <= 4;
 		    // Repeat for JUNIT: 
 			assertTrue(x <= 4);
@@ -241,7 +241,7 @@ class JML$ITU$ForAll8 {
 	public static void forAll() {
 		for(int x : dk.itu.openjml.quantifiers.IntervalSet.intersect(
 				dk.itu.openjml.quantifiers.IntervalSet.interval(0, Integer.MAX_VALUE), 
-				dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, dk.itu.openjml.quantifiers.Test_ForAll.array.length))) {
+				dk.itu.openjml.quantifiers.IntervalSet.interval(Integer.MIN_VALUE, dk.itu.openjml.quantifiers.Utils.array.length))) {
 			assert x <= 4;
 		    // Repeat for JUNIT: 
 			assertTrue(x <= 4);			
