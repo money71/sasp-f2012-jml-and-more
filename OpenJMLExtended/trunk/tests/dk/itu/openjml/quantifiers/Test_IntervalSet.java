@@ -264,15 +264,10 @@ public class Test_IntervalSet {
 					IntervalSet.interval(Integer.MIN_VALUE, 10-1)), 
 					IntervalSet.interval(11,11)
 					);
-		for(int n: u){
-			assertTrue("Failed with " + n, 0 < n && n <= 9 || 11 == n);
-			System.out.println(n);
-		}
-		
 		try{
 			int count = 0;
 			for(int n: u){
-				assertTrue(n == count+1);
+				assertTrue("Failed with " + n, 0 < n && n <= 9 || 11 == n);
 				count++;
 			}
 			assertEquals(10, count);	
