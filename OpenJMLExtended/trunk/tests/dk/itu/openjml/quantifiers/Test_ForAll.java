@@ -56,6 +56,12 @@ public class Test_ForAll {
 		s.add("//@ requires (\\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Utils.array.length || 0 <= dk.itu.openjml.quantifiers.Test_ForAll.array.length ; x <= 4 );");		
 		//s.add("//@ requires (\\forall int x; 0 <= x && x <= dk.itu.openjml.quantifiers.Utils.array.length && 2 <= dk.itu.openjml.quantifiers.Test_ForAll.array.length ; x <= 4 );");
 		
+		// Expression 9:
+		s.add("//@ requires (\\forall int i, j; 0 <= i && i < 10 && 0 <= j && j < 10; i == j);");
+		
+		
+		
+		
 	}
 
 	
