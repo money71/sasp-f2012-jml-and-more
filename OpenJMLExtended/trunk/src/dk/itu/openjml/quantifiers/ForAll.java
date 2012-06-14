@@ -5,7 +5,6 @@ import org.jmlspecs.openjml.JmlTree.JmlQuantifiedExpr;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.ListBuffer;
 
-import dk.itu.openjml.quantifiers.QRange;
 
 /**
  * This is the class that generates code to  evaluate JML \forall 
