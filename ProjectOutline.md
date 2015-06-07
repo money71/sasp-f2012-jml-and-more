@@ -1,0 +1,69 @@
+# Project Outline #
+
+> ### Abstract ###
+
+An abstract
+
+> ## Intro ##
+An introduction.
+
+> ## Pre-requisites ##
+Outlining pre-requisits, what we did, etc.?
+
+> ## Current Implementation ##
+Quantified expressions in OpenJML are currently implemented for a single declaration only. Our task is to generalize this behavior so that a quantified expression is also valid with multiple declarations.
+
+Examlpe use case (the condition is pretty nonsensical whatsoever):
+```
+	//@ requires (\forall int i, j; 0 <= i && i < array.length && j == i++; array[i] == j);
+	public static void foo (int[] array) {
+		// Do something
+	}
+```
+
+Further, the problem is how to determine the variable space in a smart way. Just iterating [int.MINVALuE, int.MAXVALUE] is going to take too long and produces a huge amount of overhead. Nevertheless, we will use this very naive approach for a first implementation which we will then refine iteratively.
+
+> ### Goals (in order of procedure) ###
+    * Implement a function _f_ that evaluates _\forall_ expressions
+      * from a string
+      * from a JML-AST
+    * Refine _f_ to accept multiple declarations
+      * A nested for-loop might be a solution here!
+    * Refine _f_ to process the guard smartly to avoid unneccesary overhead
+    * Generalize _f_ to parse existential and universal quantifiers
+    * Modify _f_ so it produces
+      * Java source code as output
+      * a Java-AST as output
+
+> ## Approaches Towards Quantified Expressions ##
+Quantified expressions in JML are semantically defined in the following way:
+```
+(\forall D; P; Q);
+```
+
+where
+  * _D_: a declaration of a race-variable
+  * _P_: the guard which variables in D have to pass
+  * _Q_: the predicate which has to be true variables passing P.
+
+Mathematically it reads <wiki:gadget url="http://mathml-gadget.googlecode.com/svn/trunk/mathml-gadget.xml" border="0" up\_content="forall d in D: P rightarrow Q" height="15"/>
+
+> ### A First Approach in Code ###
+A simple first step is to let OpenJML parse a .java-file and pass it to our function. We then generate some (yet random) code and pass it back to
+
+```
+List<JmlCompilationUnit> ast = org.jmlspecs.openjml.API.parseSingleFile("/usr/local/myFile.java");
+
+public static f(List <JmlCompilationUnit> ast) {
+       // Here we later process expressions big-time
+       return "public class Foo { \n"
+       	      + "\t // Do nothing \n"
+	      + "}";
+}
+
+org.jmlspecs.openjml.API.parseString(f(ast));
+```
+
+> ## Bibliography ##
+Todo: Generate a proper bibtex-file
+  * Cheon, Y., Leavens, G. T. (2002): A Runtime Assertion Checker for the Java Modeling Language (JML)

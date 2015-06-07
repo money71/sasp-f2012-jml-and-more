@@ -1,0 +1,64 @@
+# Problem Outline #
+
+In this section we will outline the current state of the implementation of quantified expressions in OpenJML RAC [6](6.md). Further we will elaborate on the problem by giving an example of a naive approach towards solving the evaluation of range expressions and point to more cases where the execution of a quantified expression is difficult.
+
+For brevity and to get a deeper understanding of the underlying implications and problems, we have focussed on the _\forall_ statement over integers during the project. Since all quantified expressions can be evaluated using the same technique just with a minor alteration, it will be possible to apply our results to general quantifiers in OpenJML.
+
+## Current Implementation of Quantifiers in OpenJML ##
+
+As of revision [rev](rev.md) in the OpenJML trunk, the following statement will be compiled into RAC binary code:
+
+```
+\\@ requires (\forall int i; 0 <= i && i <= 10; p(i));
+```
+
+where **p(i)** is a predicate that should hold for all **i**. A more general form is:
+
+```
+\\@ requires (\forall i; R; P);
+```
+
+where **R** is a boolean expression that defines a range and **P** a boolean expression that defines the predicate which should hold for all **i**. The notation is similar to the set-builder notation, where the values inside of a set are denoted through a boolean expression:
+
+```
+\math{i \in N|0 \leq i \and i \leq 10}
+```
+
+The OpenJML RAC will compile a check into the method decorated with the above JML statement that runs a _for_-loop for each **i** for which the given **P** is asserted. If the check runs over an **i** for which **P** does not hold, an Exception is thrown, notifying the user about the violation of the condition.
+
+However, conditions in JML that use the _\forall_ statement are likely to become more elaborate. For example:
+
+<code 1>
+```
+\\@ requires (\forall int i, j; (100 >= i && i > 0 || i == 200) && (-100 < j && 100 > j); p(i) && q(j));
+```
+
+where **p(i)** and **q(j)** are predicates that must hold for all **i** and **j**. Here, we have multiple new issues:
+
+  * There is more than one race variable declared in the expression.
+  * The order of the boolean range description is entirely arbitrary.
+  * **i** can not only be inside a single well defined range but additionally become a value outside of \math{[1, 100]}.
+
+An expression like given in this example will currently (as of trunk revision [rev](rev.md)) not be executed when compiled into RAC in OpenJML. This is mostly due to the declaration of two race variables. However, OpenJML RAC relies on a heuristic to identify the set of values which **i** and **j** can take and therefore highly relies on the layout of the expression.
+
+## Naive Approach ##
+
+The most naive approach sees the range expression **R** as a predicate that has to hold for all integers. Code to check for the expression given in <code 1> could look like this.
+
+```
+for(int i = Integer.MIN_VALUE; i <= Integer.MAX_VALUE; i++){
+	for(int j = Integer.MIN_VALUE; j <= Integer.MAX_VALUE; j++){
+		if((100 >= i && i > 0 || i == 200) && (-100 < j && 100 > j)){
+			assert p(i) && q(j);
+		}
+	}
+}
+```
+
+While this is a valid check, this approach has a runtime of O(|Integer|^(Number of race variables)). This is impractical for conducting actual runtime assertion checks. While it is obvious that running RAC-compiled code is very slow, it should still be runnable within a reasonable time. This illustrates that the naive approach is not a good solution to the question of how to implement quantifiers with multiple race variables.
+
+## Further Difficulties ##
+
+Of course, quantifiers should not only be applicable to integers as race variables but also for other primitive datatypes like booleans, chars or even floats and as well for any kind of object in Java, for which a range can be defined. Due to time difficulties we omitted work on these cases and instead tried to build a solid foundation for integer quantification. If our foundational work is properly executed, it may be possible to extend our approaches to include more of the mentioned cases.
+
+However, our approach is mainly targeted towards primitive types as there are other techniques and approaches to assert quantified expressions for arbitrary objects. These aim to manipulate the actual behavior of objects to be able to verify conditions that these must hold without having to generate every possible instance of this type.

@@ -1,0 +1,246 @@
+# OpenJML From Command Line #
+
+---todo start---
+
+Using tar / relase from xxx
+
+Placed xxx
+
+Remember to load $OPENJML or specify full path
+
+Add link to JML2FromCommandLine.wiki and create that file
+using material **on desk**.
+
+## Prerequests ##
+
+Java 7
+
+java 6 can be used using xxx
+
+
+---todo end---
+
+
+## -help is your friend ##
+
+```
+
+    $ java -jar $OPENJML/openjml.jar -help
+
+```
+
+but lets get some simple examples in place (for now using example
+with out package).
+
+## Check ##
+
+```
+    $ java -jar $OPENJML/openjml.jar -check Foo.java
+```
+
+In the docs it states its a short hand for doing:
+
+```
+    $ java -jar $OPENJML/openjml.jar org.jmlspecs.openjml.Main -check Foo.java
+```
+
+If check produces lots of warnings simply use the **-noPurityCheck**
+
+```
+
+    $ java -jar $OPENJML/openjml.jar -noPurityCheck -check Foo.java
+```
+
+This removes the warnings sbout various jml stuff not implemented yet
+within OpenJML.
+
+## Compile ##
+
+```
+
+    $ java -jar $OPENJML/openjml.jar -compile Foo.java -d openjml-compiled
+    // or 
+    $ java -jar $OPENJML/openjml.jar -compile Foo.java -d java-compiled
+
+```
+
+Both produces/outputs currently no .class files - not sure whats
+intended **-help** says: **-compile Does a Java-only compiler**.
+
+Plain mimic of javac can be done as follow:
+
+
+```
+    java -jar $OPENJML/openjml.jar -java Foo.java -d java-compiled
+    // produces:
+    .
+    ├── java-compiled
+    │   └── JMLTest.class
+```
+
+
+### Ad hoc observation ###
+
+For now check|compile seems/feels the same try e.g. run those with
+**-noInternalSpecs -jmlverbose**:
+
+```
+
+    java -jar $OPENJML/openjml.jar -noPurityCheck -noInternalSpecs -jmlverbose -check Foo.java -d openjml-compiled
+
+    java -jar $OPENJML/openjml.jar -noPurityCheck -noInternalSpecs -jmlverbose -compile Foo.java -d openjml-compiled
+
+```
+
+outputs both:
+
+```
+
+    Using internal runtime /usr/local/java/openjml/jmlruntime.jar
+    Classpath: /usr/local/java/openjml/jmlruntime.jar
+    parsing file:/tmp/openjml_tryouts/JMLTest.java
+    specspath: /usr/local/java/openjml/jmlruntime.jar
+    sourcepath: null
+    classpath: /usr/local/java/openjml/jmlruntime.jar
+    java.class.path: /usr/local/java/openjml/openjml.jar
+    entering JMLTest.java
+      completed entering JMLTest.java
+    No specs for java.lang.Object
+    No specs for java.io.Serializable
+    No specs for java.lang.Comparable
+    No specs for java.lang.CharSequence
+    No specs for java.lang.String
+    typechecking JMLTest
+    No specs for java.lang.System
+    No specs for java.lang.Number
+    No specs for java.lang.Integer
+    typechecked JMLTest
+    No specs for java.lang.AutoCloseable
+    No specs for java.io.Closeable
+    No specs for java.io.Flushable
+    No specs for java.io.OutputStream
+    No specs for java.io.FilterOutputStream
+    No specs for java.lang.Appendable
+    No specs for java.io.PrintStream
+
+```
+
+
+## RAC ##
+
+```
+
+    $ java -jar $OPENJML/openjml.jar -rac Foo.java -d openjml-compiled
+    $ tree .
+    .
+    ├── Foo.java
+    └── openjml-compiled
+	└── Foo.class
+```
+
+
+## how to run? ##
+
+Something like:
+
+```
+
+    $ java -cp $CLASSPATH:openjml-compiled JMLTest
+    Exception in thread "main" java.lang.NoClassDefFoundError: org/jmlspecs/utils/Utils
+	    at JMLTest._JML$$$checkStaticInvariant(JMLTest.java:1)
+	    at JMLTest.main(JMLTest.java:1)
+    Caused by: java.lang.ClassNotFoundException: org.jmlspecs.utils.Utils
+	    at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	    at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	    at java.security.AccessController.doPrivileged(Native Method)
+	    at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	    at java.lang.ClassLoader.loadClass(ClassLoader.java:423)
+	    at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	    at java.lang.ClassLoader.loadClass(ClassLoader.java:356)
+	    ... 2 more
+
+```
+
+or:
+
+```
+
+    $ java -jar $OPENJML/openjml.jar -cp $CLASSPATH:openjml-compiled JMLTest
+    error: Class names, 'JMLTest', are only accepted if annotation processing is explicitly requested
+    1 error
+
+```
+
+
+or
+
+```
+    $ java -cp $OPENJML/openjml.jar org.jmlspecs.openjml.Main -cp $CLASSPATH:openjml-compiled Foo
+    error: Class names, 'Foo', are only accepted if annotation processing is explicitly requested
+    1 error
+```
+
+conclusion do:
+
+```
+
+
+    $ java -cp $CLASSPATH:$OPENJML/openjml.jar:openjml-compiled/ Foo
+    // or just if nothing is in the $CLASSPATH
+    $ java -cp $OPENJML/openjml.jar:openjml-compiled/ Foo
+```
+
+or if it has a package structure
+
+```
+
+    $ java -cp $OPENJML/openjml.jar:openjml-compiled/ dk.itu.jmlexamples.foo.Foo
+
+```
+
+
+## ESC ##
+
+Extend statical analysis says:
+
+```
+
+    $ java -jar $OPENJML/openjml.jar -noPurityCheck -g -esc -prover JMLTest.java
+    openjml: no source files
+    Usage: openjml <options> <source files>
+    use -help for a list of possible options
+```
+
+remember to set the properties file in openjml for the yices:
+
+```
+  /usr/local/java/openjml:
+  -rwxr-xr-x 1 ubuntu ubuntu     683 May  8 14:00 openjml.properties
+```
+
+
+## OpenJML w. Java 6 ##
+
+Basically use **-Xbootclasspath/p:$OPENJML/openjml.jar** - lets have a few examples:
+
+```
+
+    $ java -Xbootclasspath/p:$OPENJML/openjml.jar -jar $OPENJML/openjml.jar -noPurityCheck -check Foo.java
+
+    $ java -Xbootclasspath/p:$OPENJML/openjml.jar -jar $OPENJML/openjml.jar -noPurityCheck -compile Foo.java -d java-compiled
+    
+    $ java -Xbootclasspath/p:$OPENJML/openjml.jar -jar $OPENJML/openjml.jar -noPurityCheck -rac Foo.java -d openjml-compiled
+
+```
+
+**-rac** raised (and no compiled files created)
+
+```
+    ...
+    Note: /usr/local/java/openjml/openjml.jar(specs16/java/util/Arrays.jml) uses unchecked or unsafe operations.
+    Note: Recompile with -Xlint:unchecked for details.
+    100 errors
+```
+
+We don't really have the time look into that for now we focus on Java 7 as
+descriebed above.

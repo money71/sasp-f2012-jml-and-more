@@ -1,0 +1,62 @@
+# Pattern matcher 1/2 #
+
+```
+[[E1, op, E2]] :=
+if "++" in E1, E2 | "−−" in E1 , E2 then Exception else
+if E2 == var && var not in E1 then [[E2, inverted(op), E1]] else
+match op with
+| "<=" => high = E2
+| ">=" => low = E2
+| "<" => [[E1, "<=" , E2 − 1]]
+| ">" => [[E1, ">=" , E2 + 1]]
+| "==" => low = E2 , high = E2
+| "!=" => low = E2 + 1, high = E2 − 1
+| _ => Exception
+```
+
+# Pattern matcher 2/2 #
+
+```
+[E1, op, E2] :=
+if var not in E1, E2 then Ignore() else
+match op with
+| "&&" => Intersection([E1], [E2])
+| "||" => Union([E1], [E2])
+| ">" | ">=" | "<" | "<=" | "==" | "!=" => [[E1, op, E2]]
+| _ => Exception
+```
+
+# Extended pattern matcher #
+
+```
+{E1, op, E2} :=
+
+if var not in E1, E2 then Ignore() else
+if "++" in E1, E2 | "−−" in E1 , E2 then Exception else
+if E2 == var && var not in E1 then {E2, inverted(op), E1} else
+
+match op with
+| "&&" => Intersection({E1}, {E2})
+| "||" => Union({E1}, {E2})
+
+# This requires alteration of the AST
+| "==>" => {(E1 && E2) || !E1}
+| "<==" => {(E2 && E1) || !E2}
+| "<==>" => {
+
+| "<" => {E1, "<=" , E2 − 1}
+| ">" => {E1, ">=" , E2 + 1}
+
+| "<=" => high = E2
+| ">=" => low = E2
+
+# This requires alteration of the AST
+| "==" => match E2 with
+       	  | CONSTANT => low = E2, high = E2
+	  | var => Ignore()
+	  | _ => if new_var in E2 then for each constraint in findConstraints(new_var) constraints + constraint.replace(new_var, var), else Exception
+	  
+| "!=" => low = E2 + 1, high = E2 − 1
+
+| _ => Exception
+```

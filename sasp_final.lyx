@@ -1,0 +1,2403 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass scrartcl
+\begin_preamble
+\usepackage{listings}
+\usepackage{color}
+ 
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+ 
+\lstset{ %
+  language=Java,                % the language of the code
+  basicstyle=\footnotesize,           % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line 
+                                  % will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},      % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  frame=none,                   % adds a frame around the code
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+ % title=\lstname,                   % show the filename of files included with \lstinputlisting;
+                                  % also try caption instead of title
+  keywordstyle=\color{blue},          % keyword style
+  commentstyle=\color{dkgreen},       % comment style
+  stringstyle=\color{mauve},         % string literal style
+  escapeinside={\%*}{*)},            % if you want to add a comment within your code
+  morekeywords={*,...}               % if you want to add more keywords to the set
+}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding utf8
+\fontencoding global
+\font_roman times
+\font_sans helvet
+\font_typewriter courier
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "Implementing Quantified Expressions for OpenJML"
+\pdf_author "Pelle Krøgholt, Florian Biermann"
+\pdf_subject "SASP Project Spring 2012"
+\pdf_keywords "JML, OpenJML, Quantified Expression, Pattern Matching"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine natbib_authoryear
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Subject
+SASP Project Report 2012
+\end_layout
+
+\begin_layout Title
+Implementing Quantified Expressions for OpenJML
+\end_layout
+
+\begin_layout Subtitle
+A Pattern Matching Approach
+\end_layout
+
+\begin_layout Author
+Pelle Krøgholt
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+pelle@itu.dk
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \qquad{}
+\end_inset
+
+Florian Biermann
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+fbie@itu.dk
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+This project report for the course Advanced Models and Program in spring
+ 2012 documents our efforts to extend the OpenJML framework.
+ Our project focuses on implementing quantified statements into the runtime
+ assertion checker of OpenJML.
+ The report outlines our implementation and emphasizes on the model behind
+ the implementation.
+\end_layout
+
+\begin_layout Abstract
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+This project report for the course Advanced Models and Program in spring
+ 2012 documents our efforts to extend the OpenJML
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "http://jmlspecs.sourceforge.net/"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ framework.
+ Our project focuses on implementing quantified statements into the runtime
+ assertion checker of OpenJML.
+\end_layout
+
+\begin_layout Subsection
+An Overview of OpenJML
+\end_layout
+
+\begin_layout Standard
+OpenJML is a tool to verify the correctness of Java 7 code by specifying
+ the behavior of classes and methods using mathematical models 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "cok_openjml:_2011,cok_openjml_2011"
+
+\end_inset
+
+.
+ It is built on top of the OpenJDK
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "http://www.openjdk.org"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ compiler and has a Java-like syntax (the JML syntax) to add pre- and post-condi
+tions to source code as well as invariants.
+ These conditions are written by the developer in comments throughout the
+ sources or in a separate file.
+ The tool then comes with three different variants to check the correctness
+ of source code specifications:
+\end_layout
+
+\begin_layout Itemize
+Static analysis
+\end_layout
+
+\begin_layout Itemize
+Extended static analysis (ESC)
+\end_layout
+
+\begin_layout Itemize
+Runtime assertion checker (RAC)
+\end_layout
+
+\begin_layout Standard
+While the static analysis only checks the correctness of the JML statements,
+ the ESC is able to verify the correctness of the program's behavior to
+ a certain extend by implying automated like Yices
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "http://yices.csl.sri.com/"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ or interactive provers like Coq
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "http://coq.inria.fr/"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "cok_openjml:_2011,burdy_overview_2005,chalin_beyond_2006"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The RAC compiles the JML specifications in to the binary code and checks
+ that invariants and pre- and post-conditions hold during executing the
+ program.
+ Because the OpenJDK compiler is part of OpenJML, the AST generated during
+ compile-time can be altered directly so that actual assertions will be
+ executed before and after each call of a method.
+ Using additional tools, it is possible to generate test-suites for the
+ RAC-compiled Java binaries to quickly get huge coverage of unit testing
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "cheon_runtime_2002,zimmerman_jmlunit:_2011"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Overview of the Report
+\end_layout
+
+\begin_layout Standard
+In this project, we have investigated and implemented a solution for evaluating
+ quantified statements over integers.
+ In the current OpenJML trunk version
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "http://sourceforge.net/apps/trac/jmlspecs/log/OpenJML/trunk/"
+
+\end_inset
+
+, Revision 2543
+\end_layout
+
+\end_inset
+
+, quantified statements can only be evaluated for one race variable.
+ As the ESC of OpenJML is currently being overhauled entirely, we focused
+ on developing a solution for the OpenJML RAC.
+\end_layout
+
+\begin_layout Standard
+In the following report, we will outline the problem further and give examples
+ of currently not evaluated quantified statements.
+ For brevity, we will focus only on the implementation of the 
+\emph on
+for all
+\emph default
+ expression.
+ Next we will describe a number of possible solutions, starting with the
+ most naive approach, and explain our design decisions in the solution.
+ We will then explain our solution in detail, followed by a section to outline
+ future work on our proposed solution
+\end_layout
+
+\begin_layout Section
+Problem Outline
+\end_layout
+
+\begin_layout Standard
+In this section we will outline the current state of the implementation
+ of quantified expressions in OpenJML RAC
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+ [6]
+\end_layout
+
+\end_inset
+
+.
+ Further we will elaborate on the problem by giving an example of a naive
+ approach towards solving the evaluation of range expressions and point
+ to more cases where the execution of a quantified expression is difficult.
+ 
+\end_layout
+
+\begin_layout Standard
+For brevity and to get a deeper understanding of the underlying implications
+ and problems, we have focused on the 
+\emph on
+
+\backslash
+forall
+\emph default
+ statement over integers during the project.
+ Since all quantified expressions can be evaluated using the same technique
+ just with a minor alteration, it will be possible to apply our results
+ to general quantifiers in OpenJML.
+\end_layout
+
+\begin_layout Subsection
+Current Implementation of Quantifiers in OpenJML
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Current-Implementation-of"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As of revision [rev] in the OpenJML trunk, the following statement will
+ be compiled into RAC binary code:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+//@ requires (
+\backslash
+forall int i; 0 <= i && i <= 10; p(i));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $p(i)$
+\end_inset
+
+ is a predicate that should hold for all 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ A more general form is:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+//@ requires (
+\backslash
+forall i; R; P); 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $R$
+\end_inset
+
+ is a boolean expression that defines a range and 
+\begin_inset Formula $P$
+\end_inset
+
+ a boolean expression that defines the predicate which should hold for all
+ 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ The notation is similar to the set-builder notation, where the values inside
+ of a set are denoted through a boolean expression:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+i\in N|0\leq i\wedge i\leq10
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The OpenJML RAC will compile a check into the method decorated with the
+ above JML statement that runs a 
+\emph on
+for-loop
+\emph default
+ for each 
+\begin_inset Formula $i$
+\end_inset
+
+ for which the given 
+\begin_inset Formula $P$
+\end_inset
+
+ is asserted.
+ If the check runs over an 
+\begin_inset Formula $i$
+\end_inset
+
+ for which 
+\begin_inset Formula $P$
+\end_inset
+
+ does not hold, an Exception is thrown, notifying the user about the violation
+ of the condition.
+\end_layout
+
+\begin_layout Standard
+However, conditions in JML that use the 
+\emph on
+
+\backslash
+forall
+\emph default
+ statement are likely to become more elaborate.
+ Take the following as an example, where 
+\begin_inset Formula $p(i)$
+\end_inset
+
+ and 
+\begin_inset Formula $q(j)$
+\end_inset
+
+ are predicates that must hold for all 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $j$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+//@ requires (
+\backslash
+forall int i, j; (100 >= i && i > 0 || i == 200) && (-100 < j && 100 > j);
+ p(i) && q(j));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here, we have multiple new issues:
+\end_layout
+
+\begin_layout Itemize
+There is more than one race variable declared in the expression.
+\end_layout
+
+\begin_layout Itemize
+The order of the boolean range description is entirely arbitrary.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $i$
+\end_inset
+
+ can not only be inside a single well defined range but additionally become
+ a value outside of 
+\begin_inset Formula $[1,100]$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+An expression like given in this example will currently (as of trunk revision
+ 2543) not be executed when compiled into RAC in OpenJML.
+ This is mostly due to the declaration of two race variables.
+ However, OpenJML RAC relies on a heuristic to identify the set of values
+ which 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $j$
+\end_inset
+
+ can take and therefore highly relies on the layout of the expression.
+\end_layout
+
+\begin_layout Subsection
+The Naive Approach
+\end_layout
+
+\begin_layout Standard
+The most naive approach sees the range expression 
+\begin_inset Formula $R$
+\end_inset
+
+ as a predicate that has to hold for all integers.
+ Code to check for the expression given in Section
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Current-Implementation-of"
+
+\end_inset
+
+ could look as follows.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+for(int i = Integer.MIN_VALUE; i <= Integer.MAX_VALUE; i++){
+\end_layout
+
+\begin_layout Plain Layout
+
+  for(int j = Integer.MIN_VALUE; j <= Integer.MAX_VALUE; j++){
+\end_layout
+
+\begin_layout Plain Layout
+
+    if((100 >= i && i > 0 || i == 200) && (-100 < j && 100 > j)){
+\end_layout
+
+\begin_layout Plain Layout
+
+      assert p(i) && q(j);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+While this is a valid check, this approach has a runtime of 
+\begin_inset Formula $\mathcal{O}(|Integer|^{Number\, of\, race\, variables})$
+\end_inset
+
+.
+ This is impractical for conducting actual runtime assertion checks.
+ While it is obvious that running RAC-compiled code is very slow, it should
+ still be runnable within a reasonable time.
+ This illustrates that the naive approach is not a good solution to the
+ question of how to implement quantifiers with multiple race variables.
+\end_layout
+
+\begin_layout Subsection
+Further Difficulties
+\end_layout
+
+\begin_layout Standard
+Of course, quantifiers should not only be applicable to integers as race
+ variables but also for other primitive data types like booleans, chars
+ or even floats and as well for any kind of object in Java, for which a
+ range can be defined.
+ Due to time difficulties we omitted work on these cases and instead tried
+ to build a solid foundation for integer quantification.
+ If our foundational work is properly executed, it may be possible to extend
+ our approaches to include more of the mentioned cases.
+\end_layout
+
+\begin_layout Standard
+However, our approach is mainly targeted towards primitive types as there
+ are other techniques and approaches to assert quantified expressions for
+ arbitrary objects.
+ These aim to manipulate the actual behavior of objects to be able to verify
+ conditions that these must hold without having to generate every possible
+ instance of this type.
+\end_layout
+
+\begin_layout Section
+Implementation
+\end_layout
+
+\begin_layout Standard
+Our implementation has two main features.
+ It relies on a rigorous pattern matcher that tries to eliminate as much
+ heuristics as possible.
+ It is able to procedurally produce code that represents the values defined
+ in the quantified expression by the set-builder notation.
+ This representation in turn relies on our implementation of a class that
+ implements Iterator and therefore can efficiently calculate allowed values
+ on the fly through operations on sets.
+ We will go into further detail in the following subsections.
+\end_layout
+
+\begin_layout Standard
+Our implementation is, however, not yet tightly integrated into the OpenJML
+ infrastructure.
+ Currently it is in an experimental stadium and mostly relies extensively
+ on string comparison.
+ Future work will be to integrate it into the visitor class used in OpenJML
+ that walks the AST generated by the parser and modifies it accordingly
+ to RAC.
+\end_layout
+
+\begin_layout Subsection
+QRange - Implementation of a Pattern Matcher
+\end_layout
+
+\begin_layout Standard
+We implemented a rigorous pattern matcher that analyzes an expression recursive
+ through a unification-like algorithm.
+ The pattern matcher is part of a binary tree that, if asked, will return
+ code that produces another binary tree that represents the actual values.
+ This behavior is implemented in 
+\emph on
+QRange.java
+\emph default
+ (see Appendix
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:QRange.java"
+
+\end_inset
+
+).
+ The implementation was inspired by the original QSet class implemented
+ as part of JML2
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "http://jmlspecs.cvs.sourceforge.net/viewvc/jmlspecs/JML2/"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "cheon_runtime_2002"
+
+\end_inset
+
+.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+ [4c,7]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Rigorous Pattern Matching
+\end_layout
+
+\begin_layout Standard
+JML expressions are, after parsing, represented by a tree structure implemented
+ in 
+\emph on
+JmlExpression
+\emph default
+.
+ The 
+\emph on
+JmlExpression
+\emph default
+ processed by the pattern matcher is the expression that defines which values
+ are defined for a given variable name, i.e.
+ the range expression.
+ The idea is to find all sub-expressions that mention a variable name without
+ applying any arithmetic operators to it, therefore actually give a definition
+ for its value range.
+ This assures that only expressions that are intended to define values for
+ a variable name actually define its values.
+ Other sub-expressions are ignored.
+ Further, the boolean expression is broken down until it contains an atomic
+ boolean expression between integers, i.e.
+ an expression of the form 
+\begin_inset Formula $i==j$
+\end_inset
+
+.
+ To achieve this behavior, we implemented two levels of pattern matcher.
+\end_layout
+
+\begin_layout Standard
+The first level breaks a 
+\emph on
+JmlBinaryExpr
+\emph default
+ object down into its subexpressions and stores the representation by matching
+ the operator of this binary expression.
+ After our definition, a higher-level binary expression has either the operator
+ 
+\emph on
+&&
+\emph default
+ or 
+\emph on
+||
+\emph default
+.
+ The underlying implication here is that this expression is actually building
+ a set.
+ Therefore we translate the operators into their set operation counterparts.
+ 
+\emph on
+&&
+\emph default
+ is defined as set intersection, 
+\emph on
+||
+\emph default
+ is defined as a set union.
+ All not matched operators will result in an exception thrown which informs
+ the user that the expression can not be evaluated.
+\end_layout
+
+\begin_layout Standard
+Let 
+\emph on
+op
+\emph default
+ be a binary boolean operator and 
+\emph on
+E1
+\emph default
+, 
+\emph on
+E2
+\emph default
+ boolean expressions of any form.
+ The pseudo-code is denoted in a functional-style, 
+\begin_inset Formula $[\,]$
+\end_inset
+
+ the described function.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+[E1, op, E2] :=
+\end_layout
+
+\begin_layout Plain Layout
+
+if var not in E1, E2 then Ignore() else
+\end_layout
+
+\begin_layout Plain Layout
+
+match op with
+\end_layout
+
+\begin_layout Plain Layout
+
+| "&&" => Intersection([E1], [E2])
+\end_layout
+
+\begin_layout Plain Layout
+
+| "||" => Union([E1], [E2])
+\end_layout
+
+\begin_layout Plain Layout
+
+| ">" | ">=" | "<" | "<=" | "==" | "!=" => Interval(E1, op, E2)
+\end_layout
+
+\begin_layout Plain Layout
+
+| _ => Exception
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that if the first line's condition is hit, a 
+\emph on
+QRange
+\emph default
+ of type 
+\emph on
+Ignore
+\emph default
+ is returned.
+ If the expression that is being evaluated is the only given one, our convention
+ for the definition for this variable through Ignore will be 
+\emph on
+[Integer.MIN_VALUE, Integer.MAX_VALUE]
+\emph default
+, as we presume that the user actually wants to check 
+\emph on
+every
+\emph default
+ possible integer.
+\end_layout
+
+\begin_layout Standard
+The second level of the pattern matcher performs a unification-like algorithm.
+ First, note that a single atomic boolean expression can only define a single
+ margin value of an interval.
+ Mathematically this means that one of the two boundaries of the interval
+ will be either infinity or negative infinity.
+ Programmatically however, this is not a real problem as the lowest and
+ highest representable integers are discrete values.
+\end_layout
+
+\begin_layout Standard
+Because of this fact, the low and high border of an interval are set initially
+ to 
+\emph on
+Integer.MIN_VALUE
+\emph default
+, 
+\emph on
+Integer.MAX_VALUE
+\emph default
+ respectively.
+ Then, the pattern matcher determines if the expression defines the lower
+ or the upper border of the interval.
+ The algorithm then unifies the expression so that the variable always takes
+ the left part of the expression.
+ Afterwards it is trivial to infer if the expression defines a high or a
+ low boundary.
+\end_layout
+
+\begin_layout Standard
+Let 
+\emph on
+op
+\emph default
+ be a binary boolean operator on integers, 
+\emph on
+E1
+\emph default
+, 
+\emph on
+E2
+\emph default
+ either the variable that should be defined or a (reference to an) integer,
+ high and low data fields that together represent an interval.
+ The pseudo-code is again denoted in a functional-style, 
+\begin_inset Formula $[[\,]]$
+\end_inset
+
+ the described function.
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+[[E1, op, E2]] :=
+\end_layout
+
+\begin_layout Plain Layout
+
+if "++" in E1, E2 || "--" in E1, E2 then Exception else
+\end_layout
+
+\begin_layout Plain Layout
+
+if E2 == var && var not in E1 then [[E2, inverted(op), E1]] else
+\end_layout
+
+\begin_layout Plain Layout
+
+match op with
+\end_layout
+
+\begin_layout Plain Layout
+
+| "<=" => high = E2
+\end_layout
+
+\begin_layout Plain Layout
+
+| ">=" => low = E2
+\end_layout
+
+\begin_layout Plain Layout
+
+| "<" => [[E1, "<=", E2 - 1]]
+\end_layout
+
+\begin_layout Plain Layout
+
+| ">" => [[E1, ">=", E2 + 1]]
+\end_layout
+
+\begin_layout Plain Layout
+
+| "==" => low = E2, high = E2
+\end_layout
+
+\begin_layout Plain Layout
+
+| "!=" => low = E2 + 1, high = E2 - 1
+\end_layout
+
+\begin_layout Plain Layout
+
+| _ => Exception
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Pre- and postfix in- or decrementors are not allowed, as they would alter
+ the value of race variables while defining another one.
+ The rule for the operator 
+\emph on
+!=
+\emph default
+ is a way to define an interval where only a single value is not defined.
+ The implementation of 
+\emph on
+IntervalSet
+\emph default
+, which will execute the values computed here, allows this definition and
+ produces valid results, as we will describe in the next subsection.
+ However, there are cases where the pattern-matcher does not apply correctly.
+ We will outline these in the next section.
+\end_layout
+
+\begin_layout Subsubsection
+Code Generation
+\end_layout
+
+\begin_layout Standard
+The outlined algorithm builds a binary tree of objects of type 
+\emph on
+QRange
+\emph default
+, where the operation for union and intersection as well as the actual interval
+ are subtypes of it.
+ Additionally, we implemented an ignore subtype that indicates that this
+ sub-expression should be ignored.
+ After the recursive construction of the binary tree, a method translate
+ can be called on the object that returns a string holding code to create
+ the specified interval using the 
+\emph on
+IntervalSet
+\emph default
+ type.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Translate
+\emph default
+ walks the tree recursively.
+ It is implemented on each sub-type differently and therefore returns the
+ type-specific operation.
+ I.e.
+ the union type of 
+\emph on
+QRange
+\emph default
+ returns code to build a union of 
+\emph on
+IntervalSet
+\emph default
+, the singleton type returns code to build a singleton of 
+\emph on
+IntervalSet
+\emph default
+ and so on.
+ If a ignore type is found, the set operation is omitted and the respective
+ other sub-tree's code is returned exclusively.
+\end_layout
+
+\begin_layout Subsection
+IntervalSet - Binary Tree Representing Set Operations
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+IntervalSet 
+\emph default
+(see Appendix
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:IntervalSet.java"
+
+\end_inset
+
+) is also implemented as a binary tree.
+ Structure-wise, it is very similar to 
+\emph on
+QRange
+\emph default
+.
+ This makes sense, since 
+\emph on
+QRange
+\emph default
+ is a meta-level implementation of 
+\emph on
+IntervalSet
+\emph default
+.
+ During compile time, the structure of a
+\emph on
+ QRange
+\emph default
+ instance is projected one-to-one on the structure of an 
+\emph on
+IntervalSet
+\emph default
+ instance.
+\end_layout
+
+\begin_layout Standard
+Additionally, 
+\emph on
+IntervalSet
+\emph default
+ implements 
+\emph on
+Iterator
+\emph default
+ and 
+\emph on
+Iterable
+\emph default
+ of 
+\emph on
+Integer
+\emph default
+.
+ This makes it convenient and quick to run over all values in an 
+\emph on
+IntervalSet
+\emph default
+ using a shorthand 
+\emph on
+for-loop
+\emph default
+.
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+for(int i: IntervalSet.interval(0, 10){
+\end_layout
+
+\begin_layout Plain Layout
+
+  System.out.println(i);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This will print out all numbers from and including 0 to 10.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+IntervalSet
+\emph default
+ has subclasses that represent union, intersection and a singleton, for
+ the reasons outlined.
+ Again, only the singleton type actually holds values that represent interval
+ borders.
+ While in 
+\emph on
+QRange
+\emph default
+, these subclasses mostly only differ in the way they generate source code,
+ they have three methods each that differ in behavior.
+ One simply determines through boolean operations, if a given value is inside
+ the set.
+ The methods 
+\emph on
+getNextLow
+\emph default
+ and 
+\emph on
+getNextHigh
+\emph default
+ can however calculate a new low or high value given the tree structure
+ is interpreted as set-operations.
+\end_layout
+
+\begin_layout Standard
+The main difference is, that the union subclass can answer two different
+ lows, highs respectively, depending on what the current value is, when
+ iterating over an 
+\emph on
+IntervalSet
+\emph default
+, while intersection will only always answer the higher low or the lower
+ high.
+ If neither high nor low is greater than the current value, the current
+ value itself is returned instead.
+ Following this, the condition to stop iteration is that current equals
+ low and high at the same time.
+\end_layout
+
+\begin_layout Standard
+Due to set-builder notations not necessarily being properly written, it
+ is not given that a balanced tree will result from parsing and evaluating
+ a JML 
+\emph on
+
+\backslash
+forall
+\emph default
+ statement.
+ Still, walking an unbalanced tree is faster as implementing the naive approach,
+ especially because expressions usually are rather brief and therefore would
+ not result in very deep trees.
+\end_layout
+
+\begin_layout Standard
+There are still certain issues outstanding with this implementation, which
+ we will describe in the next section.
+ 
+\end_layout
+
+\begin_layout Subsection
+ForAll - Generating For-Loops for Multiple Race Variables
+\end_layout
+
+\begin_layout Standard
+To generate a quantified expression including multiple race variables, we
+ implemented a class that recurses over each declared variable in the quantified
+ expression (see Appendix
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:ForAll.java"
+
+\end_inset
+
+).
+ It looks for a valid definition inside the range expression contained in
+ the quantified expression and generates a nested for-loop for each variable.
+ After the last variable has been processed, an assertion, as it is stated
+ in the quantified expression, is placed in the body of the inner most 
+\emph on
+for-loop
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+The class returns the generated code on a call to 
+\emph on
+translate
+\emph default
+.
+ In 
+\emph on
+ForAll
+\emph default
+, there are as well still issues that need to be resolved as pointed out
+ in the next section.
+\end_layout
+
+\begin_layout Subsection
+JML Specifications
+\end_layout
+
+\begin_layout Standard
+We provide lightweight JML specifications throughout our implementation
+ in as many places in the code as possible.
+ 
+\end_layout
+
+\begin_layout Subsection
+Testing
+\end_layout
+
+\begin_layout Standard
+Additionally to writing specifications, we manually build several test cases
+ to make sure our implementation works correctly.
+ They can be found in Appendix
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:JUnit-Tests"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Outstanding Issues and Future Work
+\end_layout
+
+\begin_layout Standard
+As hinted before, our solution is not yet complete.
+ There are multiple issues that we were unable to fix given the short period
+ of time during which this project was conducted.
+ The following subsections will go into detail regarding errors in our code.
+\end_layout
+
+\begin_layout Subsection
+Pattern Matching
+\end_layout
+
+\begin_layout Standard
+While the pattern matcher behaves correctly and is error prone than the
+ JML2 pedant for the most expressions, there are cases we do not yet cover.
+ The pattern matcher does not properly take care of relational expressions
+ of the form 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+forall int i, j; 0 < i && i < 10 && j == i + 1; p(i) && p(j);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+These are simply disregarded entirely.
+ The pattern matcher will produce arbitrary results as the heuristic we
+ use is not strong enough to determine if an expression mentioning a variable
+ name is defining the variable or defining another one.
+\end_layout
+
+\begin_layout Standard
+Also, recursive definitions are not checked against.
+ This is important to not have the virtual machine crash when crossing recursive
+ variable definitions.
+\end_layout
+
+\begin_layout Standard
+Another important part which the current implementation does not take care
+ of is the use of JML operators such as implications in the range expression.
+ Since these are still extremely useful for writing specifications, it would
+ be vital to support them.
+\end_layout
+
+\begin_layout Subsection
+Interval Representation
+\end_layout
+
+\begin_layout Standard
+The interval representation implemented in 
+\emph on
+IntervalSet
+\emph default
+ is complete except for the representation of an interval of the form 
+\begin_inset Formula $[n,n]$
+\end_inset
+
+.
+ Since in this case 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+curent == low && current == high
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+this interval would fulfill the stop condition on the iterator, hence 
+\emph on
+hasNext
+\emph default
+ always returns false.
+ Therefore, no value would ever be produced in a for-loop, even though the
+ method 
+\emph on
+next
+\emph default
+ would return the (single only valid) value.
+\end_layout
+
+\begin_layout Standard
+To avoid these issues and to avoid over-complicating the code by introducing
+ several borderline cases, it might be easier to implement the polyhedra
+ analysis algorithm outlined by 
+\begin_inset CommandInset citation
+LatexCommand citeauthor
+key "charles_integer_2009"
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+ [8]
+\end_layout
+
+\end_inset
+
+.
+ Polyhedra analysis seems to provide greater reliability, this technique
+ has a high complexity, the problem is NP-hard 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "charles_integer_2009"
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+[8]
+\end_layout
+
+\end_inset
+
+, correctness is of greater importance when doing program analysis.
+\end_layout
+
+\begin_layout Standard
+Still, we will keep working on the problem of interval representation to
+ find a solution without turning to polyhedra analysis.
+\end_layout
+
+\begin_layout Subsection
+Loop Generation
+\end_layout
+
+\begin_layout Standard
+The loop generation in 
+\emph on
+ForAll
+\emph default
+ produces nested loops.
+ To do so it relies on the order of the race variable declaration.
+ An expression of the following form would not be accepted and result in
+ an error: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+forall int i, j; 0 < j && j < 10 && i == j; p(i) && p(j);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To make sure that, regardless of the order of declaration, the loops would
+ be executable, it would be necessary to check for relational definitions
+ and to change the order of loops accordingly.
+\end_layout
+
+\begin_layout Standard
+Additional, it would be easy to extend our approach towards implementing
+ the 
+\emph on
+
+\backslash
+forall
+\emph default
+ expression by dynamically identifying the type of the quantified expression.
+ Instead of only inserting assertions then, a sum expression could be stated
+ or the assertion could be reversed in its assertion context to provide
+ the functionality for an exists quantifier.
+ We were unable to implement this due to time constraints in this project.
+\end_layout
+
+\begin_layout Subsection
+Validation
+\end_layout
+
+\begin_layout Standard
+Unfortunately, JML2, while still being the most complete tool for checking
+ JML specifications together with ESC/Java2, is not able to perform properly
+ on Java 7.
+ Due to this we ran the current OpenJML extended static checker on it to
+ find the most basic flaws in our design.
+ However, this proved to impossible due to many JML related errors in the
+ OpenJML trunk that have not yet been taken care of.
+ We were unable to check out specifications properly.
+ Hence, this is part of future work on this project.
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+In this report we described our approach towards implementing quantified
+ expressions (more precisely the for all expression) in an efficient way
+ for OpenJML.
+ While the described implementation is still experimental and not using
+ all the internal structures of OpenJML, it should be possible to implement
+ our approach in a more tied-in fashion.
+ This would mean that instead of returning strings containing code, the
+ implementation would modify a given AST before compilation so that the
+ quantified expressions would be executed during RAC, much like it is performed
+ with other checks already.
+\end_layout
+
+\begin_layout Standard
+We showed that it is possible to use pattern matching to efficiently determine
+ interval borders, even though our implementation is still lacking some
+ rigorousness.
+ Relational or recursive definitions are not properly matched yet.
+ However, we believe that it would be possible to implement both similar
+ to how it has been implemented originally in JML2.
+ 
+\end_layout
+
+\begin_layout Standard
+Our approach does not try to calculate values initially but represents the
+ constraints as set-operations in a binary tree.
+ Our implementation takes advantage of the 
+\emph on
+Iterator
+\emph default
+ and 
+\emph on
+Iterable
+\emph default
+ classes, so that a one can simply iterate over the interval representing
+ object.
+ It answers sub-intervals when asked for in combination with the current
+ race value with regard to set operations inferred from the range expression.
+ Therefore we avoid heavy calculations.
+\end_layout
+
+\begin_layout Standard
+We solved the issue of multiple race variables by introducing nested for-loops
+ for quantified expressions with more than one declaration.
+ However, there are still outstanding issues, like relying on declaration
+ order, which can interfere with relational definitions inside the range
+ expression.
+\end_layout
+
+\begin_layout Standard
+Throughout the report we reflected upon these implementations and outstanding
+ issues extensively and pointed out further difficulties that need to be
+ engaged for future work.
+ Our implementation does still produce runnable code for the given test
+ cases, and is, to a major extend, supported by JML specifications.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+enlargethispage{1cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintAll"
+bibfiles "sasp"
+options "abbrvnat"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+\start_of_appendix
+Instructions on How to Execute the Code
+\end_layout
+
+\begin_layout Paragraph
+Setup OpenJML project Eclipse project
+\end_layout
+
+\begin_layout Standard
+Based upon the official OpenJML setup guide
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+target "http://sourceforge.net/apps/trac/jmlspecs/wiki/OpenJmlSetup "
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ Works for us on OSX 10.6.8 and Ubuntu 12.4.
+\end_layout
+
+\begin_layout Paragraph
+Prerequisites
+\end_layout
+
+\begin_layout Standard
+Java 7 
+\end_layout
+
+\begin_layout Paragraph
+Setup trunk / branches
+\end_layout
+
+\begin_layout Standard
+Create a standalone folder/workspace for the code: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ cat open_jml_trunk_sourcecode/svn_update.sh #!/bin/sh
+\end_layout
+
+\begin_layout Plain Layout
+
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/JMLAnnotations/trunk
+ JMLAnnotations
+\end_layout
+
+\begin_layout Plain Layout
+
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJDK
+ OpenJDK 
+\end_layout
+
+\begin_layout Plain Layout
+
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJML
+ OpenJML 
+\end_layout
+
+\begin_layout Plain Layout
+
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJML-
+UpdateSite OpenJML-UpdateSite 
+\end_layout
+
+\begin_layout Plain Layout
+
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJMLF
+eature OpenJMLFeature 
+\end_layout
+
+\begin_layout Plain Layout
+
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/trunk/OpenJMLU
+I OpenJMLUI 
+\end_layout
+
+\begin_layout Plain Layout
+
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/Specs/trunk Specs
+\end_layout
+
+\begin_layout Plain Layout
+
+svn co https://jmlspecs.svn.sourceforge.net/svnroot/jmlspecs/OpenJML/vendor
+ vendor
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Create a separate Eclipse workspace which contains no code: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ ls -a open_jml_trunk_workspace
+\end_layout
+
+\begin_layout Plain Layout
+
+.
+ ..
+ .metadata
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Get a 
+\emph on
+fresh
+\emph default
+ Eclipse SDK (both 32/64 bit 3.7.2 worked for us).
+ Start Eclipse using the 
+\emph on
+empty
+\emph default
+ workspace.
+ Then import as existing projects (without copying)
+\end_layout
+
+\begin_layout Itemize
+JMLAnnotations
+\end_layout
+
+\begin_layout Itemize
+OpenJDK
+\end_layout
+
+\begin_layout Itemize
+OpenJML
+\end_layout
+
+\begin_layout Itemize
+OpenJML-UpdateSite
+\end_layout
+
+\begin_layout Itemize
+OpenJMLFeature
+\end_layout
+
+\begin_layout Itemize
+OpenJMLUI
+\end_layout
+
+\begin_layout Itemize
+Specs
+\end_layout
+
+\begin_layout Standard
+Then at least clean projects and build.
+ Turn off auto build since it otherwise will build projects each time saving-act
+ions are done.
+\end_layout
+
+\begin_layout Paragraph
+Trouble shooting on import
+\end_layout
+
+\begin_layout Standard
+Turn on show all 
+\emph on
+*.*
+\emph default
+ resources under the 
+\emph on
+filters
+\emph default
+ e.g.
+ add exception for 
+\emph on
+*.svn
+\emph default
+ which we don't wanna see.
+\end_layout
+
+\begin_layout Standard
+We experienced an import error on a non existing 
+\emph on
+src
+\emph default
+ folder (see Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Eclipse-Import-Error"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Clean and build project again, then it raises the error: 
+\begin_inset Quotes eld
+\end_inset
+
+Project 'OpenJML' is missing required Java project: 'Specs'
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Simply import Specs again and clean plus rebuild all projects at the same
+ time again.
+ And now no errors in the log, 
+\emph on
+only
+\emph default
+ a bunch of warnings.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/OpenJMLImportError.png
+	display false
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Eclipse Import Error on a Non Existing 
+\emph on
+src
+\emph default
+ Folder
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Eclipse-Import-Error"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+https://sasp-f2012-jml-and-more.googlecode.com/svn/wiki/images/OpenJMLImportError.p
+ng
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Setup OpenJMLExtended Eclipse project
+\end_layout
+
+\begin_layout Standard
+Check out the code from svn (public repository):
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+svn co http://sasp-f2012-jml-and-more.googlecode.com/svn/OpenJMLExtended/tags/fina
+l_handin OpenJMLExtended
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Then import OpenJMLExtended as Eclipse existing projects (here, copying
+ can safely be done).
+\end_layout
+
+\begin_layout Paragraph
+Run OpenJMLExtended Eclipse project
+\end_layout
+
+\begin_layout Standard
+Open the Eclipse with a workspace installed in the above way.
+ It should look as follow in Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:OpenJMLExtendedExlipseProject"
+
+\end_inset
+
+.
+ Run one of the launch configurations for example 
+\emph on
+TestAllOpenJMLExtended.launch
+\emph default
+ which executes all the JUnit tests within the OpenJMLExtended Eclipse project.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename images/OpenJMLExtendedEclipseProject.png
+	display false
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenJMLExtendedExlipseProject
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:OpenJMLExtendedExlipseProject"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+https://sasp-f2012-jml-and-more.googlecode.com/svn/wiki/images/OpenJMLExtendedEcli
+pseProject.png
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+ForAll.java
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:ForAll.java"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../OpenJMLExtended/tags/final_handin/src/dk/itu/openjml/quantifier
+s/ForAll.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+QRange.java
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:QRange.java"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../OpenJMLExtended/tags/final_handin/src/dk/itu/openjml/quantifier
+s/QRange.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+IntervalSet.java
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:IntervalSet.java"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../OpenJMLExtended/tags/final_handin/src/dk/itu/openjml/quantifier
+s/IntervalSet.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+JUnit Tests
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:JUnit-Tests"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Test_ForAll.java
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../OpenJMLExtended/tags/final_handin/tests/dk/itu/openjml/quantifi
+ers/Test_ForAll.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Test_QRange.java
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../OpenJMLExtended/tags/final_handin/tests/dk/itu/openjml/quantifi
+ers/Test_QRange.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Test_IntervalSet.java
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../OpenJMLExtended/tags/final_handin/tests/dk/itu/openjml/quantifi
+ers/Test_IntervalSet.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+TestAll.java
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../OpenJMLExtended/tags/final_handin/tests/dk/itu/openjml/quantifi
+ers/TestAll.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Test_ForAllCompiledForRAC.java
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../OpenJMLExtended/tags/final_handin/tests/dk/itu/openjml/quantifi
+ers/Test_ForAllCompiledForRAC.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Weblinks
+\end_layout
+
+\begin_layout Itemize
+Google Code SVN 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "https://sasp-f2012-jml-and-more.googlecode.com/svn/OpenJMLExtended/tags/final_handin"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_body
+\end_document

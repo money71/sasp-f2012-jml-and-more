@@ -1,0 +1,141 @@
+# OpenJML Eclipse Launch Configurations #
+
+
+## Existing Launch Configurations ##
+
+They are located here <OpenJML source>/launchConfigs/ (todo add link to code)
+
+### Open JML-Plugin (Eclipse) ###
+
+Is the default and launches a new Eclipse with the OpenJML installed
+similar to the one you will get when installing openjml through eclipse - but not usefull for real development.
+
+### OpenJML-Test ###
+
+Executes all the tests.
+
+### More ###
+Some uses the prover setting so remembr to set the path to **yices**.
+
+
+## Add new Launch Configurations ##
+
+OpenJMLCommandLine is sane to have in mind for setting up the arguments.
+
+Add these through OpenJML Eclipse workspace w. the sorce code.
+
+For the OpenJML go to properties.
+
+Add on run configuration for each of Check|Compile|RAC
+
+Remember to add each configuration as a **Java application**
+- screenshoot: http://screencast.com/t/xkTVb1Fza (todo add as real img).
+
+### Check ###
+
+Project: OpenJML
+Main: org.jmlspecs.openjml.Main
+Program args:
+```
+-noPurityCheck -g -check /tmp/openjml_tryouts/Foo.java -d /tmp/openjml_tryouts/openjml-compiled/
+```
+VM args:
+```
+-Dopenjml.eclipseProjectLocation=${project_loc:OpenJML} -Dopenjml.eclipseSpecsProjectLocation=${project_loc:Specs}
+```
+
+
+### Compile ###
+
+Project: OpenJML
+Main: org.jmlspecs.openjml.Main
+Program args:
+```
+-noPurityCheck -g -compile /tmp/openjml_tryouts/Foo.java -d /tmp/openjml_tryouts/openjml-compiled/
+```
+VM args:
+```
+-Dopenjml.eclipseProjectLocation=${project_loc:OpenJML} -Dopenjml.eclipseSpecsProjectLocation=${project_loc:Specs}
+```
+
+
+### RAC ###
+
+Project: OpenJML
+Main: org.jmlspecs.openjml.Main
+Program args:
+```
+-noPurityCheck -g -rac /tmp/openjml_tryouts/Foo.java -d /tmp/openjml_tryouts/openjml-compiled/
+```
+VM args:
+```
+-Dopenjml.eclipseProjectLocation=${project_loc:OpenJML} -Dopenjml.eclipseSpecsProjectLocation=${project_loc:Specs}
+```
+
+All this can possible be added through the file system and set up in a more flexible way - just don't know now.
+
+## run the configurations ##
+
+1. Choose project OpenJML
+2. Then under **run** choose **run configurations**
+3. Choose config to run and / or set up favorites etc..
+
+View screen shoot: http://screencast.com/t/5HYq3bHlsmKd
+
+
+## Export launch configurations ##
+
+Launch configurations created through Eclipse can be exported simply
+do :
+
+1. choose project and select export
+2. filter for launch and choose that one
+3. then export and e.g.: place the **.launch files under
+> OpenJML/launchConfigs.**
+
+## Edit existing launch configurations ##
+
+Its easy to edit simply just edit the files through Eclipse or file system and run the config again.
+
+Eg. adding the **-jmlverbose** flag for more out put on running
+**-check**.
+
+
+
+## Launch config example ##
+
+Used for an eclipse set up with OpenJML trunk source code (OpenJMLDevelopment) and imported this Eclipse project - JMLExamples .
+
+```
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/OpenJML/src/org/jmlspecs/openjml/Main.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jmlspecs.openjml.Main"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-jmlverbose -noPurityCheck -rac ${project_loc:JMLExamples}/src/JMLTest.java -d ${project_loc:JMLExamples}/openjml-compiled/"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="OpenJML"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dopenjml.eclipseProjectLocation=${project_loc:OpenJML} -Dopenjml.eclipseSpecsProjectLocation=${project_loc:Specs}"/>
+</launchConfiguration>
+
+```
+
+- add / adjust eventually script to walk over all files in src etc.
+
+## Generic launches ##
+
+To perform a launch on a selected resource from JMLExamples, replace the .java-filename in the run config by **${selected\_resource\_name}**, respectively **${java\_type\_name}** for classes.
+
+  * OpenJML-Check
+  * OpenJML-Compile
+  * OpenJML-RAC
+  * OpenJML-Run
+
+The latter executes the OpenJML RAC compiled class. Should ESC be added?

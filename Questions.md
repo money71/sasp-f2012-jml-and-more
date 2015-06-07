@@ -1,0 +1,25 @@
+# Collected Questions #
+
+A collection of questions formulated based on findings in the code and project development.
+
+## Recent ##
+  * Does \nonnullelements not rely on a proper \forall implementation in RAC?
+  * `//@ requires \nonnullelements o;` could basically be `\forall o, i; i < o.length; \nonnull o[i];`
+
+## Development ##
+  * To what extend are quantified expressions already implemented? ("RAC is implemented for expressions with just one declaration.")
+  * Are quantified expressions being parsed at the moment? Where in the code?
+  * Do RAC and ESC use the same parser?
+  * Where are methods called that create checks (assertions)?
+  * Where is the main-method for the RAC?
+
+## Concepts ##
+  * Is the main task to evaluate a \forall expression?
+  * Is the main task to generate proper assertions fo a \forall expression?
+  * We'd rather go for multiple easier tasks than a single hard one (nullabl,e, fresh...)
+
+
+
+
+
+

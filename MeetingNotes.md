@@ -1,0 +1,75 @@
+# Question for the next meeting #
+  * Is the general approach valid or sane?
+  * How to test the code peoperly? We could just copy-paste our results into a test case but that is rather ugly...
+  * Converting Primitive Types into Objects: Memory overhead VS code simplicity (set/sequence)
+
+# Meeting Notes #
+
+## Meeting with Joe, 14.05.2012 ##
+  * Not yet conducted
+
+## Meeting with Joe, 11.05.2012, 11.00 ##
+  * What about recursive deepening for multi-dimensional arrays or nested lists?
+    * There should be semantics for this
+    * Implemented in the original compiler
+    * Write testcase
+  * What is _desugaring_?
+    * Different language levels
+    * Rewrite higher-level definitions into core definitions
+    * Happens because David and Joe defined it that way
+  * Should _\nonnullelements_ not be a product of _\non\_null_, _\forall_?
+    * Implementations and semantics are de-coupled
+    * Maybe make a proposal
+  * When trying to compile _\fresh_ with JML2 it outputs
+```
+   File "src/Fresh.java", line 13, character 22 warning: Entire clause will be dropped since JmlFreshExpression is not executable.
+```
+    * _\fresh_ is not executable in any tools we have right now
+  * Quantified expressions seem **in general** be limited to one race variable (tested with _\forall_, _\exists_ and _\sum_)
+    * **Implement translator/utility function to interpret quantifiers which takes an AST and produces code/AST**
+    * Code style?
+    * Performance?
+    * Less overhead
+    * Amount of code
+  * What about the style of the report?
+    * Examples, Goals, Experiences, important stuff
+    * Joe will share examples
+
+## Meeting with Joe, 8.05.2012, 10.15 ##
+  * AST node relating to universal quantifier
+  * Eclipse search "where in the code is this constant referenced?"
+  * Friday Analog with Joe, 11.00am
+
+## Meeting with Joe, 1.05.2012, 16.00 ##
+  * JML2 is most advanced and working -> use it for homework!
+  * "An overview over JML Tools" - Joes's website
+  * Project -> Validated Type checker for universes
+
+> ### Universes ###
+  * Specify ownership-relations
+  * "Hot area" for the past twelve years
+  * Who owns whom?
+  * /readonly, /rep, /any
+  * RAC or ESC??
+
+> #### Levels of project ####
+  * 1. implement core basic unit type checker without testing or contracts
+  * 2. + validation via contracts and unit testing (translating rules into contracts)
+  * 3. + implement universe variants
+
+> ### Quantifiers in RAC for OpenJML ###
+  * How to translate quantified expression into executable code?
+  * Also several papers published on that
+
+> ### \nonnull ###
+  * No runtime checking for that
+  * Build!
+
+> ### \fresh ###
+  * Specify that an object is new
+  * Meaning, newly created
+
+> ### \assignable ###
+  * "Frame axioms"
+  * Runtime checking is absolutely novel
+  * Kinda heavyweight

@@ -1,0 +1,87 @@
+# JMLExamples #
+
+Todo add path to source code and an short explaination.
+
+## NonNullElementsBoiler.java ##
+
+This is our boiler-plate class for the _\nonnullelements_ expression in OpenJML. The static class is holding two methods:
+
+  * One checking the elements of the passed array consecutively until a null-reference is found or until there are no more elements to check
+  * One checking all the elements of the passed array and returing in the end if there have been null-references.
+
+While the former is, of course, saving computation time, the latter is more correct in a logical sense. However, from the outside both methods behave exactly the same, as indicated by both sharing the same specifications. These are created in reference to [Leino-Nelson-Saxe00] and read exactly like this:
+
+```
+    //@ requires o != null;
+    //@ requires (\forall int i; 0 <= i && i < o.length; o[i] != null);
+    //@ ensures \result == true;
+    //@ also
+    //@ requires o == null || (\exists int i; 0 <= i && i < o.length; o[i] == null);
+    //@ ensures \result == false;
+```
+
+**Checks:**
+
+  * JML2 ESC - **Done**
+  * JML2 compiler - **Done**
+  * JML2 RAC
+  * OpenJML ESC - **Done**
+  * OpenJML compiler
+  * OpenJML RAC
+
+~~The latter two are not possible to perform as long as there is no \forall expression implemented in OpenJML.~~
+
+
+
+
+
+
+
+
+
+
+
+## Ad hoc JML / OpenJML Q/A ##
+
+
+### What's \invariant\_for ? ###
+
+JML refman pdf p. 110 (todo: change into links to the online refman) :
+
+```
+    12.4.22 \invariant_for 
+    invariant-for-expression ::= \invariant_for ( spec-expression ) 
+    The \invariant_for operator returns true just when its argument satisfies
+    the invariant of its static type; for example, \invariant_for((MyClass)o)
+    is true when o satisfies the invariant of MyClass. The entire \invariant_for
+    expression is of type boolean. 
+```
+
+
+lets show that within a **real example** - todo.
+
+
+### Whats the precise def. of \fresh ? ###
+
+JML refman pdf p. 97 (todo: change into links to the online refman) :
+
+```
+
+    12.4.9 \fresh 
+    The syntax of a fresh-expression is as follows. See Section 12.2 [Specification
+    Expressions], page 90, for the syntax of spec-expression-list.
+    fresh-expression ::= \fresh ( spec-expression-list ) 
+    The operator \fresh asserts that objects were freshly allocated; for example, 
+    \fresh(x,y) asserts that x and y are not null and that the objects bound to
+    these identifiers were not allocated in the pre-state. The arguments to \fresh
+    can have any reference type, and the type of the overall expression is boolean.
+
+    Note that it is wrong to use \fresh(this) in the specification of a
+    constructor, because Java’s new operator allocates storage for the object; the
+    constructor’s job is just to initialize that storage. 
+
+```
+
+lets show that within a **real example** - todo.
+
+
